@@ -1,0 +1,12 @@
+E:\WorkSpace\QRT\QRT\QRT.DB\bin\Debug\QRT.DB.dll.config
+E:\WorkSpace\QRT\QRT\QRT.DB\bin\Debug\QRT.DB.dll
+E:\WorkSpace\QRT\QRT\QRT.DB\bin\Debug\QRT.DB.pdb
+E:\WorkSpace\QRT\QRT\QRT.DB\bin\Debug\EntityFramework.dll
+E:\WorkSpace\QRT\QRT\QRT.DB\bin\Debug\EntityFramework.SqlServer.dll
+E:\WorkSpace\QRT\QRT\QRT.DB\bin\Debug\EntityFramework.xml
+E:\WorkSpace\QRT\QRT\QRT.DB\bin\Debug\EntityFramework.SqlServer.xml
+E:\WorkSpace\QRT\QRT\QRT.DB\obj\Debug\QRT.DB.dll
+E:\WorkSpace\QRT\QRT\QRT.DB\obj\Debug\QRT.DB.pdb
+E:\WorkSpace\QRT\QRT\QRT.DB\obj\Debug\QRT.DB.csprojResolveAssemblyReference.cache
+E:\WorkSpace\QRT\QRT\QRT.DB\obj\Debug\QRT.DB.csproj.CoreCompileInputs.cache
+E:\WorkSpace\QRT\QRT\QRT.DB\obj\Debug\QRT.DB.csproj.CopyComplete
