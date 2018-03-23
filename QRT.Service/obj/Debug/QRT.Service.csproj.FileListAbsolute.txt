@@ -1,0 +1,16 @@
+E:\WorkSpace\QRT\QRT\QRT.Service\obj\Debug\QRT.Service.csprojResolveAssemblyReference.cache
+E:\WorkSpace\QRT\QRT\QRT.Service\bin\Debug\QRT.Service.dll
+E:\WorkSpace\QRT\QRT\QRT.Service\bin\Debug\QRT.Service.pdb
+E:\WorkSpace\QRT\QRT\QRT.Service\bin\Debug\Op3ration.dll
+E:\WorkSpace\QRT\QRT\QRT.Service\bin\Debug\QRT.DB.dll
+E:\WorkSpace\QRT\QRT\QRT.Service\bin\Debug\QRT.Domain.dll
+E:\WorkSpace\QRT\QRT\QRT.Service\bin\Debug\EntityFramework.dll
+E:\WorkSpace\QRT\QRT\QRT.Service\bin\Debug\QRT.DB.pdb
+E:\WorkSpace\QRT\QRT\QRT.Service\bin\Debug\QRT.Domain.pdb
+E:\WorkSpace\QRT\QRT\QRT.Service\bin\Debug\EntityFramework.xml
+E:\WorkSpace\QRT\QRT\QRT.Service\obj\Debug\QRT.Service.dll
+E:\WorkSpace\QRT\QRT\QRT.Service\obj\Debug\QRT.Service.pdb
+E:\WorkSpace\QRT\QRT\QRT.Service\bin\Debug\QRT.DB.dll.config
+E:\WorkSpace\QRT\QRT\QRT.Service\bin\Debug\QRT.Domain.dll.config
+E:\WorkSpace\QRT\QRT\QRT.Service\obj\Debug\QRT.Service.csproj.CoreCompileInputs.cache
+E:\WorkSpace\QRT\QRT\QRT.Service\obj\Debug\QRT.Service.csproj.CopyComplete

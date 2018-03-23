@@ -1,0 +1,236 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using QRT.DB;
+using QRT.Domain;
+using QRT.Domain.Interface.Service;
+using QRT.Domain.Interface.Repository;
+using Op3ration.ExceptionHandler;
+using QRT.Domain.ViewModel;
+
+namespace QRT.Service.Implement
+{
+    public class mas_routeService:Imas_routeService
+    {
+        #region utility
+        private readonly Imas_routeRepository _route;
+        private readonly Imas_companyService _compservice;
+        private ValidateHandler Validator;
+        public mas_routeService(Imas_routeRepository imas_routerepository
+            ,Imas_companyService imascompservice)
+        {
+            _route = imas_routerepository;
+            _compservice = imascompservice;
+        }
+
+
+       
+        private ValidateHandler ValidateModel(m_routeViewModel model)
+        {
+            Validator = new ValidateHandler();
+            return Validator;
+        }
+        #endregion
+
+        public m_routeViewModel GetRoute()
+        {
+            m_routeViewModel emp = new m_routeViewModel();
+            emp.company = _compservice.GetCompany();
+            return emp;
+        }
+
+        public m_routeViewModel GetAllRoute()
+        {
+            m_routeViewModel model = new m_routeViewModel();
+            var data = _route.All(inc => inc.mas_company).ToList();
+            if (data != null)
+            {
+                var route = data.Select(x => new RouteData()
+                {
+                    id = x.route_id,
+                    title = x.route_title,
+                    description = x.route_desc,
+                    comp_name = x.mas_company.comp_name,
+                    status = x.route_active == "A" ? "Active" : "Deactive",
+                    created_date = x.route_cdate,
+                }).OrderByDescending(c => c.created_date).ToList();
+                model.s_routeData = route;
+                model.company = _compservice.GetCompany();
+                return model;
+            }
+            else
+            {
+                model.s_routeData = new List<RouteData>();
+                return model;
+
+            }
+        }
+
+        public m_routeViewModel FilterRoute(m_routeViewModel model)
+        {
+            var id = model.s_route.id;
+            var title = model.s_route.title;
+
+            var data = _route.All(inc => inc.mas_company).ToList();
+
+            if (model.s_route.id!=0 && model.s_route.title == null)
+            {
+                data = data.Where(c => c.route_id == model.s_route.id && c.route_active == "A").ToList();
+            }
+            else if (model.s_route.id == 0 && model.s_route.title !=null)
+            {
+                data = data.Where(c => c.route_title.Contains(model.s_route.title) && c.route_active == "A").ToList();
+            }
+            else if(model.s_route.id != 0 && model.s_route.title != null)
+            {
+                data = data.Where(c => c.route_title.Contains(model.s_route.title) && c.route_id == model.s_route.id && c.route_active == "A").ToList();
+            }
+            else
+            {
+                data = _route.Filter(c => c.route_active == "A").ToList();
+            }
+            
+
+            if (data != null)
+            {
+                var route = data.Select(x => new RouteData()
+                {
+                    id = x.route_id,
+                    title = x.route_title,
+                    description = x.route_desc,
+                    comp_name = x.mas_company.comp_name,
+                    status = x.route_active == "A" ? "Active" : "Deactive",
+                    created_date = x.route_cdate,
+                }).OrderByDescending(c => c.created_date).ToList();
+
+                model.s_routeData = route;
+                model.s_route.id = id;
+                model.s_route.title = title;
+                model.company = _compservice.GetCompany();
+                return model;
+            }
+            else
+            {
+                model.s_routeData = new List<RouteData>();
+                return model;
+
+            }
+
+        }
+
+        public m_routeViewModel GetById(long id)
+        {
+            var data = _route.Filter(c => c.route_id == id,inc=>inc.mas_company).SingleOrDefault();
+            m_routeViewModel route = new m_routeViewModel();
+            route.id = data.route_id;
+            route.title = data.route_title;
+            route.description = data.route_desc;
+            route.comp_id = data.company_id;
+            route.status = data.route_active == "A" ? "On" : "Off";
+            route.created_date = data.route_cdate;
+            route.created_by = data.adminid_create;
+            route.company = _compservice.GetCompany();
+            return route;
+        }
+
+        public void Save(m_routeViewModel model)
+        {
+            if (model.id == 0)
+            {
+                Validator = ValidateModel(model);
+                if (Validator.HasError())
+                {
+                    throw Validator;
+                }
+                else
+                {
+                    try
+                    {
+                        mas_route route = new mas_route();
+                        route.route_title = model.title;
+                        route.route_desc = model.description;
+                        route.company_id = model.comp_id;
+                        route.route_active = model.status == "On" ? "A" : "D";
+                        route.route_cdate = DateTime.Now;
+                        //route.adminid_create = model.created_by;
+                        route.adminid_create = 1001883;
+                        _route.Create(route);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.IsValidateHandler())
+                            throw ex.ToValidateHandler();
+                        throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
+                    }
+                }
+            }
+            else
+            {
+                Validator = ValidateModel(model);
+                if (Validator.HasError())
+                {
+                    throw Validator;
+                }
+                else
+                {
+                    var oldData = _route.Filter(c => c.route_id == model.id).SingleOrDefault();
+                    if (oldData != null)
+                    {
+                        try
+                        {
+                            oldData.route_title = model.title;
+                            oldData.route_desc = model.description;
+                            oldData.company_id = model.comp_id;
+                            oldData.route_active = model.status == "On" ? "A" : "D";
+                            oldData.route_udate = DateTime.Now;
+                            oldData.adminid_update = 1001883;
+                            _route.Update(oldData);
+                        }
+                        catch (Exception ex)
+                        {
+                            if (ex.IsValidateHandler())
+                                throw ex.ToValidateHandler();
+                            throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
+                        }
+                       
+                    }
+                }
+            }
+        }
+
+        public void UpdateStatus(long id)
+        {
+            var oldData = _route.Filter(c => c.route_id == id).SingleOrDefault();
+            try
+            {
+                oldData.route_active = "D";
+                _route.Update(oldData);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<route_item> GetRouteItem()
+        {
+            List<route_item> itemRoute = new List<route_item>();
+            var routeData = _route.Filter(c => c.route_active == "A").ToList();
+            if (routeData != null)
+            {
+                foreach (var item in routeData)
+                {
+                    route_item r = new route_item();
+                    r.id = item.route_id;
+                    r.text = item.route_title;
+                    itemRoute.Add(r);
+                }
+            }
+            return itemRoute;
+        }
+        
+    }
+}
