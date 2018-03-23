@@ -1,0 +1,21 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="main" role="main">
+    <!-- RIBBON -->
+    <div id="ribbon">
+        <!-- breadcrumb -->
+        <ol class="breadcrumb">
+            <li>Home</li>
+            <li>Blank</li>
+        </ol>
+    </div>
+   
+</div>
+@section Scripts {
+    <script type="text/javascript">
+        $('[title="blank_"]').parent().addClass('active')
+        $('[title!="blank_"]').parent().removeClass('active')
+    </script>
+    }

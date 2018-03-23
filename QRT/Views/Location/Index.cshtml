@@ -1,0 +1,317 @@
+﻿@model QRT.Domain.ViewModel.m_locationViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="main" role="main">
+    <div id="ribbon">
+        <ol class="breadcrumb">
+            <li>Home</li>
+            <li>Location</li>
+        </ol>
+    </div>
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+        <h1 class="page-title txt-color-blueDark">
+            <i class="fa-fw fa fa-home"></i>
+            Location
+        </h1>
+    </div>
+
+    <div id="content">
+        <section id="widget-grid" class="">
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-8">
+                <span class="ribbon-button-alignment pull-right" style="margin-right:25px">
+                    <a href="\Location\Add" id="add" class="btn btn-success" data-title="add"><i class="fa fa-plus"></i> Add</a>
+                </span>
+            </div>
+            <div class="row">
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="">
+                        <form class="form-horizontal" style="margin-bottom:20px;" action="\Location\Index" method="post">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">ID</label>
+                                <div class="col-md-4">
+                                    <input class="form-control" name="s_location.id" placeholder="Enter ID" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Title</label>
+                                <div class="col-md-4">
+                                    <input class="form-control" name="s_location.title" placeholder="Enter Title" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Route</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="s_location.route" type="text">
+                                        <option value="0">Please select</option>
+                                        @if (Model.route != null)
+                                        {
+                                            for (int i = 0; i < Model.route.Count; i++)
+                                            {
+                                                <option value="@Model.route[i].id">@Model.route[i].text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="text-align:center;">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-search"></i>
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </article>
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                            <h2>All Data</h2>
+
+                        </header>
+                        <div>
+                            <div class="jarviswidget-editbox">
+                            </div>
+                            <div class="widget-body no-padding">
+                                <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th data-hide="phone">ID</th>
+                                            <th data-class="expand"><i class="fa fa-fw fa-bullhorn text-muted hidden-md hidden-sm hidden-xs"></i> Title</th>
+                                            <th><i class="fa fa-fw fa-comments text-muted hidden-md hidden-sm hidden-xs"></i> Route</th>
+                                            <th><i class="fa fa-fw fa-lightbulb-o text-muted hidden-md hidden-sm hidden-xs"></i>Status</th>
+                                            <th data-hide="phone"><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> Crearted Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model != null && Model.s_locationData.Any())
+                                        {
+                                            for (int i = 0; i < Model.s_locationData.Count; i++)
+                                            {
+                                                <tr>
+                                                    <td>@Model.s_locationData[i].id</td>
+                                                    <td>@Model.s_locationData[i].title</td>
+                                                    <td>@Model.s_locationData[i].route_name</td>
+                                                    <td>@Model.s_locationData[i].status</td>
+                                                    <td>@Model.s_locationData[i].created_date.Value.ToString("MM/dd/yyyy")</td>
+                                                    <td>
+                                                        <a href="\Location\Edit\?id=@Model.s_locationData[i].id" class="btn btn-defalt"><i class="fa fa-edit"></i></a>
+                                                        <a href="#" onclick="WarningAlert(@Model.s_locationData[i].id);" class="btn btn-defalt"><i class="fa fa-trash-o"></i></a>
+                                                        <a href="#" onclick="PopUpQuest(@Model.s_locationData[i].id,@Model.s_locationData[i].route_id);" class="btn btn-defalt"><i class="fa fa-list-alt"></i></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="modal" id="popUpResult" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Infomation</h5>
+            </div>
+            <div class="modal-body">
+                <p id="returnMsg"></p>
+            </div>
+            <div class="modal-footer">
+                <a href="\Location\Index" class="btn btn-primary">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="popUpWarning" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Warning</h5>
+            </div>
+            <div class="modal-body">
+                <p id="warningMsg"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="ok" type="button" data="" class="btn btn-primary">OK</button>
+                <button id="cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_PopUpQuestion")
+
+
+@section Scripts {
+    <script src="~/scripts/js/plugin/bootstrap-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+    <script src="~/scripts/custom/coreDetail.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            pageSetUp();
+            var responsiveHelper_dt_basic = undefined;
+            var responsiveHelper_datatable_fixed_column = undefined;
+            var responsiveHelper_datatable_col_reorder = undefined;
+            var responsiveHelper_datatable_tabletools = undefined;
+
+            var breakpointDefinition = {
+                tablet: 1024,
+                phone: 480
+            };
+
+            $('#dt_basic').dataTable({
+                "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                "autoWidth": true,
+                "oLanguage": {
+                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                },
+                "preDrawCallback": function () {
+                    if (!responsiveHelper_dt_basic) {
+                        responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#dt_basic'), breakpointDefinition);
+                    }
+                },
+                "rowCallback": function (nRow) {
+                    responsiveHelper_dt_basic.createExpandIcon(nRow);
+                },
+                "drawCallback": function (oSettings) {
+                    responsiveHelper_dt_basic.respond();
+                }
+            });
+
+        });
+
+        $('[title="location_"]').parent().addClass('active')
+        $('[title!="location_"]').parent().removeClass('active')
+
+
+        $('#ok').on('click',function () {
+            var id = $('#ok').attr('data');
+            $('#popUpWarning').hide();
+            FlagDel(id);
+        });
+
+
+        function FlagDel(id) {
+                $.ajax({
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    type: "GET",
+                    url: '@Url.Action("Delete", "Location")',
+                    data: { "id": id },
+                    success: function (data) {
+                        if (!data.Success) {
+                            $('#returnMsg').text('Location is deactive.');
+                            $('#popUpResult').modal('show');
+                        }
+                        else {
+                            $('#returnMsg').text(data.returnMsg);
+                            $('#popUpResult').modal('show');
+                        }
+                    },
+                    error: function (data) {
+                        $('#returnMsg').text(data.returnMsg);
+                        $('#popUpResult').modal('show');
+                    }
+                });
+            }
+
+
+
+        function WarningAlert(id) {
+            $('#warningMsg').text('Are you want to deactive this location?');
+            $('#popUpWarning').modal('show');
+            $('#ok').attr('data', id);
+        }
+
+
+
+
+        function PopUpQuest(location_id,route_id) {
+
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "GET",
+                url: '@Url.Action("InitPopUp", "Location")',
+                data: { "route_id": route_id, "location_id": location_id},
+                success: function (data) {
+                    var options = '';
+                    if (data != 0) {
+                        $(data).each(function (index, value) {
+                            options += '<option value="' + value.id + '" ' + value.set_select + '>' + value.text + '</option>';
+                        });
+
+                        $('#initializeDuallistbox').html(options);
+                        var initializeDuallistbox = $('#initializeDuallistbox').bootstrapDualListbox({
+                            preserveSelectionOnMove: 'moved',
+                            moveOnSelect: false,
+                            nonSelectedFilter: ''
+                        });
+                        $('[name="location_id"]').val(location_id);
+                        $('#popUpQuestion').modal('show');
+                    } else {
+                        $('#warningMsg').text('Not have question for this route, Please add new question.');
+                        $('#popUpWarning').modal('show');
+                    }
+                }
+            })
+        }
+
+         function initObj() {
+            var obj = {
+                location_id: $('[name="location_id"]').val(),
+                question_arr:  $('[name="question_arr"]').val() 
+            }
+            return obj;
+        }
+       
+
+        $('#SaveQuestion').click(function () {
+            Save();
+        });
+
+        function Save() {
+            var object = initObj();
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST",
+                url: '@Url.Action("SaveQuestion", "Location")',
+                data: JSON.stringify({ model: object }),
+                success: function (xhr) {
+                    if (!xhr.Success) {
+                        $('#popUpQuestion').modal('toggle');
+                        $('#returnMsg').text('Save successfully.');
+                        $('#popUpResult').modal('show');
+                    }
+                    else {
+                        $('#popUpQuestion').modal('toggle');
+                        $('#returnMsg').text(xhr.returnMsg);
+                        $('#popUpResult').modal('show');
+                    }
+
+                },
+                error: function (xhr) {
+                    $('#returnMsg').text(xhr.returnMsg);
+                    $('#popUpResult').modal('show');
+                }
+            })
+        }
+
+    </script>
+}
+
