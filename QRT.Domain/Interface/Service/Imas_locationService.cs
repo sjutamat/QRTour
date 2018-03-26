@@ -18,5 +18,6 @@ namespace QRT.Domain.Interface.Service
         m_locationViewModel GetById(long id);
         void UpdateStatus(long id);
         List<quest_item> GetQuestion(long route_id,long location_id);
+        //byte[] GenQRCode();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,8 @@ using QRT.Domain.Interface.Service;
 using QRT.Domain.Interface.Repository;
 using Op3ration.ExceptionHandler;
 using QRT.Domain.ViewModel;
+using QRCoder;
+using System.Drawing;
 
 namespace QRT.Service.Implement
 {
@@ -264,9 +267,25 @@ namespace QRT.Service.Implement
             return data;
         }
 
-        public void GenQRCode()
-        {
-
-        }
+        //public byte[] GenQRCode()
+        //{
+        //    string code = "";
+        //    QRCodeGenerator qrGenerator = new QRCodeGenerator();
+        //    QRCodeGenerator.QRCode qrCode = qrGenerator.CreateQrCode(code, QRCodeGenerator.ECCLevel.Q);
+        //    //System.Web.UI.WebControls.Image imgBarCode = new System.Web.UI.WebControls.Image();
+        //    //imgBarCode.Height = 150;
+        //    //imgBarCode.Width = 150;
+        //    byte[] byteImage = null;
+        //    using (Bitmap bitMap = qrCode.GetGraphic(20))
+        //    {
+        //        using (MemoryStream ms = new MemoryStream())
+        //        {
+        //            bitMap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+        //            byteImage = ms.ToArray();
+        //            //imgBarCode.ImageUrl = "data:image/png;base64," + Convert.ToBase64String(byteImage);
+        //        }
+        //    }
+        //    return byteImage;
+        //}
     }
 }

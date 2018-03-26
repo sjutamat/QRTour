@@ -68,35 +68,41 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                                <label class="col-md-2 control-label">QR Code 1</label>
-                                                <div class="col-md-7">
-                                                    <input class="form-control" name="qrcode1" placeholder="Default Text Field" type="text" readonly>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <a class="btn btn-info" id="code1" onclick="getNewCode('code1'); return false;"><i class="fa fa-edit"></i></a>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label class="checkbox-inline">
-                                                        <input type="checkbox" name="code1_status" class="checkbox style-0" value="Off" onchange="chkBoxChange(this); return false;"/>
-                                                        <span>Active Code 1</span>
-                                                    </label>
-                                                </div>
+                                            <label class="col-md-2 control-label">QR Code 1</label>
+                                            <div class="col-md-6">
+                                                <input class="form-control" name="qrcode1" placeholder="Default Text Field" type="text" readonly>
                                             </div>
+                                            <div class="col-md-1">
+                                                <a title="Edit QRCode" class="btn btn-info" id="code1" onclick="getNewCode('code1'); return false;"><i class="fa fa-edit"></i></a>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" name="code1_status" class="checkbox style-0" value="Off" onchange="chkBoxChange(this); return false;" />
+                                                    <span>Active Code 1</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a title="Generate QRCode" class="btn btn-info" id="genQrcode" onclick="GenQRCode('qrcode1'); return false;"><i class="fa fa-barcode"></i></a>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
-                                                <label class="col-md-2 control-label">QR Code 2</label>
-                                                <div class="col-md-7">
-                                                    <input class="form-control" name="qrcode2" placeholder="Default Text Field" type="text" readonly>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <a class="btn btn-info" id="code2" onclick="getNewCode('code2'); return false;"><i class="fa fa-edit"></i></a>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label class="checkbox-inline">
-                                                        <input type="checkbox" name="code2_status" class="checkbox style-0" value="Off" onchange="chkBoxChange(this); return false;">
-                                                        <span>Active Code 2</span>
-                                                    </label>
-                                                </div>
+                                            <label class="col-md-2 control-label">QR Code 2</label>
+                                            <div class="col-md-6">
+                                                <input class="form-control" name="qrcode2" placeholder="Default Text Field" type="text" readonly>
                                             </div>
+                                            <div class="col-md-1">
+                                                <a title="Edit QRCode" class="btn btn-info" id="code2" onclick="getNewCode('code2'); return false;"><i class="fa fa-edit"></i></a>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" name="code2_status" class="checkbox style-0" value="Off" onchange="chkBoxChange(this); return false;">
+                                                    <span>Active Code 2</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a title="Generate QRCode" class="btn btn-info" id="genQrcode" onclick="GenQRCode('qrcode2'); return false;"><i class="fa fa-barcode"></i></a>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Status</label>
                                             <div class="col-md-7">
@@ -110,6 +116,12 @@
                                                 </label>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <div id="qrcodeImg" class="col-sm-12" style="text-align:center;">
+
+                                            </div>
+                                        </div>
+                                        
                                         <div class="form-actions">
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -153,6 +165,7 @@
 
 @section Scripts {
     <script src="~/scripts/custom/coreDetail.js"></script>
+    <script src="~/scripts/js/plugin/jquery.qrcode.min.js"></script>
     <script type="text/javascript">
 
         if (@Model.id == 0) {
@@ -260,6 +273,13 @@
                 $('[name="'+name+'"]').val('Off');
             }
         }
+
+        function GenQRCode(code) {
+            var guidCode = $('[name="' + code + '"]').val();
+            $('#qrcodeImg').empty();
+            jQuery("#qrcodeImg").qrcode(guidCode);
+        }
+      
     </script>
 }
 

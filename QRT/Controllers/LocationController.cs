@@ -12,13 +12,10 @@ namespace QRT.Controllers
     public class LocationController : Controller
     {
         private readonly Imas_locationService _locationService;
-        //private readonly Imas_questionService _questservice;
         public LocationController(Imas_locationService ilocationService
-            //,Imas_questionService imasquestservice
             )
         {
             _locationService = ilocationService;
-            //_questservice = imasquestservice;
         }
 
         // GET: Location
@@ -103,5 +100,15 @@ namespace QRT.Controllers
             var data = _locationService.GetQuestion(rid,lid);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
+        //public System.Web.UI.WebControls.Image QRCode()
+        //{
+        //    byte[] byteImage =_locationService.GenQRCode();
+        //    System.Web.UI.WebControls.Image imgBarCode = new System.Web.UI.WebControls.Image();
+        //    imgBarCode.Height = 150;
+        //    imgBarCode.Width = 150;
+        //    imgBarCode.ImageUrl = "data:image/png;base64," + Convert.ToBase64String(byteImage);
+        //    return imgBarCode;
+        //}
     }
 }

@@ -192,6 +192,7 @@
                 }
             });
 
+           
         });
 
         $('[title="location_"]').parent().addClass('active')
@@ -241,7 +242,6 @@
 
 
         function PopUpQuest(location_id,route_id) {
-
             $.ajax({
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -249,18 +249,44 @@
                 url: '@Url.Action("InitPopUp", "Location")',
                 data: { "route_id": route_id, "location_id": location_id},
                 success: function (data) {
+                   
+
                     var options = '';
                     if (data != 0) {
                         $(data).each(function (index, value) {
                             options += '<option value="' + value.id + '" ' + value.set_select + '>' + value.text + '</option>';
                         });
+                        
+                      
+                        //$('#initializeDuallistbox').empty();
+                        //$('#initializeDuallistbox').html(options);
+                        //$('#initializeDuallistbox').bootstrapDualListbox();
+                        //$('#initializeDuallistbox').bootstrapDualListbox({
+                        //    preserveSelectionOnMove: 'moved',
+                        //    moveOnSelect: false,
+                        //    nonSelectedFilter: ''
+                        //});
+
 
                         $('#initializeDuallistbox').html(options);
-                        var initializeDuallistbox = $('#initializeDuallistbox').bootstrapDualListbox({
+                        var initializeDuallistbox = $('#initializeDuallistbox').bootstrapDualListbox();
+                        //initializeDuallistbox.bootstrapDualListbox('destroy', true);
+                        //initializeDuallistbox.bootstrapDualListbox('getContainer');
+                        initializeDuallistbox.bootstrapDualListbox({
                             preserveSelectionOnMove: 'moved',
                             moveOnSelect: false,
                             nonSelectedFilter: ''
-                        });
+                        })
+
+                        //var initializeDuallistbox = $('#initializeDuallistbox').bootstrapDualListbox({
+                        //    preserveSelectionOnMove: 'moved',
+                        //    moveOnSelect: false,
+                        //    nonSelectedFilter: ''
+                            
+                        //});
+                        
+                        
+
                         $('[name="location_id"]').val(location_id);
                         $('#popUpQuestion').modal('show');
                     } else {
@@ -310,6 +336,13 @@
                     $('#popUpResult').modal('show');
                 }
             })
+        }
+
+
+        function destroySelectList() {
+            //$('#initializeDuallistbox').bootstrapDualListbox('refresh', true);
+            
+            $('#popUpQuestion').modal('toggle');
         }
 
     </script>

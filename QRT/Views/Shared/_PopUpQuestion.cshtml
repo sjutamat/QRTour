@@ -15,17 +15,6 @@
                                 <div class="col-md-12">
                                     <div class="widget-body">
                                         <select multiple="multiple" size="20" name="question_arr" id="initializeDuallistbox">
-                                                @*@if (Model.quest != null)
-                                                {
-                                                    for (int i = 0; i < Model.quest.Count; i++)
-                                                    {
-                                                        <option value="@Model.quest[i].id">@Model.quest[i].text</option>
-                                                    }
-                                                }*@
-                                            
-                                            @*<option value="1"></option>
-                                            <option value="2">yyy</option>
-                                            <option value="3">zzz</option>*@
                                         </select>
                                     </div>
                                 </div>
@@ -37,7 +26,8 @@
             </div>
             <div class="modal-footer" style="text-align:left;">
                 <a id="SaveQuestion" class="btn btn-success"><i class="fa fa-save"></i>Save</a>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="\Location\Index" class="btn btn-default">Close</a>
+                @*<button onclick="destroySelectList(); return false;" type="button" class="btn btn-default">Close</button>*@
             </div>
         </div>
     </div>
