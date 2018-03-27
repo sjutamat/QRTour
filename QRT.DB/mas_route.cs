@@ -31,10 +31,10 @@ namespace QRT.DB
         public Nullable<int> adminid_update { get; set; }
         public Nullable<long> company_id { get; set; }
     
-        public virtual mas_company mas_company { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mas_location> mas_location { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mas_question> mas_question { get; set; }
+        public virtual mas_company mas_company { get; set; }
     }
 }

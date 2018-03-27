@@ -34,10 +34,10 @@ namespace QRT.Service.Implement
         }
         #endregion
 
-        public m_questionViewModel GetAllQuesion()
+        public m_questionViewModel GetAllQuesion(UserViewModel user)
         {
             m_questionViewModel model = new m_questionViewModel();
-            var data = _question.Filter(c => c.question_active == "A", inc => inc.mas_route).ToList();
+            var data = _question.Filter(c => c.question_active == "A" && c.adminid_create == user.id, inc => inc.mas_route).ToList();
             if (data != null)
             {
                 var question = data.Select(x => new QuestionData()
@@ -50,7 +50,7 @@ namespace QRT.Service.Implement
                 }).OrderByDescending(c => c.created_date).ToList();
 
                 model.s_questionData = question;
-                model.route = _routeservice.GetRouteItem();
+                model.route = _routeservice.GetRouteItem(user);
                 return model;
             }
             else
@@ -61,13 +61,13 @@ namespace QRT.Service.Implement
             }
         }
 
-        public m_questionViewModel FilterQuestion(m_questionViewModel model)
+        public m_questionViewModel FilterQuestion(m_questionViewModel model, UserViewModel user)
         {
             var id = model.s_question.id;
             var title = model.s_question.title;
             var route = Convert.ToInt32(model.s_question.route);
-            
-            var data = _question.Filter(c => c.question_active == "A", inc => inc.mas_route).ToList();
+
+            var data = _question.Filter(c => c.question_active == "A" && c.adminid_create == user.id, inc => inc.mas_route).ToList();
             if (id != 0)
             {
                 data = data.Where(c => c.question_id == id).ToList();
@@ -95,7 +95,7 @@ namespace QRT.Service.Implement
                 }).OrderByDescending(c => c.created_date).ToList();
 
                 model.s_questionData = question;
-                model.route = _routeservice.GetRouteItem();
+                model.route = _routeservice.GetRouteItem(user);
                 return model;
             }
             else
@@ -106,7 +106,7 @@ namespace QRT.Service.Implement
             }
         }
 
-        public m_questionViewModel GetById(long id)
+        public m_questionViewModel GetById(long id, UserViewModel user)
         {
             var data = _question.Filter(c => c.question_id == id, inc => inc.mas_route).SingleOrDefault();
             m_questionViewModel quest = new m_questionViewModel();
@@ -117,11 +117,11 @@ namespace QRT.Service.Implement
             quest.status = data.question_active == "A" ? "On" : "Off";
             quest.created_date = data.question_cdate;
             quest.created_by = data.adminid_create;
-            quest.route = _routeservice.GetRouteItem();
+            quest.route = _routeservice.GetRouteItem(user);
             return quest;
         }
 
-        public void Save(m_questionViewModel model)
+        public void Save(m_questionViewModel model, UserViewModel user)
         {
             if (model.id == 0)
             {
@@ -140,8 +140,7 @@ namespace QRT.Service.Implement
                         question.question_desc = model.description;
                         question.question_active = model.status == "On" ? "A" : "D";
                         question.question_cdate = DateTime.Now;
-                        //route.adminid_create = model.created_by;
-                        question.adminid_create = 1001883;
+                        question.adminid_create = user.id;
                         _question.Create(question);
                     }
                     catch (Exception ex)
@@ -171,7 +170,7 @@ namespace QRT.Service.Implement
                             oldData.question_desc = model.description;
                             oldData.question_active = model.status == "On" ? "A" : "D";
                             oldData.question_udate = DateTime.Now;
-                            oldData.adminid_update = 1001883;
+                            oldData.adminid_update = user.id;
                             _question.Update(oldData);
                         }
                         catch (Exception ex)
@@ -186,12 +185,14 @@ namespace QRT.Service.Implement
             }
         }
 
-        public void UpdateStatus(long id)
+        public void UpdateStatus(long id, UserViewModel user)
         {
             var oldData = _question.Filter(c => c.question_id == id).SingleOrDefault();
             try
             {
                 oldData.question_active = "D";
+                oldData.question_udate = DateTime.Now;
+                oldData.adminid_update = user.id;
                 _question.Update(oldData);
             }
             catch (Exception)
@@ -201,10 +202,10 @@ namespace QRT.Service.Implement
             }
         }
 
-        public List<quest_item> GetQuestItemByRouteID(long route_id, long location_id)
+        public List<quest_item> GetQuestItemByRouteID(long route_id, long location_id, UserViewModel user)
         {
             List<quest_item> itemRoute = new List<quest_item>();
-            var routeData = _question.Filter(c =>c.route_id == route_id && c.question_active == "A").ToList();
+            var routeData = _question.Filter(c =>c.route_id == route_id && c.question_active == "A" && c.adminid_create == user.id).ToList();
             if (routeData != null)
             {
                 foreach (var item in routeData)
@@ -217,7 +218,7 @@ namespace QRT.Service.Implement
                 }
             }
 
-            var lq = _locquest.Filter(c => c.location_id == location_id && c.locquestion_active == "A").ToList();
+            var lq = _locquest.Filter(c => c.location_id == location_id && c.locquestion_active == "A" && c.adminid_create == user.id).ToList();
             if (lq != null && lq.Count != 0)
             {
                foreach (var item in itemRoute)
@@ -237,10 +238,10 @@ namespace QRT.Service.Implement
             return itemRoute;
         }
 
-        public m_questionViewModel GetQuestion()
+        public m_questionViewModel GetQuestion(UserViewModel user)
         {
             m_questionViewModel model = new m_questionViewModel();
-            model.route = _routeservice.GetRouteItem();
+            model.route = _routeservice.GetRouteItem(user);
             return model;
         }
     }

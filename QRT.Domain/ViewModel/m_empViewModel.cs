@@ -31,7 +31,7 @@ namespace QRT.Domain.ViewModel
         public int? updated_by { get; set; }
     }
 
- 
+
 
     public class SearchDataEmp
     {

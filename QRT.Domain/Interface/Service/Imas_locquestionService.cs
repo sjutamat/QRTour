@@ -9,10 +9,10 @@ namespace QRT.Domain.Interface.Service
 {
     public interface Imas_locquestionService
     {
-        List<m_locquestionViewModel> GetAllLocQuestion();
-        m_locquestionViewModel GetByLocationId(long id);
-        void Save(m_locquestionViewModel model);
-        void UpdateStatus(long id);
-        m_locquestionViewModel InitailModel();
+        List<m_locquestionViewModel> GetAllLocQuestion(UserViewModel user);
+        m_locquestionViewModel GetByLocationId(long id, UserViewModel user);
+        void Save(m_locquestionViewModel model, UserViewModel user);
+        void UpdateStatus(long id, UserViewModel user);
+        m_locquestionViewModel InitailModel(UserViewModel user);
     }
 }

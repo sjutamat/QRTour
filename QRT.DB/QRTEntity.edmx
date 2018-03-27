@@ -14,6 +14,7 @@
           <Property Name="admin_password" Type="nvarchar" MaxLength="20" />
           <Property Name="admin_cdate" Type="datetime" />
           <Property Name="admin_active" Type="nvarchar" MaxLength="5" />
+          <Property Name="company_id" Type="bigint" />
         </EntityType>
         <EntityType Name="mas_company">
           <Key>
@@ -295,7 +296,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="QRCodeTourModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="QRCodeTourEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="mas_admin" EntityType="QRCodeTourModel.mas_admin" />
           <EntitySet Name="mas_emp" EntityType="QRCodeTourModel.mas_emp" />
           <EntitySet Name="mas_location" EntityType="QRCodeTourModel.mas_location" />
           <EntitySet Name="mas_locquestion" EntityType="QRCodeTourModel.mas_locquestion" />
@@ -326,16 +326,7 @@
             <End Role="trn_transaction" EntitySet="trn_transaction" />
             <End Role="trn_answer" EntitySet="trn_answer" />
           </AssociationSet>
-          <EntitySet Name="mas_company" EntityType="QRCodeTourModel.mas_company" />
           <EntitySet Name="mas_route" EntityType="QRCodeTourModel.mas_route" />
-          <AssociationSet Name="FK_mas_emp_mas_company" Association="QRCodeTourModel.FK_mas_emp_mas_company">
-            <End Role="mas_company" EntitySet="mas_company" />
-            <End Role="mas_emp" EntitySet="mas_emp" />
-          </AssociationSet>
-          <AssociationSet Name="FK_mas_route_mas_company" Association="QRCodeTourModel.FK_mas_route_mas_company">
-            <End Role="mas_company" EntitySet="mas_company" />
-            <End Role="mas_route" EntitySet="mas_route" />
-          </AssociationSet>
           <AssociationSet Name="FK_mas_location_mas_route" Association="QRCodeTourModel.FK_mas_location_mas_route">
             <End Role="mas_route" EntitySet="mas_route" />
             <End Role="mas_location" EntitySet="mas_location" />
@@ -344,17 +335,17 @@
             <End Role="mas_route" EntitySet="mas_route" />
             <End Role="mas_question" EntitySet="mas_question" />
           </AssociationSet>
+          <EntitySet Name="mas_admin" EntityType="QRCodeTourModel.mas_admin" />
+          <EntitySet Name="mas_company" EntityType="QRCodeTourModel.mas_company" />
+          <AssociationSet Name="FK_mas_emp_mas_company" Association="QRCodeTourModel.FK_mas_emp_mas_company">
+            <End Role="mas_company" EntitySet="mas_company" />
+            <End Role="mas_emp" EntitySet="mas_emp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mas_route_mas_company" Association="QRCodeTourModel.FK_mas_route_mas_company">
+            <End Role="mas_company" EntitySet="mas_company" />
+            <End Role="mas_route" EntitySet="mas_route" />
+          </AssociationSet>
           </EntityContainer>
-        <EntityType Name="mas_admin">
-          <Key>
-            <PropertyRef Name="admin_id" />
-          </Key>
-          <Property Name="admin_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="admin_user" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="admin_password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="admin_cdate" Type="DateTime" Precision="3" />
-          <Property Name="admin_active" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="mas_emp">
           <Key>
             <PropertyRef Name="emp_id" />
@@ -524,16 +515,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="mas_company">
-          <Key>
-            <PropertyRef Name="comp_id" />
-          </Key>
-          <Property Name="comp_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="comp_name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="comp_desc" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="mas_emp" Relationship="QRCodeTourModel.FK_mas_emp_mas_company" FromRole="mas_company" ToRole="mas_emp" />
-          <NavigationProperty Name="mas_route" Relationship="QRCodeTourModel.FK_mas_route_mas_company" FromRole="mas_company" ToRole="mas_route" />
-        </EntityType>
         <EntityType Name="mas_route">
           <Key>
             <PropertyRef Name="route_id" />
@@ -547,9 +528,54 @@
           <Property Name="adminid_create" Type="Int32" />
           <Property Name="adminid_update" Type="Int32" />
           <Property Name="company_id" Type="Int64" />
-          <NavigationProperty Name="mas_company" Relationship="QRCodeTourModel.FK_mas_route_mas_company" FromRole="mas_route" ToRole="mas_company" />
           <NavigationProperty Name="mas_location" Relationship="QRCodeTourModel.FK_mas_location_mas_route" FromRole="mas_route" ToRole="mas_location" />
           <NavigationProperty Name="mas_question" Relationship="QRCodeTourModel.FK_mas_question_mas_route" FromRole="mas_route" ToRole="mas_question" />
+          <NavigationProperty Name="mas_company" Relationship="QRCodeTourModel.FK_mas_route_mas_company" FromRole="mas_route" ToRole="mas_company" />
+        </EntityType>
+        <Association Name="FK_mas_location_mas_route">
+          <End Type="QRCodeTourModel.mas_route" Role="mas_route" Multiplicity="0..1" />
+          <End Type="QRCodeTourModel.mas_location" Role="mas_location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mas_route">
+              <PropertyRef Name="route_id" />
+            </Principal>
+            <Dependent Role="mas_location">
+              <PropertyRef Name="route_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mas_question_mas_route">
+          <End Type="QRCodeTourModel.mas_route" Role="mas_route" Multiplicity="0..1" />
+          <End Type="QRCodeTourModel.mas_question" Role="mas_question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mas_route">
+              <PropertyRef Name="route_id" />
+            </Principal>
+            <Dependent Role="mas_question">
+              <PropertyRef Name="route_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="mas_admin">
+          <Key>
+            <PropertyRef Name="admin_id" />
+          </Key>
+          <Property Name="admin_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="admin_user" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="admin_password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="admin_cdate" Type="DateTime" Precision="3" />
+          <Property Name="admin_active" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="company_id" Type="Int64" />
+        </EntityType>
+        <EntityType Name="mas_company">
+          <Key>
+            <PropertyRef Name="comp_id" />
+          </Key>
+          <Property Name="comp_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="comp_name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="comp_desc" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="mas_emp" Relationship="QRCodeTourModel.FK_mas_emp_mas_company" FromRole="mas_company" ToRole="mas_emp" />
+          <NavigationProperty Name="mas_route" Relationship="QRCodeTourModel.FK_mas_route_mas_company" FromRole="mas_company" ToRole="mas_route" />
         </EntityType>
         <Association Name="FK_mas_emp_mas_company">
           <End Type="QRCodeTourModel.mas_company" Role="mas_company" Multiplicity="1" />
@@ -575,47 +601,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_mas_location_mas_route">
-          <End Type="QRCodeTourModel.mas_route" Role="mas_route" Multiplicity="0..1" />
-          <End Type="QRCodeTourModel.mas_location" Role="mas_location" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="mas_route">
-              <PropertyRef Name="route_id" />
-            </Principal>
-            <Dependent Role="mas_location">
-              <PropertyRef Name="route_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_mas_question_mas_route">
-          <End Type="QRCodeTourModel.mas_route" Role="mas_route" Multiplicity="0..1" />
-          <End Type="QRCodeTourModel.mas_question" Role="mas_question" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="mas_route">
-              <PropertyRef Name="route_id" />
-            </Principal>
-            <Dependent Role="mas_question">
-              <PropertyRef Name="route_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="QRCodeTourModelStoreContainer" CdmEntityContainer="QRCodeTourEntities">
-          <EntitySetMapping Name="mas_admin">
-            <EntityTypeMapping TypeName="QRCodeTourModel.mas_admin">
-              <MappingFragment StoreEntitySet="mas_admin">
-                <ScalarProperty Name="admin_active" ColumnName="admin_active" />
-                <ScalarProperty Name="admin_cdate" ColumnName="admin_cdate" />
-                <ScalarProperty Name="admin_password" ColumnName="admin_password" />
-                <ScalarProperty Name="admin_user" ColumnName="admin_user" />
-                <ScalarProperty Name="admin_id" ColumnName="admin_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="mas_emp">
             <EntityTypeMapping TypeName="QRCodeTourModel.mas_emp">
               <MappingFragment StoreEntitySet="mas_emp">
@@ -704,15 +695,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="mas_company">
-            <EntityTypeMapping TypeName="QRCodeTourModel.mas_company">
-              <MappingFragment StoreEntitySet="mas_company">
-                <ScalarProperty Name="comp_desc" ColumnName="comp_desc" />
-                <ScalarProperty Name="comp_name" ColumnName="comp_name" />
-                <ScalarProperty Name="comp_id" ColumnName="comp_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="mas_route">
             <EntityTypeMapping TypeName="QRCodeTourModel.mas_route">
               <MappingFragment StoreEntitySet="mas_route">
@@ -725,6 +707,27 @@
                 <ScalarProperty Name="route_desc" ColumnName="route_desc" />
                 <ScalarProperty Name="route_title" ColumnName="route_title" />
                 <ScalarProperty Name="route_id" ColumnName="route_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mas_admin">
+            <EntityTypeMapping TypeName="QRCodeTourModel.mas_admin">
+              <MappingFragment StoreEntitySet="mas_admin">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="admin_active" ColumnName="admin_active" />
+                <ScalarProperty Name="admin_cdate" ColumnName="admin_cdate" />
+                <ScalarProperty Name="admin_password" ColumnName="admin_password" />
+                <ScalarProperty Name="admin_user" ColumnName="admin_user" />
+                <ScalarProperty Name="admin_id" ColumnName="admin_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mas_company">
+            <EntityTypeMapping TypeName="QRCodeTourModel.mas_company">
+              <MappingFragment StoreEntitySet="mas_company">
+                <ScalarProperty Name="comp_desc" ColumnName="comp_desc" />
+                <ScalarProperty Name="comp_name" ColumnName="comp_name" />
+                <ScalarProperty Name="comp_id" ColumnName="comp_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

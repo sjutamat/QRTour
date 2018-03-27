@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implement\mas_adminRepository.cs" />
     <Compile Include="Implement\mas_companyRepository.cs" />
     <Compile Include="Implement\mas_empRepository.cs" />
     <Compile Include="Implement\mas_locationRepository.cs" />

@@ -35,7 +35,7 @@ namespace QRT.Service.Implement
         }
         #endregion
 
-        public List<m_locquestionViewModel> GetAllLocQuestion()
+        public List<m_locquestionViewModel> GetAllLocQuestion(UserViewModel user)
         {
             var d = _locquestion.Filter(c => c.locquestion_active != "D", inc => inc.mas_location, i => i.mas_question).ToList().GroupBy(c => c.location_id);
             var data = _locquestion.Filter(c => c.locquestion_active != "D", inc => inc.mas_location, i => i.mas_question).ToList();
@@ -60,9 +60,9 @@ namespace QRT.Service.Implement
             }
         }
 
-        public m_locquestionViewModel GetByLocationId(long loccationid)
+        public m_locquestionViewModel GetByLocationId(long loccationid, UserViewModel user)
         {
-            var data = _locquestion.Filter(c => c.location_id == loccationid).SingleOrDefault();
+            var data = _locquestion.Filter(c => c.location_id == loccationid && c.adminid_create == user.id).SingleOrDefault();
             m_locquestionViewModel locquest = new m_locquestionViewModel();
             locquest.id = data.locquestion_id;
             locquest.location_id = data.location_id;
@@ -100,7 +100,7 @@ namespace QRT.Service.Implement
             return locquest;
         }
 
-        public void Save(m_locquestionViewModel model)
+        public void Save(m_locquestionViewModel model, UserViewModel user)
         {
             if (model.location_id != null || model.location_id != 0)
             {
@@ -127,7 +127,7 @@ namespace QRT.Service.Implement
                                     locquest.question_id = Convert.ToInt32(model.question_arr[i]);
                                     locquest.location_id = model.location_id;
                                     locquest.locquestion_active = "A";
-                                    locquest.adminid_create = 1001883;
+                                    locquest.adminid_create = user.id;
                                     locquest.locquestion_cdate = DateTime.Now;
                                     _locquestion.Create(locquest);
                                 }
@@ -161,7 +161,7 @@ namespace QRT.Service.Implement
                                     locquest.question_id = Convert.ToInt32(model.question_arr[i]);
                                     locquest.location_id = model.location_id;
                                     locquest.locquestion_active = "A";
-                                    locquest.adminid_create = 1001883;
+                                    locquest.adminid_create = user.id;
                                     locquest.locquestion_cdate = DateTime.Now;
                                     _locquestion.Create(locquest);
                                 }
@@ -180,7 +180,7 @@ namespace QRT.Service.Implement
             
         }
 
-        public void UpdateStatus(long id)
+        public void UpdateStatus(long id, UserViewModel user)
         {
             var oldData = _locquestion.Filter(c => c.locquestion_id == id).SingleOrDefault();
             try
@@ -194,12 +194,12 @@ namespace QRT.Service.Implement
             }
         }
 
-        public m_locquestionViewModel InitailModel()
+        public m_locquestionViewModel InitailModel(UserViewModel user)
         {
             m_locquestionViewModel model = new m_locquestionViewModel();
             //get location
             model.location = new List<location_item>();
-            var locitem = _location.Filter(c => c.location_active != "D").ToList();
+            var locitem = _location.Filter(c => c.location_active != "D" && c.adminid_create == user.id).ToList();
             if (locitem != null)
             {
                 foreach (var item in locitem)
@@ -213,7 +213,7 @@ namespace QRT.Service.Implement
 
             //get question
             model.question = new List<question_item>();
-            var questitem = _question.Filter(c => c.question_active != "D").ToList();
+            var questitem = _question.Filter(c => c.question_active != "D" && c.adminid_create == user.id).ToList();
             if (questitem != null)
             {
                 foreach (var item in questitem)

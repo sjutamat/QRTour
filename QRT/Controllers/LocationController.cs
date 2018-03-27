@@ -9,19 +9,21 @@ using QRT.Domain.ViewModel;
 
 namespace QRT.Controllers
 {
-    public class LocationController : Controller
+    public class LocationController : BaseController
     {
         private readonly Imas_locationService _locationService;
         public LocationController(Imas_locationService ilocationService
             )
         {
             _locationService = ilocationService;
-        }
+         }
+        
+        
 
         // GET: Location
         public ActionResult Index()
         {
-            var data = _locationService.GetAllLocation();
+            var data = _locationService.GetAllLocation(admin);
            
             return View(data);
         }
@@ -30,19 +32,19 @@ namespace QRT.Controllers
         [AllowAnonymous]
         public ActionResult Index(m_locationViewModel model)
         {
-            var data = _locationService.FilterLocation(model);
+            var data = _locationService.FilterLocation(model,admin);
             return View(data);
         }
 
         public ActionResult Add()
         {
-            var model = _locationService.GetRoute();
+            var model = _locationService.GetRoute(admin);
             return View("Detail",model);
         }
 
         public ActionResult Edit(long id)
         {
-            var model = _locationService.GetById(id);
+            var model = _locationService.GetById(id,admin);
             return View("Detail", model);
         }
 
@@ -51,7 +53,7 @@ namespace QRT.Controllers
             string returnMsg = "";
             if (model != null)
             {
-                _locationService.Save(model);
+                _locationService.Save(model,admin);
                 returnMsg = "success";
             }
             else
@@ -67,7 +69,7 @@ namespace QRT.Controllers
             string returnMsg = "";
             if (model != null)
             {
-                _locationService.SaveQuestion(model);
+                _locationService.SaveQuestion(model,admin);
                 returnMsg = "success";
             }
             else
@@ -80,7 +82,7 @@ namespace QRT.Controllers
 
         public JsonResult Delete(long id)
         {
-            _locationService.UpdateStatus(id);
+            _locationService.UpdateStatus(id,admin);
             var returnMsg = "success";
             return Json(returnMsg, JsonRequestBehavior.AllowGet);
         }
@@ -97,7 +99,7 @@ namespace QRT.Controllers
         {
             var rid = Convert.ToInt32(route_id);
             var lid = Convert.ToInt32(location_id);
-            var data = _locationService.GetQuestion(rid,lid);
+            var data = _locationService.GetQuestion(rid,lid,admin);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 

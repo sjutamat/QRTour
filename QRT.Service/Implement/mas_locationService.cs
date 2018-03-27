@@ -52,10 +52,10 @@ namespace QRT.Service.Implement
         }
 
 
-        public m_locationViewModel GetRoute()
+        public m_locationViewModel GetRoute(UserViewModel user)
         {
             m_locationViewModel location = new m_locationViewModel();
-            location.route = _routeservice.GetRouteItem();
+            location.route = _routeservice.GetRouteItem(user);
             location.qrcode1 = CodeGenerater();
             location.qrcode2 = CodeGenerater();
 
@@ -64,10 +64,10 @@ namespace QRT.Service.Implement
         }
         #endregion
 
-        public m_locationViewModel GetAllLocation()
+        public m_locationViewModel GetAllLocation(UserViewModel user)
         {
             m_locationViewModel model = new m_locationViewModel();
-            var data = _location.Filter(f => f.route_id > 0 && f.location_active != "D",inc=> inc.mas_route) .ToList();
+            var data = _location.Filter(f => f.adminid_create == user.id && f.location_active != "D",inc=> inc.mas_route) .ToList();
             if (data != null)
             {
                 var location = data.Select(x => new LocationData()
@@ -83,7 +83,7 @@ namespace QRT.Service.Implement
                 }).OrderByDescending(c => c.created_date).ToList();
                 
                 model.s_locationData = location;
-                model.route = _routeservice.GetRouteItem();
+                model.route = _routeservice.GetRouteItem(user);
                 return model;
             }
             else
@@ -94,13 +94,13 @@ namespace QRT.Service.Implement
             }
         }
 
-        public m_locationViewModel FilterLocation(m_locationViewModel model)
+        public m_locationViewModel FilterLocation(m_locationViewModel model, UserViewModel user)
         {
             var id = model.s_location.id;
             var title = model.s_location.title;
             var route = Convert.ToInt32(model.s_location.route);
 
-            var data = _location.Filter(c=>c.location_active == "A", inc => inc.mas_route).ToList();
+            var data = _location.Filter(c => c.location_active == "A" && c.adminid_create == user.id, inc => inc.mas_route).ToList();
             if (id!=0)
             {
                 data = data.Where(c => c.location_id == id).ToList();
@@ -132,7 +132,7 @@ namespace QRT.Service.Implement
                 }).OrderByDescending(c => c.created_date).ToList();
 
                 model.s_locationData = location;
-                model.route = _routeservice.GetRouteItem();
+                model.route = _routeservice.GetRouteItem(user);
                 return model;
             }
             else
@@ -143,7 +143,7 @@ namespace QRT.Service.Implement
             }
         }
 
-        public m_locationViewModel GetById(long id)
+        public m_locationViewModel GetById(long id, UserViewModel user)
         {
             var data = _location.Filter(c => c.location_id == id).SingleOrDefault();
             m_locationViewModel location = new m_locationViewModel();
@@ -160,12 +160,12 @@ namespace QRT.Service.Implement
 
             location.created_date = data.location_cdate;
             location.created_by = data.adminid_create;
-            location.route = _routeservice.GetRouteItem();
+            location.route = _routeservice.GetRouteItem(user);
 
             return location;
         }
 
-        public void Save(m_locationViewModel model)
+        public void Save(m_locationViewModel model, UserViewModel user)
         {
             if (model.id == 0)
             {
@@ -190,7 +190,7 @@ namespace QRT.Service.Implement
                         location.qrcode2_status = model.code2_status == "On" ? "A" : "D";
 
                         location.location_cdate = DateTime.Now;
-                        location.adminid_create = 1001883;
+                        location.adminid_create = user.id;
                         _location.Create(location);
                     }
                     catch (Exception ex)
@@ -226,7 +226,7 @@ namespace QRT.Service.Implement
                             oldData.qrcode2_status = model.code2_status == "On" ? "A" : "D";
 
                             oldData.location_udate = DateTime.Now;
-                            oldData.adminid_update = 1001883;
+                            oldData.adminid_update = user.id;
                             _location.Update(oldData);
                         }
                         catch (Exception ex)
@@ -241,17 +241,19 @@ namespace QRT.Service.Implement
             }
         }
 
-        public void SaveQuestion(m_locquestionViewModel model)
+        public void SaveQuestion(m_locquestionViewModel model, UserViewModel user)
         {
-            _locquestservice.Save(model);
+            _locquestservice.Save(model,user);
         }
 
-        public void UpdateStatus(long id)
+        public void UpdateStatus(long id, UserViewModel user)
         {
             var oldData = _location.Filter(c => c.location_id == id).SingleOrDefault();
             try
             {
                 oldData.location_active = "D";
+                oldData.adminid_update = user.id;
+                oldData.location_udate = DateTime.Now;
                 _location.Update(oldData);
             }
             catch (Exception)
@@ -261,9 +263,9 @@ namespace QRT.Service.Implement
             }
         }
 
-        public List<quest_item> GetQuestion(long route_id, long location_id)
+        public List<quest_item> GetQuestion(long route_id, long location_id, UserViewModel user)
         {
-            var data = _questservice.GetQuestItemByRouteID(route_id,location_id);
+            var data = _questservice.GetQuestItemByRouteID(route_id,location_id,user);
             return data;
         }
 

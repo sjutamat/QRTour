@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\Repository\Imas_adminRepository.cs" />
     <Compile Include="Interface\Repository\Imas_companyRepository.cs" />
     <Compile Include="Interface\Repository\Imas_empRepository.cs" />
     <Compile Include="Interface\Repository\Imas_locationRepository.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Interface\Repository\Imas_questionRepository.cs" />
     <Compile Include="Interface\Repository\Imas_routeRepository.cs" />
     <Compile Include="Interface\Repository\IRepositoryBase.cs" />
+    <Compile Include="Interface\Service\Imas_adminService.cs" />
     <Compile Include="Interface\Service\Imas_companyService.cs" />
     <Compile Include="Interface\Service\Imas_empService.cs" />
     <Compile Include="Interface\Service\Imas_locationService.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="ViewModel\m_locquestionViewModel.cs" />
     <Compile Include="ViewModel\m_questionViewModel.cs" />
     <Compile Include="ViewModel\m_routeViewModel.cs" />
+    <Compile Include="ViewModel\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

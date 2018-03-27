@@ -8,7 +8,7 @@ using QRT.Domain.ViewModel;
 
 namespace QRT.Controllers
 {
-    public class QuestionController : Controller
+    public class QuestionController : BaseController
     {
         private readonly Imas_questionService _questionService;
         public QuestionController(Imas_questionService iquestionservice)
@@ -19,7 +19,7 @@ namespace QRT.Controllers
         // GET: Question
         public ActionResult Index()
         {
-            var data = _questionService.GetAllQuesion();
+            var data = _questionService.GetAllQuesion(admin);
             return View(data);
         }
 
@@ -27,19 +27,19 @@ namespace QRT.Controllers
         [AllowAnonymous]
         public ActionResult Index(m_questionViewModel model)
         {
-            var data = _questionService.FilterQuestion(model);
+            var data = _questionService.FilterQuestion(model,admin);
             return View(data);
         }
 
         public ActionResult Add()
         {
-            var model = _questionService.GetQuestion();
+            var model = _questionService.GetQuestion(admin);
             return View("Detail", model);
         }
 
         public ActionResult Edit(long id)
         {
-            var model = _questionService.GetById(id);
+            var model = _questionService.GetById(id,admin);
             return View("Detail", model);
         }
 
@@ -48,7 +48,7 @@ namespace QRT.Controllers
             string returnMsg = "";
             if (model != null)
             {
-                _questionService.Save(model);
+                _questionService.Save(model,admin);
                 returnMsg = "success";
             }
             else
@@ -61,7 +61,7 @@ namespace QRT.Controllers
 
         public JsonResult Delete(long id)
         {
-            _questionService.UpdateStatus(id);
+            _questionService.UpdateStatus(id,admin);
             var returnMsg = "success";
             return Json(returnMsg, JsonRequestBehavior.AllowGet);
         }

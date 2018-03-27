@@ -9,12 +9,12 @@ namespace QRT.Domain.Interface.Service
 {
     public interface Imas_routeService
     {
-        m_routeViewModel GetRoute();
-        m_routeViewModel GetAllRoute();
-        void Save(m_routeViewModel model);
-        m_routeViewModel GetById(long id);
-        m_routeViewModel FilterRoute(m_routeViewModel model);
-        void UpdateStatus(long id);
-        List<route_item> GetRouteItem();
+        m_routeViewModel GetRoute(UserViewModel user);
+        m_routeViewModel GetAllRoute(UserViewModel user);
+        void Save(m_routeViewModel model, UserViewModel user);
+        m_routeViewModel GetById(long id, UserViewModel user);
+        m_routeViewModel FilterRoute(m_routeViewModel model, UserViewModel user);
+        void UpdateStatus(long id, UserViewModel user);
+        List<route_item> GetRouteItem(UserViewModel user);
     }
 }

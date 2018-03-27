@@ -8,7 +8,7 @@ using QRT.Domain.Interface.Repository;
 
 namespace QRT.DAL.Implement
 {
-    class mas_companyRepository:RepositoryBase<mas_company>,Imas_companyRepository
+    public class mas_companyRepository:RepositoryBase<mas_company>,Imas_companyRepository
     {
         private readonly QRCodeTourEntities _dbContext;
         public mas_companyRepository(QRCodeTourEntities _Context):base(_Context){
