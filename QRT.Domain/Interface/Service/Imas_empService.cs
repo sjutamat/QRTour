@@ -16,6 +16,7 @@ namespace QRT.Domain.Interface.Service
         void UpdateStatus(long id);
         m_empViewModel GetEmp();
         string GetNewCode(long compid);
-       
+        EmpData CheckEmp(string emp_code);
+        //EmpData ChkEmployee(string emp_code);
     }
 }

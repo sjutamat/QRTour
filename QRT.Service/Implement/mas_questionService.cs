@@ -15,15 +15,21 @@ namespace QRT.Service.Implement
         #region Utility
         private readonly Imas_questionRepository _question;
         private readonly Imas_locquestionRepository _locquest;
+        private readonly Imas_locationRepository _location;
+
         private readonly Imas_routeService _routeservice;
         private ValidateHandler Validator;
         public mas_questionService(Imas_questionRepository imas_questionrepository
             ,Imas_locquestionRepository imas_locquestionrepository
+            ,Imas_locationRepository imas_locationrepository
+
             ,Imas_routeService imasrouteservice
             )
         {
             _question = imas_questionrepository;
             _locquest = imas_locquestionrepository;
+            _location = imas_locationrepository;
+
             _routeservice = imasrouteservice;
         }
 
@@ -141,6 +147,8 @@ namespace QRT.Service.Implement
                         question.question_active = model.status == "On" ? "A" : "D";
                         question.question_cdate = DateTime.Now;
                         question.adminid_create = user.id;
+                        question.question_udate = DateTime.Now;
+                        question.adminid_update = user.id;
                         _question.Create(question);
                     }
                     catch (Exception ex)
@@ -243,6 +251,14 @@ namespace QRT.Service.Implement
             m_questionViewModel model = new m_questionViewModel();
             model.route = _routeservice.GetRouteItem(user);
             return model;
+        }
+
+        public List<QuestionList> GetQuestionByLocation(int locationId)
+        {
+            var jah = _question.QuestionByLocation();
+            var d = jah.Where(c => c.location_id.Equals(locationId)).ToList();
+            List<QuestionList> data = new List<QuestionList>();
+            return jah;
         }
     }
 }

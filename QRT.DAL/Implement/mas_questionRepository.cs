@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using QRT.Domain.Interface.Repository;
 using QRT.DB;
+using QRT.Domain.ViewModel;
 
 namespace QRT.DAL.Implement
 {
@@ -14,6 +15,26 @@ namespace QRT.DAL.Implement
         public mas_questionRepository(QRCodeTourEntities _Context) : base(_Context)
         {
             _dbContext = _Context;
+        }
+
+        public List<QuestionList> QuestionByLocation()
+        {
+            var data = from q in _dbContext.mas_question
+                                      join lq in _dbContext.mas_locquestion on q.question_id equals lq.question_id
+                                      join l in _dbContext.mas_location on lq.location_id equals l.location_id
+                                      where l.location_id == 1
+                                      select new QuestionList
+                                      {
+                                          id = q.question_id, // or pc.ProdId
+                                          route_id = q.route_id,
+                                          title = q.question_title,
+                                          location_id = lq.location_id,
+                                          location_name = l.location_title
+                                      };
+
+            var a = data.ToList();
+            return data.ToList();
+
         }
 
     }

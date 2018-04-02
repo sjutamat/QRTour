@@ -264,6 +264,7 @@
     <Content Include="Content\img\logo-pale.png" />
     <Content Include="Content\img\logo-white.png" />
     <Content Include="Content\img\logo.png" />
+    <Content Include="Content\img\logo_paragon.png" />
     <Content Include="Content\img\mappin-default.png" />
     <Content Include="Content\img\minus.png" />
     <Content Include="Content\img\mybg.png" />
@@ -825,6 +826,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CheckPointController.cs" />
     <Compile Include="Controllers\EmpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
@@ -898,6 +900,8 @@
     <Content Include="Views\LocQuestion\Detail.cshtml" />
     <Content Include="Views\Shared\_PopUpQuestion.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\CheckPoint\Index.cshtml" />
+    <Content Include="Views\CheckPoint\QuestionCheck.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

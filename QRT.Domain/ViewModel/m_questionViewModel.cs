@@ -10,8 +10,9 @@ namespace QRT.Domain.ViewModel
     {
         public SearchQuestionData s_question { get; set; }
         public List<QuestionData> s_questionData { get; set; }
-
+        
         public List<route_item> route { get; set; }
+        public List<Answer> answer { get; set; }
 
         public long id { get; set; }
         public long? route_id { get; set; }
@@ -47,4 +48,23 @@ namespace QRT.Domain.ViewModel
         public string status { get; set; }
         public DateTime? created_date { get; set; }
     }
+
+
+    public class QuestionList
+    {
+        public long id { get; set; }
+        public long? route_id { get; set; }
+        public string title { get; set; }
+        public long? location_id { get; set; }
+        public string location_name { get; set; }
+        public string answer_text { get; set; }
+    }
+
+    public class Answer
+    {
+        public string location_id {get;set;}
+        public string question_id {get;set;}
+        public string answer_text {get;set;}
+    }
+
 }

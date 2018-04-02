@@ -208,14 +208,12 @@ namespace QRT.Service.Implement
             }
         }
 
-
         public m_empViewModel GetEmp()
         {
             m_empViewModel emp = new m_empViewModel();
             emp.company = _compservice.GetCompany();
             return emp;
         }
-
 
         public string GetNewCode(long compid)
         {
@@ -243,5 +241,35 @@ namespace QRT.Service.Implement
             }
             return data;
         }
+
+        public EmpData CheckEmp(string emp_code)
+        {
+            var data = _emp.Filter(c => c.emp_code.Equals(emp_code)).SingleOrDefault();
+            EmpData emp = new EmpData();
+            if (data != null)
+            {
+                emp.id = data.emp_id;
+                emp.code = data.emp_code;
+                emp.name = data.emp_fname + " " + data.emp_surname;
+                emp.fname = data.emp_fname;
+                emp.sname = data.emp_surname;
+            }
+            return emp;
+        }
+
+        //public EmpData ChkEmployee(string emp_code)
+        //{
+        //    var data = _emp.Filter(c => c.emp_code.Equals(emp_code)).SingleOrDefault();
+        //    EmpData emp = new EmpData();
+        //    if (data != null)
+        //    {
+        //        emp.id = data.emp_id;
+        //        emp.code = data.emp_code;
+        //        emp.name = data.emp_fname + " " + data.emp_surname;
+        //        emp.fname = data.emp_fname;
+        //        emp.sname = data.emp_surname;
+        //    }
+        //    return emp;
+        //}
     }
 }

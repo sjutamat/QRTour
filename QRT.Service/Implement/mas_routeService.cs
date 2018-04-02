@@ -154,8 +154,9 @@ namespace QRT.Service.Implement
                         route.company_id = model.comp_id;
                         route.route_active = model.status == "On" ? "A" : "D";
                         route.route_cdate = DateTime.Now;
-                        //route.adminid_create = model.created_by;
                         route.adminid_create = user.id;
+                        route.route_udate = DateTime.Now;
+                        route.adminid_update = user.id;
                         _route.Create(route);
                     }
                     catch (Exception ex)

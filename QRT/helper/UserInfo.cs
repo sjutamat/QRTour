@@ -42,5 +42,26 @@ namespace QRT.helper
                 return Get.id;
             }
         }
+
+
+        public static void SetEmployee(EmpData model)
+        {
+            HttpContext.Current.Session["EMPINFO"] = model;
+            model = null;
+        }
+
+        public static EmpData GetEmployee
+        {
+            get
+            {
+                return (EmpData)HttpContext.Current.Session["EMPINFO"];
+            }
+        }
+
+        public static void EmployeeLogout()
+        {
+            HttpContext.Current.Session["EMPINFO"] = null;
+        }
+
     }
 }

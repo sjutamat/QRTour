@@ -16,5 +16,6 @@ namespace QRT.Domain.Interface.Service
         void UpdateStatus(long id, UserViewModel user);
         List<quest_item> GetQuestItemByRouteID(long route_id,long location_id, UserViewModel user);
         m_questionViewModel GetQuestion(UserViewModel user);
+        List<QuestionList> GetQuestionByLocation(int locationId);
     }
 }

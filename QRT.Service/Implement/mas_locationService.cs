@@ -191,6 +191,8 @@ namespace QRT.Service.Implement
 
                         location.location_cdate = DateTime.Now;
                         location.adminid_create = user.id;
+                        location.location_udate = DateTime.Now;
+                        location.adminid_update = user.id;
                         _location.Create(location);
                     }
                     catch (Exception ex)
