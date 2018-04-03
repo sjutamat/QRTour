@@ -57,4 +57,10 @@ namespace QRT.Domain.ViewModel
         public int? created_by { get; set; }
         public int? updated_by { get; set; }
     }
+
+    public class EmpLogin
+    {
+        public int location_id { get; set; }
+        public string username { get; set; }
+    }
 }

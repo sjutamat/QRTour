@@ -19,5 +19,6 @@ namespace QRT.Domain.Interface.Service
         void UpdateStatus(long id, UserViewModel user);
         List<quest_item> GetQuestion(long route_id,long location_id, UserViewModel user);
         //byte[] GenQRCode();
+        bool ChkSequentNumber(string locationId);
     }
 }

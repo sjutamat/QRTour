@@ -148,31 +148,6 @@
 
     <script>
         runAllForms();
-
-        $('#submit').click(function () {
-            var username = $('[name="username"]').val();
-            $.ajax({
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                type: "POST",
-                url: '@Url.Action("SingIn", "CheckPoint")',
-                data: { 'username': username },
-                success: function (xhr) {
-                    if (!xhr.Success) {
-
-                    }
-                    else {
-
-                    }
-
-                },
-                error: function (xhr) {
-                }
-            })
-        })
-
-
-
         $(function () {
             // Validation
             $("#login-form").validate({
@@ -254,22 +229,37 @@
                 url: '@Url.Action("SaveToAnwser", "CheckPoint")',
                 data: JSON.stringify({ model: object }),
                 success: function (xhr) {
-                    if (!xhr.Success) {
-                        $('#returnMsg').text('Save successfully.');
-                        $('#popUpResult').modal('show');
+                    if (xhr != "success") {
+                        window.location = 'QuestionCheck?location=' + @Model[0].location_id;
+                        //$('#returnMsg').text(xhr.returnMsg);
+                        //$('#popUpResult').modal('show');
                     }
-                    else {
-                        $('#returnMsg').text(xhr.returnMsg);
-                        $('#popUpResult').modal('show');
+                    else
+                    {
+                       // CloseWindow();
+                        window.location = 'SuccessPage';
+                        //$('#returnMsg').text('Save successfully.');
+                        //$('#popUpResult').modal('show');
                     }
 
                 },
                 error: function (xhr) {
                 }
             })
+            return false;
         })
 
+        function CloseWindow() {
+            var answer = confirm("Do you want to close this window ?");
+            if (answer) {
 
+                netscape.security.PrivilegeManager.enablePrivilege('UniversalBrowserWrite');
+                window.close();
+            }
+            else {
+                stop;
+            }
+        }
     </script>
 </body>
 </html>

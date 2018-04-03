@@ -271,6 +271,27 @@ namespace QRT.Service.Implement
             return data;
         }
 
+
+        public bool ChkSequentNumber(string locationId)
+        {
+            var sq = _location.Filter(c => c.qrcode1.Equals(locationId) && c.qrcode1_status.Equals("A")|| c.qrcode2.Equals(locationId) && c.qrcode2_status.Equals("A")).SingleOrDefault().seq_number;
+            if (sq!=null)
+            {
+                if (sq==1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
         //public byte[] GenQRCode()
         //{
         //    string code = "";

@@ -17,12 +17,12 @@ namespace QRT.DAL.Implement
             _dbContext = _Context;
         }
 
-        public List<QuestionList> QuestionByLocation()
+        public List<QuestionList> QuestionByLocation(string location)
         {
             var data = from q in _dbContext.mas_question
                                       join lq in _dbContext.mas_locquestion on q.question_id equals lq.question_id
                                       join l in _dbContext.mas_location on lq.location_id equals l.location_id
-                                      where l.location_id == 1
+                                      where (l.qrcode1 == location && l.qrcode1_status == "A") || (l.qrcode2 == location && l.qrcode2_status == "A")
                                       select new QuestionList
                                       {
                                           id = q.question_id, // or pc.ProdId

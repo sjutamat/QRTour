@@ -253,10 +253,10 @@ namespace QRT.Service.Implement
             return model;
         }
 
-        public List<QuestionList> GetQuestionByLocation(int locationId)
+        public List<QuestionList> GetQuestionByLocation(string locationcode)
         {
-            var jah = _question.QuestionByLocation();
-            var d = jah.Where(c => c.location_id.Equals(locationId)).ToList();
+            var jah = _question.QuestionByLocation(locationcode);
+            //var d = jah.Where(c => c.location_id.Equals(locationcode)).ToList();
             List<QuestionList> data = new List<QuestionList>();
             return jah;
         }

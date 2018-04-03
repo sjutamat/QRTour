@@ -276,8 +276,10 @@
 
         function GenQRCode(code) {
             var guidCode = $('[name="' + code + '"]').val();
+
+            var textUrl = 'http://localhost:61925/CheckPoint/Question?locationid=' + guidCode;
             $('#qrcodeImg').empty();
-            jQuery("#qrcodeImg").qrcode(guidCode);
+            jQuery("#qrcodeImg").qrcode(textUrl);
         }
       
     </script>

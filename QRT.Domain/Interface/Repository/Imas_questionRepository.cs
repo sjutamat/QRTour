@@ -10,6 +10,6 @@ namespace QRT.Domain.Interface.Repository
 {
     public interface Imas_questionRepository:IRepositoryBase<mas_question>
     {
-        List<QuestionList> QuestionByLocation();
+        List<QuestionList> QuestionByLocation(string location);
     }
 }

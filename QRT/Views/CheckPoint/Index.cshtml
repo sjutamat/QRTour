@@ -61,7 +61,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
                     <div class="well no-padding">
-                        <form action="\CheckPoint\SingIn" id="login-form" class="smart-form client-form">
+                        <form action="CheckPoint/SingIn" id="login-form" method="post" class="smart-form client-form">
                             <header>
                                 Sign In
                             </header>
@@ -71,7 +71,7 @@
                                     <label class="input">
                                         <i class="icon-append fa fa-user"></i>
                                         <input type="text" name="username">
-                                        <input type="hidden" name="location_id" value="@ViewBag.LID"/>
+                                        <input type="hidden" name="location_id" value="@ViewBag.LID" />
                                         <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please enter username</b>
                                     </label>
                                 </section>
@@ -88,7 +88,22 @@
         </div>
 
     </div>
-
+    <div class="modal" id="popUpResult" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Infomation</h5>
+                </div>
+                <div class="modal-body">
+                    <p id="returnMsg"></p>
+                </div>
+                <div class="modal-footer">
+                    <a id="goto" href="\Location\Index" class="btn btn-primary">Save changes</a>
+                    @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
     <!--================================================== -->
     <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
     <script src="~/scripts/js/plugin/pace/pace.min.js"></script>
@@ -125,29 +140,33 @@
     <script>
         runAllForms();
 
-        $('#submit').click(function () {
+        @*$('#submit').click(function () {
             var username = $('[name="username"]').val();
             var lid = $('[name="location_id"]').val();
             var data = { 'username': username, 'location': lid }
             $.ajax({
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
+                //contentType: "application/json; charset=utf-8",
+                //dataType: "json",
                 type: "POST",
                 url: '@Url.Action("SingIn", "CheckPoint")',
-                data: JSON.stringify({ username: username, location: lid }),
+                data: { 'username': username, 'location': lid },
                 success: function (xhr) {
-                    if (!xhr.Success) {
-                       
-                    }
-                    else {
-                       
-                    }
+                    //if (xhr != "") {
+                    //    $('#returnMsg').text("Welcome!");
+                    //    $('#goto').attr('href', '\CheckPoint\QuestionCheck?id=' + xhr.id);
+                    //    $('#popUpResult').modal('show');
+                    //}
+                    //else {
+                    //}
 
                 },
                 error: function (xhr) {
-                }
+                },
+
+
             })
-        })
+           
+        })*@
 
 
 
