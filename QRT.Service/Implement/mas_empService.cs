@@ -16,7 +16,7 @@ namespace QRT.Service.Implement
         #region Utility
         private readonly Imas_empRepository _emp;
         private readonly Imas_companyService _compservice;
-        private ValidateHandler Validator;
+        //private ValidateHandler Validator;
         public mas_empService(Imas_empRepository imas_emprepository
             ,Imas_companyService imascompanyservice)
         {
@@ -25,11 +25,17 @@ namespace QRT.Service.Implement
         }
 
 
-        private ValidateHandler ValidateModel(m_empViewModel model)
-        {
-            Validator = new ValidateHandler();
-            return Validator;
-        }
+        //private ValidateHandler ValidateModel(m_empViewModel model)
+        //{
+        //    Validator = new ValidateHandler();
+        //    //if (String.IsNullOrEmpty(model.comp_name))
+        //    //    Validator.AddMessage(MessageLevel.Error, "กรุณาระบุ Email");
+
+        //    if (String.IsNullOrEmpty(model.fname))
+        //        Validator.AddMessage(MessageLevel.Error, "Please enter FirstName");
+
+        //    return Validator;
+        //}
         #endregion
 
         public m_empViewModel GetAllEmp()
@@ -131,13 +137,13 @@ namespace QRT.Service.Implement
         {
             if (model.id == 0)
             {
-                Validator = ValidateModel(model);
-                if (Validator.HasError())
-                {
-                    throw Validator;
-                }
-                else
-                {
+                //Validator = ValidateModel(model);
+                //if (Validator.HasError())
+                //{
+                //    throw Validator;
+                //}
+                //else
+                //{
                     try
                     {
                         mas_emp emp = new mas_emp();
@@ -156,17 +162,17 @@ namespace QRT.Service.Implement
                             throw ex.ToValidateHandler();
                         throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
                     }
-                }
+                //}
             }
             else
             {
-                Validator = ValidateModel(model);
-                if (Validator.HasError())
-                {
-                    throw Validator;
-                }
-                else
-                {
+                //Validator = ValidateModel(model);
+                //if (Validator.HasError())
+                //{
+                //    throw Validator;
+                //}
+                //else
+                //{
                     var oldData = _emp.Filter(c => c.emp_id == model.id).SingleOrDefault();
                     if (oldData != null)
                     {
@@ -189,7 +195,7 @@ namespace QRT.Service.Implement
                         }
 
                     }
-                }
+                //}
             }
         }
 
@@ -217,9 +223,11 @@ namespace QRT.Service.Implement
 
         public string GetNewCode(long compid)
         {
+            var company = _compservice.GetById(compid);
+
             string data;
             int newCode = 0;
-            if (compid == 1)
+            if (company.flag_internal == true)//Internal SiamPiwat Group
             {
                 data = "";
             }

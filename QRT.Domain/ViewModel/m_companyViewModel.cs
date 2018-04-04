@@ -13,5 +13,6 @@ namespace QRT.Domain.ViewModel
     {
         public long id { get; set; }
         public string text { get; set; }
+        public bool? flag_internal { get; set; } 
     }
 }

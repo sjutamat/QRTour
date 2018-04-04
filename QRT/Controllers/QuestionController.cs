@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Op3ration.ExceptionHandler;
 using QRT.Domain.Interface.Service;
 using QRT.Domain.ViewModel;
 
@@ -11,9 +12,23 @@ namespace QRT.Controllers
     public class QuestionController : BaseController
     {
         private readonly Imas_questionService _questionService;
+        private ValidateHandler Validator;
         public QuestionController(Imas_questionService iquestionservice)
         {
             _questionService = iquestionservice;
+        }
+
+        private ValidateHandler ValidateModel(m_questionViewModel model)
+        {
+            Validator = new ValidateHandler();
+            if (String.IsNullOrEmpty(model.title))
+                Validator.AddMessage(MessageLevel.Error, "Please enter Title");
+
+            if (model.route_id == 0)
+                Validator.AddMessage(MessageLevel.Error, "Please select Route");
+
+         
+            return Validator;
         }
 
         // GET: Question
@@ -48,8 +63,25 @@ namespace QRT.Controllers
             string returnMsg = "";
             if (model != null)
             {
-                _questionService.Save(model,admin);
-                returnMsg = "success";
+                Validator = ValidateModel(model);
+                if (Validator.HasError())
+                {
+                    // throw Validator;
+                    var msg = Validator._MessageList.ToList();
+                    var text = "";
+                    for (int i = 0; i < msg.Count(); i++)
+                    {
+                        text += "<p>" + msg[i].Message + "</p>" + "\n";
+                    }
+                    returnMsg = text;
+                }
+                else
+                {
+                    _questionService.Save(model, admin);
+                    returnMsg = "success";
+                }
+
+                
             }
             else
             {

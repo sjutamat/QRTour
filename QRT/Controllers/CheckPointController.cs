@@ -124,7 +124,7 @@ namespace QRT.Controllers
         {
             List<QuestionList> data = _questservice.GetQuestionByLocation(location);
             var employeecode = Request.Cookies["EmpCookies"].Value;
-            if (employeecode != null)
+            if (employeecode != null && data.Any())
             {
                 EmpData employee = _empservice.CheckEmp(employeecode);
 

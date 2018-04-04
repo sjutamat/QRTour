@@ -77,10 +77,12 @@
                                                 <i data-swchon-text="YES" data-swchoff-text="NO"></i>
                                                 <input type="hidden" name="location_id[@(i)]" value="@Model[i].location_id" />
                                                 <input type="hidden" name="question_id[@(i)]" value="@Model[i].id" />
-                                                <input type="hidden" name="answer_txt[@(i)]" value="No" />
+                                                <input type="hidden" name="answer_flag[@(i)]" value="No" />
                                             </label>
                                         }
                                     }
+
+                                    <input type="text" name="answer_text"/>
                                 </section>
                             </fieldset>
                             <footer>
@@ -190,7 +192,7 @@
             $(this).click(function () {
                 if ($(this).prop('checked') == true) {
                     var index = $(this).attr('id').replace('checkbox-toggle', '');
-                    $('[name="answer_txt[' + index + ']"]').val('YES');
+                    $('[name="answer_flag[' + index + ']"]').val('YES');
                 }
             })
         })

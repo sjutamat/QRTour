@@ -114,12 +114,24 @@
         </div>
     </div>
 </div>
-
+<div class="modal" id="popUpWarning" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Infomation</h5>
+            </div>
+            <div class="modal-body">
+                <div id="returnMsgWarning"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts {
 <script src="~/scripts/custom/coreDetail.js"></script>
     <script type="text/javascript">
-
-
             if (@Model.id == 0) {
                 $('[name="id"]').text('****');
             }else{
@@ -140,37 +152,70 @@
         $('#Company').val('@Model.comp_id');
 
 
+        @*function Save () {
+            $("#formSave").validate({
+                rules: {
+                    title: { required: true }
+                },
+                message:{
+                    title: { required: "Please enter title."}
+                },
+                submitHandler: function (form) {
+                    $.ajax({
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    type: "POST",
+                    url: '@Url.Action("Save", "Route")',
+                    data: JSON.stringify({ model: $('#formSave').serializeObject() }),
+                    success: function (xhr) {
+                        if (!xhr.Success) {
+                            $('#returnMsg').text('Save successfully.');
+                            $('#popUpResult').modal('show');
+                        }
+                        else {
+                            $('#returnMsg').text(xhr.returnMsg);
+                            $('#popUpResult').modal('show');
+                        }
 
-
-
-
-
-
+                    },
+                    error: function (xhr) {
+                    }
+                })
+                    return false;
+                }
+            });
+        };*@
+  
+       
         $('#submit').click(function () {
             Save();
         });
 
-        function Save() {
-            $.ajax({
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                type: "POST",
-                url: '@Url.Action("Save", "Route")',
-                data: JSON.stringify({ model: $('#formSave').serializeObject() }),
-                success: function (xhr) {
-                    if (!xhr.Success) {
-                        $('#returnMsg').text('Save successfully.');
-                        $('#popUpResult').modal('show');
-                    }
-                    else {
-                        $('#returnMsg').text(xhr.returnMsg);
-                        $('#popUpResult').modal('show');
-                    }
 
-                },
-                error: function (xhr) {
-                }
-            })
+        function Save() {
+                $.ajax({
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    type: "POST",
+                    url: '@Url.Action("Save", "Route")',
+                    data: JSON.stringify({ model: $('#formSave').serializeObject() }),
+                    success: function (xhr) {
+                        if (xhr == "success") {
+                            $('#returnMsg').text('Save successfully.');
+                            $('#popUpResult').modal('show');
+                        }
+                        else {
+                            $('#returnMsgWarning').html("");
+                            $('#returnMsgWarning').append(xhr);
+                            $('#popUpWarning').modal('show');
+                        }
+
+                    },
+                    error: function (xhr) {
+                        $('#returnMsgWarning').append(xhr);
+                        $('#popUpWarning').modal('show');
+                    }
+                })
         }
         function selectCompany() {
             var comp_id = $('#Company').val();

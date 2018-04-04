@@ -23,7 +23,7 @@ namespace QRT.Service.Implement
         private readonly Imas_routeService _routeservice;
         private readonly Imas_questionService _questservice;
         private readonly Imas_locquestionService _locquestservice;
-        private ValidateHandler Validator;
+        //private ValidateHandler Validator;
         public mas_locationService(Imas_locationRepository imas_locationrepository,
             Imas_routeRepository imas_routerepository,
             Imas_routeService imasrouteservice,
@@ -38,11 +38,11 @@ namespace QRT.Service.Implement
         }
 
 
-        private ValidateHandler ValidateModel(m_locationViewModel model)
-        {
-            Validator = new ValidateHandler();
-            return Validator;
-        }
+        //private ValidateHandler ValidateModel(m_locationViewModel model)
+        //{
+        //    Validator = new ValidateHandler();
+        //    return Validator;
+        //}
 
 
         public string CodeGenerater()
@@ -169,31 +169,54 @@ namespace QRT.Service.Implement
         {
             if (model.id == 0)
             {
-                Validator = ValidateModel(model);
-                if (Validator.HasError())
+                try
                 {
-                    throw Validator;
+                    mas_location location = new mas_location();
+                    location.route_id = model.route_id;
+                    location.location_title = model.title;
+                    location.location_desc = model.description;
+                    location.location_active = model.status == "On" ? "A" : "D";
+                    location.seq_number = model.seq_number;
+                    location.qrcode1 = model.qrcode1;
+                    location.qrcode2 = model.qrcode2;
+                    location.qrcode1_status = model.code1_status == "On" ? "A" : "D";
+                    location.qrcode2_status = model.code2_status == "On" ? "A" : "D";
+
+                    location.location_cdate = DateTime.Now;
+                    location.adminid_create = user.id;
+                    location.location_udate = DateTime.Now;
+                    location.adminid_update = user.id;
+                    _location.Create(location);
                 }
-                else
+                catch (Exception ex)
+                {
+                    if (ex.IsValidateHandler())
+                        throw ex.ToValidateHandler();
+                    throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
+                }
+                
+            }
+            else
+            {
+               
+                var oldData = _location.Filter(c => c.location_id == model.id).SingleOrDefault();
+                if (oldData != null)
                 {
                     try
                     {
-                        mas_location location = new mas_location();
-                        location.route_id = model.route_id;
-                        location.location_title = model.title;
-                        location.location_desc = model.description;
-                        location.location_active = model.status == "On" ? "A" : "D";
-                        location.seq_number = model.seq_number;
-                        location.qrcode1 = model.qrcode1;
-                        location.qrcode2 = model.qrcode2;
-                        location.qrcode1_status = model.code1_status == "On" ? "A" : "D";
-                        location.qrcode2_status = model.code2_status == "On" ? "A" : "D";
+                        oldData.location_title = model.title;
+                        oldData.location_desc = model.description;
+                        oldData.location_active = model.status == "On" ? "A" : "D";
+                        oldData.route_id = model.route_id;
+                        oldData.seq_number = model.seq_number;
+                        oldData.qrcode1 = model.qrcode1;
+                        oldData.qrcode2 = model.qrcode2;
+                        oldData.qrcode1_status = model.code1_status == "On" ? "A" : "D";
+                        oldData.qrcode2_status = model.code2_status == "On" ? "A" : "D";
 
-                        location.location_cdate = DateTime.Now;
-                        location.adminid_create = user.id;
-                        location.location_udate = DateTime.Now;
-                        location.adminid_update = user.id;
-                        _location.Create(location);
+                        oldData.location_udate = DateTime.Now;
+                        oldData.adminid_update = user.id;
+                        _location.Update(oldData);
                     }
                     catch (Exception ex)
                     {
@@ -201,45 +224,9 @@ namespace QRT.Service.Implement
                             throw ex.ToValidateHandler();
                         throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
                     }
-                }
-            }
-            else
-            {
-                Validator = ValidateModel(model);
-                if (Validator.HasError())
-                {
-                    throw Validator;
-                }
-                else
-                {
-                    var oldData = _location.Filter(c => c.location_id == model.id).SingleOrDefault();
-                    if (oldData != null)
-                    {
-                        try
-                        {
-                            oldData.location_title = model.title;
-                            oldData.location_desc = model.description;
-                            oldData.location_active = model.status == "On" ? "A" : "D";
-                            oldData.route_id = model.route_id;
-                            oldData.seq_number = model.seq_number;
-                            oldData.qrcode1 = model.qrcode1;
-                            oldData.qrcode2 = model.qrcode2;
-                            oldData.qrcode1_status = model.code1_status == "On" ? "A" : "D";
-                            oldData.qrcode2_status = model.code2_status == "On" ? "A" : "D";
 
-                            oldData.location_udate = DateTime.Now;
-                            oldData.adminid_update = user.id;
-                            _location.Update(oldData);
-                        }
-                        catch (Exception ex)
-                        {
-                            if (ex.IsValidateHandler())
-                                throw ex.ToValidateHandler();
-                            throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
-                        }
-
-                    }
                 }
+                
             }
         }
 

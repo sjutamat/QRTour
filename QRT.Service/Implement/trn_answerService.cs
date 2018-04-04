@@ -43,7 +43,8 @@ namespace QRT.Service.Implement
                         answer.emp_id = emp.id;
                         answer.location_id = Convert.ToInt32(model[i].location_id);
                         answer.question_id = Convert.ToInt32(model[i].question_id);
-                        answer.answer_txt = model[i].answer_text;
+                        answer.answer_flag = model[i].answer_flag;
+                       // answer.answer_txt = model[i].answer_text;
                         answer.answer_cdate = DateTime.Now;
                         answer.session_id = HttpContext.Current.Session.SessionID;
                         _answer.Create(answer);

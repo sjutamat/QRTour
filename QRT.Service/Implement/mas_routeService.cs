@@ -17,20 +17,12 @@ namespace QRT.Service.Implement
         #region utility
         private readonly Imas_routeRepository _route;
         private readonly Imas_companyService _compservice;
-        private ValidateHandler Validator;
+       
         public mas_routeService(Imas_routeRepository imas_routerepository
             ,Imas_companyService imascompservice)
         {
             _route = imas_routerepository;
             _compservice = imascompservice;
-        }
-
-
-       
-        private ValidateHandler ValidateModel(m_routeViewModel model)
-        {
-            Validator = new ValidateHandler();
-            return Validator;
         }
         #endregion
 
@@ -139,25 +131,41 @@ namespace QRT.Service.Implement
         {
             if (model.id == 0)
             {
-                Validator = ValidateModel(model);
-                if (Validator.HasError())
+                try
                 {
-                    throw Validator;
+                    mas_route route = new mas_route();
+                    route.route_title = model.title;
+                    route.route_desc = model.description;
+                    route.company_id = model.comp_id;
+                    route.route_active = model.status == "On" ? "A" : "D";
+                    route.route_cdate = DateTime.Now;
+                    route.adminid_create = user.id;
+                    route.route_udate = DateTime.Now;
+                    route.adminid_update = user.id;
+                    _route.Create(route);
                 }
-                else
+                catch (Exception ex)
+                {
+                    if (ex.IsValidateHandler())
+                        throw ex.ToValidateHandler();
+                    throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
+                }
+                
+            }
+            else
+            {
+                var oldData = _route.Filter(c => c.route_id == model.id).SingleOrDefault();
+                if (oldData != null)
                 {
                     try
                     {
-                        mas_route route = new mas_route();
-                        route.route_title = model.title;
-                        route.route_desc = model.description;
-                        route.company_id = model.comp_id;
-                        route.route_active = model.status == "On" ? "A" : "D";
-                        route.route_cdate = DateTime.Now;
-                        route.adminid_create = user.id;
-                        route.route_udate = DateTime.Now;
-                        route.adminid_update = user.id;
-                        _route.Create(route);
+                        oldData.route_title = model.title;
+                        oldData.route_desc = model.description;
+                        oldData.company_id = model.comp_id;
+                        oldData.route_active = model.status == "On" ? "A" : "D";
+                        oldData.route_udate = DateTime.Now;
+                        oldData.adminid_update = user.id;
+                        _route.Update(oldData);
                     }
                     catch (Exception ex)
                     {
@@ -165,39 +173,9 @@ namespace QRT.Service.Implement
                             throw ex.ToValidateHandler();
                         throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
                     }
-                }
-            }
-            else
-            {
-                Validator = ValidateModel(model);
-                if (Validator.HasError())
-                {
-                    throw Validator;
-                }
-                else
-                {
-                    var oldData = _route.Filter(c => c.route_id == model.id).SingleOrDefault();
-                    if (oldData != null)
-                    {
-                        try
-                        {
-                            oldData.route_title = model.title;
-                            oldData.route_desc = model.description;
-                            oldData.company_id = model.comp_id;
-                            oldData.route_active = model.status == "On" ? "A" : "D";
-                            oldData.route_udate = DateTime.Now;
-                            oldData.adminid_update = user.id;
-                            _route.Update(oldData);
-                        }
-                        catch (Exception ex)
-                        {
-                            if (ex.IsValidateHandler())
-                                throw ex.ToValidateHandler();
-                            throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
-                        }
                        
-                    }
                 }
+                
             }
         }
 

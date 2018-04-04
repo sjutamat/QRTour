@@ -18,7 +18,7 @@ namespace QRT.Service.Implement
         private readonly Imas_locationRepository _location;
 
         private readonly Imas_routeService _routeservice;
-        private ValidateHandler Validator;
+     
         public mas_questionService(Imas_questionRepository imas_questionrepository
             ,Imas_locquestionRepository imas_locquestionrepository
             ,Imas_locationRepository imas_locationrepository
@@ -33,11 +33,7 @@ namespace QRT.Service.Implement
             _routeservice = imasrouteservice;
         }
 
-        private ValidateHandler ValidateModel(m_questionViewModel model)
-        {
-            Validator = new ValidateHandler();
-            return Validator;
-        }
+        
         #endregion
 
         public m_questionViewModel GetAllQuesion(UserViewModel user)
@@ -131,25 +127,43 @@ namespace QRT.Service.Implement
         {
             if (model.id == 0)
             {
-                Validator = ValidateModel(model);
-                if (Validator.HasError())
+               
+                try
                 {
-                    throw Validator;
+                    mas_question question = new mas_question();
+                    question.question_title = model.title;
+                    question.route_id = model.route_id;
+                    question.question_desc = model.description;
+                    question.question_active = model.status == "On" ? "A" : "D";
+                    question.question_cdate = DateTime.Now;
+                    question.adminid_create = user.id;
+                    question.question_udate = DateTime.Now;
+                    question.adminid_update = user.id;
+                    _question.Create(question);
                 }
-                else
+                catch (Exception ex)
+                {
+                    if (ex.IsValidateHandler())
+                        throw ex.ToValidateHandler();
+                    throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
+                    }
+                
+            }
+            else
+            {
+               
+                var oldData = _question.Filter(c => c.question_id == model.id).SingleOrDefault();
+                if (oldData != null)
                 {
                     try
                     {
-                        mas_question question = new mas_question();
-                        question.question_title = model.title;
-                        question.route_id = model.route_id;
-                        question.question_desc = model.description;
-                        question.question_active = model.status == "On" ? "A" : "D";
-                        question.question_cdate = DateTime.Now;
-                        question.adminid_create = user.id;
-                        question.question_udate = DateTime.Now;
-                        question.adminid_update = user.id;
-                        _question.Create(question);
+                        oldData.question_title = model.title;
+                        oldData.route_id = model.route_id;
+                        oldData.question_desc = model.description;
+                        oldData.question_active = model.status == "On" ? "A" : "D";
+                        oldData.question_udate = DateTime.Now;
+                        oldData.adminid_update = user.id;
+                        _question.Update(oldData);
                     }
                     catch (Exception ex)
                     {
@@ -157,39 +171,9 @@ namespace QRT.Service.Implement
                             throw ex.ToValidateHandler();
                         throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
                     }
-                }
-            }
-            else
-            {
-                Validator = ValidateModel(model);
-                if (Validator.HasError())
-                {
-                    throw Validator;
-                }
-                else
-                {
-                    var oldData = _question.Filter(c => c.question_id == model.id).SingleOrDefault();
-                    if (oldData != null)
-                    {
-                        try
-                        {
-                            oldData.question_title = model.title;
-                            oldData.route_id = model.route_id;
-                            oldData.question_desc = model.description;
-                            oldData.question_active = model.status == "On" ? "A" : "D";
-                            oldData.question_udate = DateTime.Now;
-                            oldData.adminid_update = user.id;
-                            _question.Update(oldData);
-                        }
-                        catch (Exception ex)
-                        {
-                            if (ex.IsValidateHandler())
-                                throw ex.ToValidateHandler();
-                            throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
-                        }
 
-                    }
                 }
+                
             }
         }
 

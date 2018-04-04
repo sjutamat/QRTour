@@ -38,10 +38,25 @@ namespace QRT.Service.Implement
                     comp_item c = new comp_item();
                     c.id = item.comp_id;
                     c.text = item.comp_name;
+                    c.flag_internal = item.flag_internal;
                     itemComp.Add(c);
                 }
             }
             return itemComp;
+        }
+
+
+        public comp_item GetById(long id)
+        {
+            var compData = _comp.Filter(c => c.comp_id == id).SingleOrDefault();
+            comp_item cmodel = new comp_item();
+            if (compData != null)
+            {
+                cmodel.id = compData.comp_id;
+                cmodel.text = compData.comp_name;
+                cmodel.flag_internal = compData.flag_internal;
+            }
+            return cmodel;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using QRT.Domain.Interface.Service;
 using QRT.Domain.ViewModel;
 using QRT.helper;
+using Op3ration.ExceptionHandler;
 
 namespace QRT.Controllers
 {
@@ -13,15 +14,22 @@ namespace QRT.Controllers
     {
         
         private readonly Imas_routeService _routeService;
-        
+        private ValidateHandler Validator;
         public RouteController(Imas_routeService irouteservice)
         {
             _routeService = irouteservice;
             
         }
 
+        private ValidateHandler ValidateModel(m_routeViewModel model)
+        {
+            Validator = new ValidateHandler();
+            if (String.IsNullOrEmpty(model.title))
+                Validator.AddMessage(MessageLevel.Error, "Please enter Title");
 
-       
+            
+            return Validator;
+        }
 
         // GET: Route
         [HttpGet]
@@ -58,8 +66,23 @@ namespace QRT.Controllers
             string returnMsg = "";
             if (model!=null)
             {
-               _routeService.Save(model,admin);
-               returnMsg = "success";
+                Validator = ValidateModel(model);
+                if (Validator.HasError())
+                {
+                    // throw Validator;
+                    var msg = Validator._MessageList.ToList();
+                    var text = "";
+                    for (int i = 0; i < msg.Count(); i++)
+                    {
+                        text += "<p>" + msg[i].Message + "</p>" + "\n";
+                    }
+                    returnMsg = text;
+                }
+                else
+                {
+                    _routeService.Save(model, admin);
+                    returnMsg = "success";
+                }
             }
             else
             {

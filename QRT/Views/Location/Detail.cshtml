@@ -162,6 +162,21 @@
         </div>
     </div>
 </div>
+<div class="modal" id="popUpWarning" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Infomation</h5>
+            </div>
+            <div class="modal-body">
+                <div id="returnMsgWarning"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script src="~/scripts/custom/coreDetail.js"></script>
@@ -217,19 +232,19 @@
                 url: '@Url.Action("Save", "Location")',
                 data: JSON.stringify({ model: $('#formSave').serializeObject() }),
                 success: function (xhr) {
-                    if (!xhr.Success) {
+                    if (xhr == "success") {
                         $('#returnMsg').text('Save successfully.');
                         $('#popUpResult').modal('show');
                     }
                     else {
-                        $('#returnMsg').text(xhr.returnMsg);
-                        $('#popUpResult').modal('show');
+                        $('#returnMsgWarning').html("");
+                        $('#returnMsgWarning').append(xhr);
+                        $('#popUpWarning').modal('show');
                     }
-
                 },
                 error: function (xhr) {
-                    $('#returnMsg').text(xhr.returnMsg);
-                    $('#popUpResult').modal('show');
+                    $('#returnMsgWarning').append(xhr);
+                    $('#popUpWarning').modal('show');
                 }
             })
         }

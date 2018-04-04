@@ -5,15 +5,32 @@ using System.Web;
 using System.Web.Mvc;
 using QRT.Domain.Interface.Service;
 using QRT.Domain.ViewModel;
+using Op3ration.ExceptionHandler;
 
 namespace QRT.Controllers
 {
     public class EmpController : Controller
     {
         private readonly Imas_empService _empService;
+        private ValidateHandler Validator;
         public EmpController(Imas_empService iempService)
         {
             _empService = iempService;
+        }
+
+        private ValidateHandler ValidateModel(m_empViewModel model)
+        {
+            Validator = new ValidateHandler();
+            if (String.IsNullOrEmpty(model.fname))
+                Validator.AddMessage(MessageLevel.Error, "Please enter FirstName");
+
+            if (String.IsNullOrEmpty(model.sname))
+                Validator.AddMessage(MessageLevel.Error, "Please enter LastName");
+
+            if (String.IsNullOrEmpty(model.password))
+                Validator.AddMessage(MessageLevel.Error, "Please enter Password");
+
+            return Validator;
         }
         // GET: Emp
         public ActionResult Index()
@@ -49,8 +66,23 @@ namespace QRT.Controllers
             string returnMsg = "";
             if (model != null)
             {
-                _empService.Save(model);
-                returnMsg = "success";
+                Validator = ValidateModel(model);
+                if (Validator.HasError())
+                {
+                    // throw Validator;
+                    var msg = Validator._MessageList.ToList();
+                    var text = "";
+                    for (int i = 0; i < msg.Count(); i++)
+                    {
+                        text += "<p>"+ msg[i].Message + "</p>" + "\n";
+                    }
+                    returnMsg = text;
+                }
+                else
+                {
+                    _empService.Save(model);
+                    returnMsg = "success";
+                }
             }
             else
             {

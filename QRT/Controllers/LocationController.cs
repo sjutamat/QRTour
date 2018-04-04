@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using QRT.Domain.Interface.Service;
 using QRT.Domain.ViewModel;
+using Op3ration.ExceptionHandler;
 
 
 namespace QRT.Controllers
@@ -12,13 +13,27 @@ namespace QRT.Controllers
     public class LocationController : BaseController
     {
         private readonly Imas_locationService _locationService;
+        private ValidateHandler Validator;
         public LocationController(Imas_locationService ilocationService
             )
         {
             _locationService = ilocationService;
          }
-        
-        
+
+        private ValidateHandler ValidateModel(m_locationViewModel model)
+        {
+            Validator = new ValidateHandler();
+            if (String.IsNullOrEmpty(model.title))
+                Validator.AddMessage(MessageLevel.Error, "Please enter FirstName.");
+           
+            if (model.seq_number == null)
+                Validator.AddMessage(MessageLevel.Error, "Please enter Sequent Number.");
+
+            if (String.IsNullOrEmpty(model.code1_status) && String.IsNullOrEmpty(model.code2_status))
+                Validator.AddMessage(MessageLevel.Error, "Please active some QRCode.");
+
+            return Validator;
+        }
 
         // GET: Location
         public ActionResult Index()
@@ -53,8 +68,22 @@ namespace QRT.Controllers
             string returnMsg = "";
             if (model != null)
             {
-                _locationService.Save(model,admin);
-                returnMsg = "success";
+                Validator = ValidateModel(model);
+                if (Validator.HasError())
+                {
+                    var msg = Validator._MessageList.ToList();
+                    var text = "";
+                    for (int i = 0; i < msg.Count(); i++)
+                    {
+                        text += "<p>" + msg[i].Message + "</p>" + "\n";
+                    }
+                    returnMsg = text;
+                }
+                else
+                {
+                    _locationService.Save(model, admin);
+                    returnMsg = "success";
+                }
             }
             else
             {

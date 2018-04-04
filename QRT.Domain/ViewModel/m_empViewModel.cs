@@ -60,7 +60,7 @@ namespace QRT.Domain.ViewModel
 
     public class EmpLogin
     {
-        public int location_id { get; set; }
+        public string location_id { get; set; }
         public string username { get; set; }
     }
 }

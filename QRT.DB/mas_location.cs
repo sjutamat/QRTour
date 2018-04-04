@@ -38,8 +38,8 @@ namespace QRT.DB
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mas_locquestion> mas_locquestion { get; set; }
+        public virtual mas_route mas_route { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_answer> trn_answer { get; set; }
-        public virtual mas_route mas_route { get; set; }
     }
 }
