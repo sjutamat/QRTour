@@ -250,14 +250,15 @@ namespace QRT.Service.Implement
             return data;
         }
 
-        public EmpData CheckEmp(string emp_code)
+        public EmpData CheckEmp(string emp_code, string pw)
         {
-            var data = _emp.Filter(c => c.emp_code.Equals(emp_code)).SingleOrDefault();
+            var data = _emp.Filter(c => c.emp_code.Equals(emp_code) && c.emp_password.Equals(pw)).SingleOrDefault();
             EmpData emp = new EmpData();
             if (data != null)
             {
                 emp.id = data.emp_id;
                 emp.code = data.emp_code;
+                emp.password = data.emp_password;
                 emp.name = data.emp_fname + " " + data.emp_surname;
                 emp.fname = data.emp_fname;
                 emp.sname = data.emp_surname;

@@ -9,5 +9,6 @@ namespace QRT.Domain.Interface.Repository
 {
     public interface Imas_routeRepository : IRepositoryBase<mas_route>
     {
+        List<mas_route> GetRouteByCompanmy(long? companyId);
     }
 }

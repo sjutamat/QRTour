@@ -1,0 +1,34 @@
+﻿@*@model QRT.Domain.ViewModel.m_locationViewModel*@
+<div class="modal" id="popUpQuestion" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="min-width:1000px;height:800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Question</h5>
+            </div>
+            <div class="modal-body">
+                <div class="widget-body">
+                    <form id="formSaveQuestion" class="form-horizontal">
+                        <fieldset>
+                            <legend>Add New Question of Location</legend>
+                            <div class="form-group">
+                                <input type="hidden" name="location_id" />
+                                <div class="col-md-12">
+                                    <div class="widget-body">
+                                        <select multiple="multiple" size="20" name="question_arr" id="initializeDuallistbox">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+            </div>
+            <div class="modal-footer" style="text-align:left;">
+                <a id="SaveQuestion" class="btn btn-success"><i class="fa fa-save"></i>Save</a>
+                <a href="\Location\Index" class="btn btn-default">Close</a>
+                @*<button onclick="destroySelectList(); return false;" type="button" class="btn btn-default">Close</button>*@
+            </div>
+        </div>
+    </div>
+</div>

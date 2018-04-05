@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="QRCodeTourModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="QRCodeTourEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="mas_emp" EntityType="QRCodeTourModel.mas_emp" />
+    <EntitySet Name="mas_location" EntityType="QRCodeTourModel.mas_location" />
+    <EntitySet Name="mas_locquestion" EntityType="QRCodeTourModel.mas_locquestion" />
+    <EntitySet Name="mas_question" EntityType="QRCodeTourModel.mas_question" />
+    <EntitySet Name="trn_transaction" EntityType="QRCodeTourModel.trn_transaction" />
+    <AssociationSet Name="FK_mas_locquestion_mas_location" Association="QRCodeTourModel.FK_mas_locquestion_mas_location">
+      <End Role="mas_location" EntitySet="mas_location" />
+      <End Role="mas_locquestion" EntitySet="mas_locquestion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_mas_locquestion_mas_question" Association="QRCodeTourModel.FK_mas_locquestion_mas_question">
+      <End Role="mas_question" EntitySet="mas_question" />
+      <End Role="mas_locquestion" EntitySet="mas_locquestion" />
+    </AssociationSet>
+    <EntitySet Name="mas_route" EntityType="QRCodeTourModel.mas_route" />
+    <AssociationSet Name="FK_mas_location_mas_route" Association="QRCodeTourModel.FK_mas_location_mas_route">
+      <End Role="mas_route" EntitySet="mas_route" />
+      <End Role="mas_location" EntitySet="mas_location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_mas_question_mas_route" Association="QRCodeTourModel.FK_mas_question_mas_route">
+      <End Role="mas_route" EntitySet="mas_route" />
+      <End Role="mas_question" EntitySet="mas_question" />
+    </AssociationSet>
+    <EntitySet Name="mas_admin" EntityType="QRCodeTourModel.mas_admin" />
+    <EntitySet Name="mas_company" EntityType="QRCodeTourModel.mas_company" />
+    <AssociationSet Name="FK_mas_emp_mas_company" Association="QRCodeTourModel.FK_mas_emp_mas_company">
+      <End Role="mas_company" EntitySet="mas_company" />
+      <End Role="mas_emp" EntitySet="mas_emp" />
+    </AssociationSet>
+    <AssociationSet Name="FK_mas_route_mas_company" Association="QRCodeTourModel.FK_mas_route_mas_company">
+      <End Role="mas_company" EntitySet="mas_company" />
+      <End Role="mas_route" EntitySet="mas_route" />
+    </AssociationSet>
+    <EntitySet Name="trn_answer" EntityType="QRCodeTourModel.trn_answer" />
+    <AssociationSet Name="FK_trn_answer_mas_emp" Association="QRCodeTourModel.FK_trn_answer_mas_emp">
+      <End Role="mas_emp" EntitySet="mas_emp" />
+      <End Role="trn_answer" EntitySet="trn_answer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_trn_answer_mas_location" Association="QRCodeTourModel.FK_trn_answer_mas_location">
+      <End Role="mas_location" EntitySet="mas_location" />
+      <End Role="trn_answer" EntitySet="trn_answer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_trn_answer_mas_question" Association="QRCodeTourModel.FK_trn_answer_mas_question">
+      <End Role="mas_question" EntitySet="mas_question" />
+      <End Role="trn_answer" EntitySet="trn_answer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_trn_answer_trn_transaction" Association="QRCodeTourModel.FK_trn_answer_trn_transaction">
+      <End Role="trn_transaction" EntitySet="trn_transaction" />
+      <End Role="trn_answer" EntitySet="trn_answer" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="mas_emp">
+    <Key>
+      <PropertyRef Name="emp_id" />
+    </Key>
+    <Property Name="emp_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="emp_title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="emp_fname" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="emp_surname" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="emp_code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="emp_password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="emp_comp" Type="Int64" Nullable="false" />
+    <Property Name="emp_active" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="mas_company" Relationship="QRCodeTourModel.FK_mas_emp_mas_company" FromRole="mas_emp" ToRole="mas_company" />
+    <NavigationProperty Name="trn_answer" Relationship="QRCodeTourModel.FK_trn_answer_mas_emp" FromRole="mas_emp" ToRole="trn_answer" />
+  </EntityType>
+  <EntityType Name="mas_location">
+    <Key>
+      <PropertyRef Name="location_id" />
+    </Key>
+    <Property Name="location_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="route_id" Type="Int64" />
+    <Property Name="location_title" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="location_desc" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="location_active" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="seq_number" Type="Int32" />
+    <Property Name="location_cdate" Type="DateTime" Precision="3" />
+    <Property Name="location_udate" Type="DateTime" Precision="3" />
+    <Property Name="adminid_create" Type="Int32" />
+    <Property Name="adminid_update" Type="Int32" />
+    <Property Name="qrcode1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="qrcode1_status" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="qrcode2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="qrcode2_status" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="mas_locquestion" Relationship="QRCodeTourModel.FK_mas_locquestion_mas_location" FromRole="mas_location" ToRole="mas_locquestion" />
+    <NavigationProperty Name="mas_route" Relationship="QRCodeTourModel.FK_mas_location_mas_route" FromRole="mas_location" ToRole="mas_route" />
+    <NavigationProperty Name="trn_answer" Relationship="QRCodeTourModel.FK_trn_answer_mas_location" FromRole="mas_location" ToRole="trn_answer" />
+  </EntityType>
+  <EntityType Name="mas_locquestion">
+    <Key>
+      <PropertyRef Name="locquestion_id" />
+    </Key>
+    <Property Name="locquestion_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="location_id" Type="Int64" />
+    <Property Name="question_id" Type="Int64" />
+    <Property Name="locquestion_cdate" Type="DateTime" Precision="3" />
+    <Property Name="locquestion_active" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="adminid_create" Type="Int32" />
+    <Property Name="adminid_update" Type="Int32" />
+    <NavigationProperty Name="mas_location" Relationship="QRCodeTourModel.FK_mas_locquestion_mas_location" FromRole="mas_locquestion" ToRole="mas_location" />
+    <NavigationProperty Name="mas_question" Relationship="QRCodeTourModel.FK_mas_locquestion_mas_question" FromRole="mas_locquestion" ToRole="mas_question" />
+  </EntityType>
+  <EntityType Name="mas_question">
+    <Key>
+      <PropertyRef Name="question_id" />
+    </Key>
+    <Property Name="question_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="question_title" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="question_desc" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="question_active" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="question_cdate" Type="DateTime" Precision="3" />
+    <Property Name="question_udate" Type="DateTime" Precision="3" />
+    <Property Name="adminid_create" Type="Int32" />
+    <Property Name="adminid_update" Type="Int32" />
+    <Property Name="route_id" Type="Int64" />
+    <NavigationProperty Name="mas_locquestion" Relationship="QRCodeTourModel.FK_mas_locquestion_mas_question" FromRole="mas_question" ToRole="mas_locquestion" />
+    <NavigationProperty Name="mas_route" Relationship="QRCodeTourModel.FK_mas_question_mas_route" FromRole="mas_question" ToRole="mas_route" />
+    <NavigationProperty Name="trn_answer" Relationship="QRCodeTourModel.FK_trn_answer_mas_question" FromRole="mas_question" ToRole="trn_answer" />
+  </EntityType>
+  <EntityType Name="trn_transaction">
+    <Key>
+      <PropertyRef Name="transaction_id" />
+    </Key>
+    <Property Name="transaction_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="transaction_comment" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="transaction_picture" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="session_id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="transaction_cdate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="trn_answer" Relationship="QRCodeTourModel.FK_trn_answer_trn_transaction" FromRole="trn_transaction" ToRole="trn_answer" />
+  </EntityType>
+  <Association Name="FK_mas_locquestion_mas_location">
+    <End Type="QRCodeTourModel.mas_location" Role="mas_location" Multiplicity="0..1" />
+    <End Type="QRCodeTourModel.mas_locquestion" Role="mas_locquestion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="mas_location">
+        <PropertyRef Name="location_id" />
+      </Principal>
+      <Dependent Role="mas_locquestion">
+        <PropertyRef Name="location_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_mas_locquestion_mas_question">
+    <End Type="QRCodeTourModel.mas_question" Role="mas_question" Multiplicity="0..1" />
+    <End Type="QRCodeTourModel.mas_locquestion" Role="mas_locquestion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="mas_question">
+        <PropertyRef Name="question_id" />
+      </Principal>
+      <Dependent Role="mas_locquestion">
+        <PropertyRef Name="question_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="mas_route">
+    <Key>
+      <PropertyRef Name="route_id" />
+    </Key>
+    <Property Name="route_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="route_title" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="route_desc" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="route_active" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="route_cdate" Type="DateTime" Precision="3" />
+    <Property Name="route_udate" Type="DateTime" Precision="3" />
+    <Property Name="adminid_create" Type="Int32" />
+    <Property Name="adminid_update" Type="Int32" />
+    <Property Name="company_id" Type="Int64" />
+    <NavigationProperty Name="mas_location" Relationship="QRCodeTourModel.FK_mas_location_mas_route" FromRole="mas_route" ToRole="mas_location" />
+    <NavigationProperty Name="mas_question" Relationship="QRCodeTourModel.FK_mas_question_mas_route" FromRole="mas_route" ToRole="mas_question" />
+    <NavigationProperty Name="mas_company" Relationship="QRCodeTourModel.FK_mas_route_mas_company" FromRole="mas_route" ToRole="mas_company" />
+  </EntityType>
+  <Association Name="FK_mas_location_mas_route">
+    <End Type="QRCodeTourModel.mas_route" Role="mas_route" Multiplicity="0..1" />
+    <End Type="QRCodeTourModel.mas_location" Role="mas_location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="mas_route">
+        <PropertyRef Name="route_id" />
+      </Principal>
+      <Dependent Role="mas_location">
+        <PropertyRef Name="route_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_mas_question_mas_route">
+    <End Type="QRCodeTourModel.mas_route" Role="mas_route" Multiplicity="0..1" />
+    <End Type="QRCodeTourModel.mas_question" Role="mas_question" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="mas_route">
+        <PropertyRef Name="route_id" />
+      </Principal>
+      <Dependent Role="mas_question">
+        <PropertyRef Name="route_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="mas_admin">
+    <Key>
+      <PropertyRef Name="admin_id" />
+    </Key>
+    <Property Name="admin_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="admin_user" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="admin_password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="admin_cdate" Type="DateTime" Precision="3" />
+    <Property Name="admin_active" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="company_id" Type="Int64" />
+  </EntityType>
+  <EntityType Name="mas_company">
+    <Key>
+      <PropertyRef Name="comp_id" />
+    </Key>
+    <Property Name="comp_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="comp_name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="comp_desc" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="flag_internal" Type="Boolean" />
+    <NavigationProperty Name="mas_emp" Relationship="QRCodeTourModel.FK_mas_emp_mas_company" FromRole="mas_company" ToRole="mas_emp" />
+    <NavigationProperty Name="mas_route" Relationship="QRCodeTourModel.FK_mas_route_mas_company" FromRole="mas_company" ToRole="mas_route" />
+  </EntityType>
+  <Association Name="FK_mas_emp_mas_company">
+    <End Type="QRCodeTourModel.mas_company" Role="mas_company" Multiplicity="1" />
+    <End Type="QRCodeTourModel.mas_emp" Role="mas_emp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="mas_company">
+        <PropertyRef Name="comp_id" />
+      </Principal>
+      <Dependent Role="mas_emp">
+        <PropertyRef Name="emp_comp" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_mas_route_mas_company">
+    <End Type="QRCodeTourModel.mas_company" Role="mas_company" Multiplicity="0..1" />
+    <End Type="QRCodeTourModel.mas_route" Role="mas_route" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="mas_company">
+        <PropertyRef Name="comp_id" />
+      </Principal>
+      <Dependent Role="mas_route">
+        <PropertyRef Name="company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="trn_answer">
+    <Key>
+      <PropertyRef Name="answer_id" />
+    </Key>
+    <Property Name="answer_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="transaction_id" Type="Int64" />
+    <Property Name="emp_id" Type="Int64" />
+    <Property Name="location_id" Type="Int64" />
+    <Property Name="question_id" Type="Int64" />
+    <Property Name="answer_txt" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="session_id" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="answer_cdate" Type="DateTime" Precision="3" />
+    <Property Name="answer_picture" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="answer_flag" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="mas_emp" Relationship="QRCodeTourModel.FK_trn_answer_mas_emp" FromRole="trn_answer" ToRole="mas_emp" />
+    <NavigationProperty Name="mas_location" Relationship="QRCodeTourModel.FK_trn_answer_mas_location" FromRole="trn_answer" ToRole="mas_location" />
+    <NavigationProperty Name="mas_question" Relationship="QRCodeTourModel.FK_trn_answer_mas_question" FromRole="trn_answer" ToRole="mas_question" />
+    <NavigationProperty Name="trn_transaction" Relationship="QRCodeTourModel.FK_trn_answer_trn_transaction" FromRole="trn_answer" ToRole="trn_transaction" />
+  </EntityType>
+  <Association Name="FK_trn_answer_mas_emp">
+    <End Type="QRCodeTourModel.mas_emp" Role="mas_emp" Multiplicity="0..1" />
+    <End Type="QRCodeTourModel.trn_answer" Role="trn_answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="mas_emp">
+        <PropertyRef Name="emp_id" />
+      </Principal>
+      <Dependent Role="trn_answer">
+        <PropertyRef Name="emp_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_trn_answer_mas_location">
+    <End Type="QRCodeTourModel.mas_location" Role="mas_location" Multiplicity="0..1" />
+    <End Type="QRCodeTourModel.trn_answer" Role="trn_answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="mas_location">
+        <PropertyRef Name="location_id" />
+      </Principal>
+      <Dependent Role="trn_answer">
+        <PropertyRef Name="location_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_trn_answer_mas_question">
+    <End Type="QRCodeTourModel.mas_question" Role="mas_question" Multiplicity="0..1" />
+    <End Type="QRCodeTourModel.trn_answer" Role="trn_answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="mas_question">
+        <PropertyRef Name="question_id" />
+      </Principal>
+      <Dependent Role="trn_answer">
+        <PropertyRef Name="question_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_trn_answer_trn_transaction">
+    <End Type="QRCodeTourModel.trn_transaction" Role="trn_transaction" Multiplicity="0..1" />
+    <End Type="QRCodeTourModel.trn_answer" Role="trn_answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="trn_transaction">
+        <PropertyRef Name="transaction_id" />
+      </Principal>
+      <Dependent Role="trn_answer">
+        <PropertyRef Name="transaction_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

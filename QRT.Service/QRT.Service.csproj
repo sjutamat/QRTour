@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implement\DashboardService.cs" />
     <Compile Include="Implement\mas_adminService.cs" />
     <Compile Include="Implement\mas_compService.cs" />
     <Compile Include="Implement\mas_empService.cs" />

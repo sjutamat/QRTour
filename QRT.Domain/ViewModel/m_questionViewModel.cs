@@ -68,10 +68,10 @@ namespace QRT.Domain.ViewModel
 
     public class Answer
     {
-        public string location_id {get;set;}
-        public string question_id {get;set;}
+        public string location_id { get; set; }
+        public string question_id { get; set; }
         public string answer_flag { get; set; }
-    
+        public string answer_comment { get; set; }
     }
 
 }

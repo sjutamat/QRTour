@@ -62,5 +62,6 @@ namespace QRT.Domain.ViewModel
     {
         public string location_id { get; set; }
         public string username { get; set; }
+        public string password { get; set; }
     }
 }

@@ -1,0 +1,242 @@
+﻿@model QRT.Domain.ViewModel.m_locquestionViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="main" role="main">
+    <div id="ribbon">
+        <ol class="breadcrumb">
+            <li>Home</li>
+            <li>Question of Location</li>
+        </ol>
+    </div>
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+        <h1 class="page-title txt-color-blueDark">
+            <i class="fa fa-lg fa-fw fa-map-marker"></i>
+            Question of Location
+        </h1>
+    </div>
+    <div id="content">
+        <section id="widget-grid" class="">
+            <div class="row">
+                <article class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                        <div>
+                            <div class="widget-body">
+                                <form id="formSave" class="form-horizontal">
+                                    <fieldset>
+                                        <legend>Add New Question of Location</legend>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">ID</label>
+                                            <div class="col-md-8">
+                                                <label name="id" class="control-label">****</label>
+                                                <input type="hidden" name="id" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label" for="select-1">Location</label>
+                                            <div class="col-md-8">
+                                                @*<input type="hidden" name="location_id" />*@
+                                                <select class="form-control" name="location_id" id="Route" onchange="selectRoute(); return false;">
+                                                    <option value="">--Please select--</option>
+                                                    @if (Model.location != null)
+                                                    {
+                                                        for (int i = 0; i < Model.location.Count; i++)
+                                                        {
+                                                            <option value="@Model.location[i].id">@Model.location[i].text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label" for="select-1">Question</label>
+                                            <div class="col-md-8">
+                                                <div class="widget-body">
+                                                    @*<input type="hidden" name="route_id" />*@
+                                                    <select multiple="multiple" size="10" name="question_arr" id="initializeDuallistbox">
+                                                        @if (Model.question != null)
+                                                        {
+                                                            for (int i = 0; i < Model.question.Count; i++)
+                                                            {
+                                                                <option value="@Model.question[i].id">@Model.question[i].text</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <a href="\LocQuestion\Index" class="btn btn-default">
+                                                        Cancel
+                                                    </a>
+                                                    <a class="btn btn-success" id="submit">
+                                                        <i class="fa fa-save"></i>
+                                                        Submit
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="modal" id="popUpResult" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Infomation</h5>
+            </div>
+            <div class="modal-body">
+                <p id="returnMsg"></p>
+            </div>
+            <div class="modal-footer">
+                <a href="\LocQuestion\Index" class="btn btn-primary">Save changes</a>
+                @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/scripts/custom/coreDetail.js"></script>
+    <script src="~/scripts/js/plugin/bootstrap-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+    <script type="text/javascript">
+
+        if (@Model.id == 0) {
+            $('[name="id"]').text('****');
+        }else{
+            $('[name="id"]').text('@Model.id');
+            $('[name="id"]').val('@Model.id');
+        }
+        @*$('[name="route_id"]').val(@Model.route_id);
+        $('#Route').val('@Model.route_id');
+        $('[name="seq_number"]').val(@Model.seq_number);
+        $('[name="title"]').val('@Model.title');
+        $('[name="description"]').val('@Model.description');
+        $('[name="qrcode1"]').val('@Model.qrcode1');
+        $('[name="qrcode2"]').val('@Model.qrcode2');
+        $('[name="code1_status"]').val('@Model.code1_status');
+        $('[name="code2_status"]').val('@Model.code2_status');
+        if('@Model.status' == 'On'){
+            $('#statusOn').prop('checked',true);
+            $('#statusOff').prop('checked',false);
+        }
+        if('@Model.status' == 'Off'){
+            $('#statusOn').prop('checked',false);
+            $('#statusOff').prop('checked',true);
+        }
+
+        if ('@Model.code1_status' == 'On') {
+            $('[name="code1_status"]').prop('checked',true);
+        }else{
+            $('[name="code1_status"]').prop('checked',false);
+        }
+
+        if ('@Model.code2_status' == 'On') {
+            $('[name="code2_status"]').prop('checked',true);
+        }else{
+            $('[name="code2_status"]').prop('checked',false);
+        }*@
+
+        function initObj() {
+            var obj = {
+                id: $('[name="id"]').val(),
+                location_id: $('[name="location_id"]').val(),
+                question_arr:  $('[name="question_arr"]').val() 
+            }
+            return obj;
+        }
+       
+
+        $('#submit').click(function () {
+            Save();
+        });
+
+        function Save() {
+            var object = initObj();
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST",
+                url: '@Url.Action("Save", "LocQuestion")',
+                data: JSON.stringify({ model: object }),
+                //data: JSON.stringify({ model: $('#formSave').serializeObject() }),
+                success: function (xhr) {
+                    if (!xhr.Success) {
+                        $('#returnMsg').text('Save successfully.');
+                        $('#popUpResult').modal('show');
+                    }
+                    else {
+                        $('#returnMsg').text(xhr.returnMsg);
+                        $('#popUpResult').modal('show');
+                    }
+
+                },
+                error: function (xhr) {
+                    $('#returnMsg').text(xhr.returnMsg);
+                    $('#popUpResult').modal('show');
+                }
+            })
+        }
+
+
+        $('[title="location_"]').parent().addClass('active')
+        $('[title!="location_"]').parent().removeClass('active')
+
+        $('#md').click(function () {
+            $('#popUpResult').modal('show')
+        });
+
+
+
+        function getNewCode(e){
+            $.ajax({
+                contentType:"application/json; charset=utf-8",
+                dataType:"json",
+                type:"GET",
+                url: '@Url.Action("GetCode", "Location")',
+                success:function(data){
+                    if(data!=null){
+                        var s = $('[name="qr'+e+'"]')
+                        $('[name="qr'+e+'"]').val(data);
+                    }
+                }
+            });
+        }
+
+        function selectRoute(){
+            var route_id = $('#Route').val();
+            $('[name="route_id"]').val(route_id);
+        }
+
+        function chkBoxChange(e){
+            var name = $(e).attr('name');
+            if ($('[name="'+name+'"]').prop('checked') == true) {
+                $('[name="'+name+'"]').val('On');
+            }else{
+                $('[name="'+name+'"]').val('Off');
+            }
+        }
+
+        var initializeDuallistbox = $('#initializeDuallistbox').bootstrapDualListbox({
+            //nonSelectedListLabel: 'Non-selected',
+            //selectedListLabel: 'Selected',
+            preserveSelectionOnMove: 'moved',
+            moveOnSelect: false,
+            //nonSelectedFilter: 'ion ([7-9]|[1][0-2])'
+            nonSelectedFilter: ''
+        });
+    </script>
+}
+

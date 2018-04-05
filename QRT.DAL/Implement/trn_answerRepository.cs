@@ -12,5 +12,13 @@ namespace QRT.DAL.Implement
         {
             _dbContext = _Context;
         }
+
+
+        public answerDetailList GetByLocation(long? lid)
+        {
+            answerDetailList data = new answerDetailList();
+            return data;
+        }
+
     }
 }

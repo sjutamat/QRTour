@@ -16,5 +16,12 @@ namespace QRT.DAL.Implement
         {
             _dbContext = _Context;
         }
+
+
+        public List<mas_route> GetRouteByCompanmy(long? companyId)
+        {
+            var data = _dbContext.mas_route.Where(c => c.company_id.Equals(companyId)).ToList();
+            return data;
+        }
     }
 }

@@ -1,0 +1,234 @@
+﻿@model QRT.Domain.ViewModel.m_routeViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="main" role="main">
+    <div id="ribbon">
+        <ol class="breadcrumb">
+            <li>Home</li>
+            <li>Route</li>
+        </ol>
+    </div>
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+        <h1 class="page-title txt-color-blueDark">
+            <i class="fa fa-lg fa-fw fa-map-marker"></i>
+            Route
+        </h1>
+    </div>
+    <div id="content">
+        <section id="widget-grid" class="">
+            <div class="row">
+                <article class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                        <div>
+                            <div class="widget-body">
+                                <form id="formSave" class="form-horizontal">
+                                    <fieldset>
+                                        <legend>Add New Route</legend>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">ID</label>
+                                            <div class="col-md-8">
+                                                <label name="id" class="control-label">****</label>
+                                                <input type="hidden" name="id" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label" for="select-1">Company</label>
+                                            <div class="col-md-8">
+                                                <input type="hidden" name="comp_id" />
+                                                <select class="form-control" id="Company" onchange="selectCompany(); return false;">
+                                                    <option value="">--Please select--</option>
+                                                    @if (Model.company != null)
+                                                    {
+                                                        for (int i = 0; i < Model.company.Count; i++)
+                                                        {
+                                                         <option value="@Model.company[i].id">@Model.company[i].text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Title</label>
+                                            <div class="col-md-8">
+                                                <input class="form-control" name="title" placeholder="Default Text Field" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Description</label>
+                                            <div class="col-md-8">
+                                                <input class="form-control" name="description" placeholder="Default Text Field" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Status</label>
+                                            <div class="col-md-8">
+                                                <label class="radio radio-inline">
+                                                    <input type="radio" id="statusOn" class="radiobox" checked value="On" name="status">
+                                                    <span>Active</span>
+                                                </label>
+                                                <label class="radio radio-inline">
+                                                    <input type="radio" id="statusOff" class="radiobox" value="Off" name="status">
+                                                    <span>Deactive</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <a href="\Route\Index" class="btn btn-default">
+                                                        Cancel
+                                                    </a>
+                                                    <a class="btn btn-success" id="submit">
+                                                        <i class="fa fa-save"></i>
+                                                        Submit
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="modal" id="popUpResult" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Infomation</h5>
+            </div>
+            <div class="modal-body">
+                <p id="returnMsg"></p>
+            </div>
+            <div class="modal-footer">
+                <a href="\Route\Index" class="btn btn-primary">Close</a>
+                @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="popUpWarning" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Infomation</h5>
+            </div>
+            <div class="modal-body">
+                <div id="returnMsgWarning"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+<script src="~/scripts/custom/coreDetail.js"></script>
+    <script type="text/javascript">
+            if (@Model.id == 0) {
+                $('[name="id"]').text('****');
+            }else{
+                $('[name="id"]').text('@Model.id');
+                $('[name="id"]').val('@Model.id');
+            }
+            $('[name="title"]').val('@Model.title');
+            $('[name="description"]').val('@Model.description');
+            if('@Model.status' == 'On'){
+                $('#statusOn').prop('checked',true);
+                $('#statusOff').prop('checked',false);
+            }
+            if('@Model.status' == 'Off'){
+                $('#statusOn').prop('checked',false);
+                $('#statusOff').prop('checked',true);
+            }
+         $('[name="comp_id"]').val(@Model.comp_id);
+        $('#Company').val('@Model.comp_id');
+
+
+        @*function Save () {
+            $("#formSave").validate({
+                rules: {
+                    title: { required: true }
+                },
+                message:{
+                    title: { required: "Please enter title."}
+                },
+                submitHandler: function (form) {
+                    $.ajax({
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    type: "POST",
+                    url: '@Url.Action("Save", "Route")',
+                    data: JSON.stringify({ model: $('#formSave').serializeObject() }),
+                    success: function (xhr) {
+                        if (!xhr.Success) {
+                            $('#returnMsg').text('Save successfully.');
+                            $('#popUpResult').modal('show');
+                        }
+                        else {
+                            $('#returnMsg').text(xhr.returnMsg);
+                            $('#popUpResult').modal('show');
+                        }
+
+                    },
+                    error: function (xhr) {
+                    }
+                })
+                    return false;
+                }
+            });
+        };*@
+  
+       
+        $('#submit').click(function () {
+            Save();
+        });
+
+
+        function Save() {
+                $.ajax({
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    type: "POST",
+                    url: '@Url.Action("Save", "Route")',
+                    data: JSON.stringify({ model: $('#formSave').serializeObject() }),
+                    success: function (xhr) {
+                        if (xhr == "success") {
+                            $('#returnMsg').text('Save successfully.');
+                            $('#popUpResult').modal('show');
+                        }
+                        else {
+                            $('#returnMsgWarning').html("");
+                            $('#returnMsgWarning').append(xhr);
+                            $('#popUpWarning').modal('show');
+                        }
+
+                    },
+                    error: function (xhr) {
+                        $('#returnMsgWarning').append(xhr);
+                        $('#popUpWarning').modal('show');
+                    }
+                })
+        }
+        function selectCompany() {
+            var comp_id = $('#Company').val();
+            $('[name="comp_id"]').val(comp_id);
+        }
+
+        $('[title="route_"]').parent().addClass('active')
+        $('[title!="route_"]').parent().removeClass('active')
+
+        $('#md').click(function () {
+            $('#popUpResult').modal('show')
+        });
+
+    </script>
+}
+

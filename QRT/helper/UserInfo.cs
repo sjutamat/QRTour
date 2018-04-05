@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using QRT.Domain.ViewModel;
 
 namespace QRT.helper
@@ -47,12 +48,10 @@ namespace QRT.helper
         public static HttpCookie CreateEmpCookie(EmpData model)
         {
             ExpireEmpCookie();
-
             HttpCookie EmpCookies = new HttpCookie("EmpCookies");
-            EmpCookies.Value = model.code;
+            EmpCookies.Values.Add("code", model.code);
+            EmpCookies.Values.Add("password", model.password);
             EmpCookies.Expires = DateTime.Now.AddMinutes(90);
-
-           
             return EmpCookies;
         }
 
@@ -95,7 +94,7 @@ namespace QRT.helper
 
         public static EmpData GetEmployee
         {
-            get
+        get
             {
                 return (EmpData)HttpContext.Current.Session["EMPINFO"];
             }

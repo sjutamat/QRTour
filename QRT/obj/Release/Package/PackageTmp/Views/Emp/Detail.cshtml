@@ -1,0 +1,236 @@
+﻿@model QRT.Domain.ViewModel.m_empViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="main" role="main">
+    <div id="ribbon">
+        <ol class="breadcrumb">
+            <li>Home</li>
+            <li>Employee</li>
+        </ol>
+    </div>
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+        <h1 class="page-title txt-color-blueDark">
+            <i class="fa fa-lg fa-fw fa-map-marker"></i>
+            Employee
+        </h1>
+    </div>
+    <div id="content">
+        <section id="widget-grid" class="">
+            <div class="row">
+                <article class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                        <div>
+                            <div class="widget-body">
+                                <form id="formSave" class="form-horizontal">
+                                    <fieldset>
+                                        <legend>Add New Employee</legend>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">ID</label>
+                                            <div class="col-md-10">
+                                                <label name="id" class="control-label">****</label>
+                                                <input type="hidden" name="id" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label" for="select-1">Code</label>
+                                            <div class="col-md-4">
+                                                <input type="hidden" name="comp" />
+                                                <input type="hidden" name="comp_name" />
+                                                <select class="form-control" id="Company" onchange="codeGenerate(); return false;">
+                                                    <option value="0">--Please select company--</option>
+                                                    @if (Model.company != null)
+                                                    {
+                                                        for (int i = 0; i < Model.company.Count; i++)
+                                                        {
+                                                           <option value="@Model.company[i].id">@Model.company[i].text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input class="form-control" name="code" placeholder="Enter Code" readonly type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">First Name</label>
+                                            <div class="col-md-8">
+                                                <input class="form-control" name="fname" placeholder="Enter Firstname" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Last Name</label>
+                                            <div class="col-md-8">
+                                                <input class="form-control" name="sname" placeholder="Enter Lastname" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Password</label>
+                                            <div class="col-md-8">
+                                                <input class="form-control" name="password" placeholder="Enter Password" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Status</label>
+                                            <div class="col-md-7">
+                                                <label class="radio radio-inline">
+                                                    <input type="radio" id="statusOn" class="radiobox" checked value="On" name="status">
+                                                    <span>Active</span>
+                                                </label>
+                                                <label class="radio radio-inline">
+                                                    <input type="radio" id="statusOff" class="radiobox" value="Off" name="status">
+                                                    <span>Deactive</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <a href="\Emp\Index" class="btn btn-default">
+                                                        Cancel
+                                                    </a>
+                                                    <a class="btn btn-success" id="submit">
+                                                        <i class="fa fa-save"></i>
+                                                        Submit
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="modal" id="popUpResult" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Infomation</h5>
+            </div>
+            <div class="modal-body">
+                <p id="returnMsg"></p>
+            </div>
+            <div class="modal-footer">
+                <a href="\Emp\Index" class="btn btn-primary">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="popUpWarning" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Infomation</h5>
+            </div>
+            <div class="modal-body">
+                <div id="returnMsgWarning"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/scripts/custom/coreDetail.js"></script>
+    <script type="text/javascript">
+
+
+        if (@Model.id == 0) {
+            $('[name="id"]').text('****');
+        }else{
+            $('[name="id"]').text('@Model.id');
+            $('[name="id"]').val('@Model.id');
+        }
+        $('[name="code"]').val('@Model.code');
+        $('[name="fname"]').val('@Model.fname');
+        $('[name="sname"]').val('@Model.sname');
+        $('[name="comp"]').val('@Model.comp');
+        $('#Company').val('@Model.comp');
+        $('[name="comp_name"]').val($("#Company option:selected").text());
+        if('@Model.status' == 'On'){
+            $('#statusOn').prop('checked',true);
+            $('#statusOff').prop('checked',false);
+        }
+        if('@Model.status' == 'Off'){
+            $('#statusOn').prop('checked',false);
+            $('#statusOff').prop('checked',true);
+        }
+        
+
+
+
+        $('#submit').click(function () {
+            Save();
+        });
+
+        function Save() {
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST",
+                url: '@Url.Action("Save", "Emp")',
+                data: JSON.stringify({ model: $('#formSave').serializeObject() }),
+                success: function (xhr) {
+                    if (xhr == "success") {
+                        $('#returnMsg').text('Save successfully.');
+                        $('#popUpResult').modal('show');
+                    }
+                    else {
+                        $('#returnMsgWarning').html("");
+                        $('#returnMsgWarning').append(xhr);
+                        $('#popUpWarning').modal('show');
+                    }
+
+                },
+                error: function (xhr) {
+                }
+            })
+        }
+
+        $('[title="emp_"]').parent().addClass('active')
+        $('[title!="emp_"]').parent().removeClass('active')
+
+        $('#md').click(function () {
+            $('#popUpResult').modal('show')
+        });
+
+
+
+
+        function codeGenerate(){
+            var id = $('#Company').val();
+            $('[name="code"]').val("");
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "GET",
+                url: '@Url.Action("CodeGen", "Emp")',
+                data:{'compid':id},
+                success: function (xhr) {
+                    if (xhr==0) { //sp
+                        $('[name="code"]').attr('readonly', false);
+                        $('[name="comp"]').val("");
+                        $('[name="comp_name"]').val($("#Company option:selected").text());
+                    }else{
+                        $('[name="code"]').val(xhr);
+                        $('[name="code"]').attr('readonly', true)
+                        $('[name="comp"]').val(id);
+                        $('[name="comp_name"]').val($("#Company option:selected").text());
+                    }
+                },
+                error: function (xhr) {
+                }
+            })
+        }
+    </script>
+}
+

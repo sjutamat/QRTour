@@ -40,9 +40,9 @@ namespace QRT.Controllers
         [HttpPost]
         public ActionResult SingIn(EmpLogin vm)
         {
-            var chk = _empservice.CheckEmp(vm.username);
+            var chk = _empservice.CheckEmp(vm.username, vm.password);
 
-            EmpData model = _empservice.CheckEmp(vm.username);
+            EmpData model = _empservice.CheckEmp(vm.username, vm.password);
             HttpCookie cdata = UserInfo.CreateEmpCookie(model);
             if (chk != null)
             {
@@ -126,7 +126,10 @@ namespace QRT.Controllers
             var employeecode = Request.Cookies["EmpCookies"].Value;
             if (employeecode != null && data.Any())
             {
-                EmpData employee = _empservice.CheckEmp(employeecode);
+
+                string code = Request.Cookies["EmpCookies"]["code"];
+                string password = Request.Cookies["EmpCookies"]["password"];
+                EmpData employee = _empservice.CheckEmp(code, password);
 
                 ViewBag.Name = employee.name;
                 ViewBag.LocationName = data[0].location_name;
@@ -143,7 +146,9 @@ namespace QRT.Controllers
         {
             string returnMsg = "";
             var employeecode = Request.Cookies["EmpCookies"].Value;
-            EmpData employee = _empservice.CheckEmp(employeecode);
+            string code = Request.Cookies["EmpCookies"]["code"];
+            string password = Request.Cookies["EmpCookies"]["password"];
+            EmpData employee = _empservice.CheckEmp(code, password);
             if (model != null)
             {
                 _answerservice.SaveAnswer(model, employee);
