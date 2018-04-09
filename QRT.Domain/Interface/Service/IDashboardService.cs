@@ -10,5 +10,6 @@ namespace QRT.Domain.Interface.Service
     public interface IDashboardService
     {
         List<answerHeader> GetAnswer(int admin_id);
+        List<answerHeader> GetAnswerFilter(dashboardViewModel model, int admin_id);
     }
 }

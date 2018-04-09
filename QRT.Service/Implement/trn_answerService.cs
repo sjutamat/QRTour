@@ -16,10 +16,19 @@ namespace QRT.Service.Implement
     {
         #region Utility
         private readonly Itrn_answerRepository _answer;
+
+        private readonly Imas_locationRepository _location;
+        private readonly Imas_routeRepository _route;
+
         private ValidateHandler Validator;
-        public trn_answerService(Itrn_answerRepository itrn_answerrepository)
+        public trn_answerService(Itrn_answerRepository itrn_answerrepository,
+            Imas_locationRepository imas_locationrepository,
+            Imas_routeRepository imas_routerepository
+            )
         {
             _answer = itrn_answerrepository;
+            _location = imas_locationrepository;
+            _route = imas_routerepository;
         }
 
 
@@ -61,5 +70,6 @@ namespace QRT.Service.Implement
             }
         }
 
+        
     }
 }
