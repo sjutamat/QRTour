@@ -9,7 +9,6 @@
     <Property Name="admin_password" Type="nvarchar" MaxLength="20" />
     <Property Name="admin_cdate" Type="datetime" />
     <Property Name="admin_active" Type="nvarchar" MaxLength="5" />
-    <Property Name="company_id" Type="bigint" />
   </EntityType>
   <EntityType Name="mas_company">
     <Key>
@@ -19,6 +18,7 @@
     <Property Name="comp_name" Type="nvarchar" MaxLength="250" />
     <Property Name="comp_desc" Type="nvarchar" MaxLength="250" />
     <Property Name="flag_internal" Type="bit" />
+    <Property Name="admin_id" Type="int" />
   </EntityType>
   <EntityType Name="mas_emp">
     <Key>
@@ -90,7 +90,6 @@
     <Property Name="route_udate" Type="datetime" />
     <Property Name="adminid_create" Type="int" />
     <Property Name="adminid_update" Type="int" />
-    <Property Name="company_id" Type="bigint" />
   </EntityType>
   <EntityType Name="trn_answer">
     <Key>
@@ -105,7 +104,6 @@
     <Property Name="session_id" Type="nvarchar" MaxLength="100" />
     <Property Name="answer_cdate" Type="datetime" />
     <Property Name="answer_picture" Type="nvarchar" MaxLength="150" />
-    <Property Name="answer_flag" Type="nchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="trn_transaction">
     <Key>
@@ -116,6 +114,9 @@
     <Property Name="transaction_picture" Type="nvarchar" MaxLength="100" />
     <Property Name="session_id" Type="nvarchar" MaxLength="50" />
     <Property Name="transaction_cdate" Type="datetime" />
+    <Property Name="transaction_answer" Type="bit" />
+    <Property Name="location_id" Type="bigint" />
+    <Property Name="route_id" Type="bigint" />
   </EntityType>
   <Association Name="FK_mas_emp_mas_company">
     <End Role="mas_company" Type="Self.mas_company" Multiplicity="1" />
@@ -177,18 +178,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_mas_route_mas_company">
-    <End Role="mas_company" Type="Self.mas_company" Multiplicity="0..1" />
-    <End Role="mas_route" Type="Self.mas_route" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="mas_company">
-        <PropertyRef Name="comp_id" />
-      </Principal>
-      <Dependent Role="mas_route">
-        <PropertyRef Name="company_id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_trn_answer_mas_emp">
     <End Role="mas_emp" Type="Self.mas_emp" Multiplicity="0..1" />
     <End Role="trn_answer" Type="Self.trn_answer" Multiplicity="*" />
@@ -237,6 +226,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_trn_transaction_mas_location">
+    <End Role="mas_location" Type="Self.mas_location" Multiplicity="0..1" />
+    <End Role="trn_transaction" Type="Self.trn_transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="mas_location">
+        <PropertyRef Name="location_id" />
+      </Principal>
+      <Dependent Role="trn_transaction">
+        <PropertyRef Name="location_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_trn_transaction_mas_route">
+    <End Role="mas_route" Type="Self.mas_route" Multiplicity="0..1" />
+    <End Role="trn_transaction" Type="Self.trn_transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="mas_route">
+        <PropertyRef Name="route_id" />
+      </Principal>
+      <Dependent Role="trn_transaction">
+        <PropertyRef Name="route_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="QRCodeTourModelStoreContainer">
     <EntitySet Name="mas_admin" EntityType="Self.mas_admin" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="mas_company" EntityType="Self.mas_company" Schema="dbo" store:Type="Tables" />
@@ -267,10 +280,6 @@
       <End Role="mas_route" EntitySet="mas_route" />
       <End Role="mas_question" EntitySet="mas_question" />
     </AssociationSet>
-    <AssociationSet Name="FK_mas_route_mas_company" Association="Self.FK_mas_route_mas_company">
-      <End Role="mas_company" EntitySet="mas_company" />
-      <End Role="mas_route" EntitySet="mas_route" />
-    </AssociationSet>
     <AssociationSet Name="FK_trn_answer_mas_emp" Association="Self.FK_trn_answer_mas_emp">
       <End Role="mas_emp" EntitySet="mas_emp" />
       <End Role="trn_answer" EntitySet="trn_answer" />
@@ -286,6 +295,14 @@
     <AssociationSet Name="FK_trn_answer_trn_transaction" Association="Self.FK_trn_answer_trn_transaction">
       <End Role="trn_transaction" EntitySet="trn_transaction" />
       <End Role="trn_answer" EntitySet="trn_answer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_trn_transaction_mas_location" Association="Self.FK_trn_transaction_mas_location">
+      <End Role="mas_location" EntitySet="mas_location" />
+      <End Role="trn_transaction" EntitySet="trn_transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_trn_transaction_mas_route" Association="Self.FK_trn_transaction_mas_route">
+      <End Role="mas_route" EntitySet="mas_route" />
+      <End Role="trn_transaction" EntitySet="trn_transaction" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

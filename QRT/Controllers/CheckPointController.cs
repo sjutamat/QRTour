@@ -48,39 +48,27 @@ namespace QRT.Controllers
             {
                 
                 Response.Cookies.Add(cdata);
-                //UserInfo.SetEmployee(chk);
                 var id = vm.location_id;
-                return RedirectToAction("QuestionCheck", new { location = vm.location_id });
-                //return Json(id, JsonRequestBehavior.AllowGet);
+
+                var chkOverSeq = _location.ChkOverSequentNumber(id, model);
+                if (chkOverSeq != null)
+                {
+                    return RedirectToAction("OverSequent", new { previousSequent = chkOverSeq });
+                }
+                else
+                {
+                    return RedirectToAction("QuestionCheck", new { location = vm.location_id });
+                }
+
+                //return RedirectToAction("QuestionCheck", new { location = vm.location_id });
             }
             else
             {
                 return RedirectToAction("Index");
-                //return Json("", JsonRequestBehavior.AllowGet);
             }
         }
         
-        //public ActionResult SingIn(string username, string location)
-        //{
-        //    var chk = _empservice.CheckEmp(username);
-
-        //    EmpData model = _empservice.CheckEmp(username);
-        //    HttpCookie cdata = UserInfo.CreateEmpCookie(model);
-        //    if (chk != null)
-        //    {
-        //        Response.Cookies.Add(cdata);
-        //        //UserInfo.SetEmployee(chk);
-        //        var id = location;
-        //        return RedirectToAction("QuestionCheck", new { id = location });
-        //        //return Json(id, JsonRequestBehavior.AllowGet);
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Index");
-        //        //return Json("", JsonRequestBehavior.AllowGet);
-        //    }
-        //}
-
+       
 
         public ActionResult Logout()
         {
@@ -110,7 +98,20 @@ namespace QRT.Controllers
             { //chk cookie
                 if (Request.Cookies["EmpCookies"] != null)  //if has cookie return view.
                 {
-                    return RedirectToAction("QuestionCheck", new { location = locationid });
+                    string code = Request.Cookies["EmpCookies"]["code"];
+                    string password = Request.Cookies["EmpCookies"]["password"];
+                    EmpData employee = _empservice.CheckEmp(code, password);
+
+                    var chkOverSeq = _location.ChkOverSequentNumber(locationid, employee);
+                    if (chkOverSeq != null)
+                    {
+                        return RedirectToAction("OverSequent", new { previousSequent = chkOverSeq });
+                    }
+                    else
+                    {
+                        return RedirectToAction("QuestionCheck", new { location = locationid });
+                    }
+                    
                 }
                 else  //if not has cookie redirect to Login
                 {
@@ -131,18 +132,27 @@ namespace QRT.Controllers
                 string password = Request.Cookies["EmpCookies"]["password"];
                 EmpData employee = _empservice.CheckEmp(code, password);
 
-                ViewBag.Name = employee.name;
-                ViewBag.LocationName = data[0].location_name;
-                return View(data);
+                var chkOverSeq = _location.ChkOverSequentNumber(location, employee);
+                if (chkOverSeq != null)
+                {
+                    return RedirectToAction("OverSequent", new { previousSequent = chkOverSeq });
+                }
+                else
+                {
+                    ViewBag.Name = employee.name;
+                    ViewBag.LocationName = data[0].location_name;
+                    return View(data);
+                }
+               
             }
             else
             {
                 return RedirectToAction("Index", new { location = location });
             }
         }
+        
 
-    
-        public JsonResult SaveToAnwser(List<Answer> model)
+        public JsonResult SaveToAnwser(answer model)
         {
             string returnMsg = "";
             var employeecode = Request.Cookies["EmpCookies"].Value;
@@ -161,8 +171,16 @@ namespace QRT.Controllers
             return Json(returnMsg, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult SuccessPage()
+        public ActionResult SuccessPage(string location)
         {
+            var l = Convert.ToInt32(location);
+            var locationName = _location.GetLocationById(l);
+            return View(locationName);
+        }
+
+        public ActionResult OverSequent(string previousSequent)
+        {
+            ViewBag.previousLocation = previousSequent;
             return View();
         }
     }

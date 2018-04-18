@@ -32,13 +32,13 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">ID</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" name="s_route.id" placeholder="Enter ID" type="text">
+                                    <input class="form-control" name="s_route.id" placeholder="Enter ID" type="text" value="@Model.s_route.id">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Title</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" name="s_route.title" placeholder="Enter Title" type="text">
+                                    <input class="form-control" name="s_route.title" placeholder="Enter Title" type="text" value="@Model.s_route.title">
                                 </div>
                             </div>
                             <div class="row">
@@ -70,7 +70,6 @@
                                             <th data-hide="phone">ID</th>
                                             <th data-class="expand"><i class="fa fa-fw fa-bullhorn text-muted hidden-md hidden-sm hidden-xs"></i> Title</th>
                                             <th data-hide="phone"><i class="fa fa-fw fa-comments text-muted hidden-md hidden-sm hidden-xs"></i> Description</th>
-                                            <th data-hide="phone"><i class="fa fa-fw fa-comments text-muted hidden-md hidden-sm hidden-xs"></i> Company</th>
                                             <th><i class="fa fa-fw fa-lightbulb-o text-muted hidden-md hidden-sm hidden-xs"></i>Status</th>
                                             <th data-hide="phone"><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> Crearted Date</th>
                                             <th>Action</th>
@@ -85,7 +84,6 @@
                                             <td>@Model.s_routeData[i].id</td>
                                             <td>@Model.s_routeData[i].title</td>
                                             <td>@Model.s_routeData[i].description</td>
-                                            <td>@Model.s_routeData[i].comp_name</td>
                                             <td>@Model.s_routeData[i].status</td>
                                             <td>@Model.s_routeData[i].created_date.Value.ToString("MM/dd/yyyy")</td>
                                             <td>
@@ -173,15 +171,24 @@
                 },
                 "drawCallback": function (oSettings) {
                     responsiveHelper_dt_basic.respond();
-                }
+                },
+                "pageLength": 50
             });
 
+
+           
+
         });
-        $()
 
         $('[title="route_"]').parent().addClass('active');
         $('[title!="route_"]').parent().removeClass('active');
    
+     @*if (@Model.s_route.id != 0) 
+         $('[name="s_route.id"]').val(@Model.s_route.id);
+
+     if (@Model.s_route.title != null)
+        $('[name="s_route.title"]').val(@Model.s_route.title);*@
+
 
         $('#ok').on('click', function () {
             var id = $('#ok').attr('data');

@@ -29,5 +29,21 @@ namespace QRT.Service.Implement
             var adminData = _admin.Login(vm.username,vm.password) ;
             return adminData;
         }
+
+        public AdminViewModel GetById(UserViewModel user)
+        {
+            var query = _admin.Find(c => c.admin_id == user.id);
+            AdminViewModel data = new AdminViewModel();
+            if (query !=null)
+            {
+                data.id = query.admin_id;
+                data.user = query.admin_user;
+                data.password = query.admin_password;
+                data.created_date = query.admin_cdate;
+                data.status = query.admin_active;
+                //data.company_id = query.company_id;
+            }
+            return data;
+        }
     }
 }

@@ -66,6 +66,7 @@
     <Compile Include="Interface\Repository\Imas_routeRepository.cs" />
     <Compile Include="Interface\Repository\IRepositoryBase.cs" />
     <Compile Include="Interface\Repository\Itrn_answerRepository.cs" />
+    <Compile Include="Interface\Repository\Itrn_transactionRepository.cs" />
     <Compile Include="Interface\Service\IDashboardService.cs" />
     <Compile Include="Interface\Service\Imas_adminService.cs" />
     <Compile Include="Interface\Service\Imas_companyService.cs" />

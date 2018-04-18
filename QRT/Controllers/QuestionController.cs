@@ -34,28 +34,60 @@ namespace QRT.Controllers
         // GET: Question
         public ActionResult Index()
         {
-            var data = _questionService.GetAllQuesion(admin);
-            return View(data);
+            if (admin != null)
+            {
+                var data = _questionService.GetAllQuesion(admin);
+                ViewBag.AdminName = admin.username;
+                return View(data);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
         }
 
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Index(m_questionViewModel model)
         {
-            var data = _questionService.FilterQuestion(model,admin);
-            return View(data);
+            if (admin != null)
+            {
+                var data = _questionService.FilterQuestion(model, admin);
+                ViewBag.AdminName = admin.username;
+                return View(data);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
         }
 
         public ActionResult Add()
         {
-            var model = _questionService.GetQuestion(admin);
-            return View("Detail", model);
+            if (admin != null)
+            {
+                var model = _questionService.GetQuestion(admin);
+                ViewBag.AdminName = admin.username;
+                return View("Detail", model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
         }
 
         public ActionResult Edit(long id)
         {
-            var model = _questionService.GetById(id,admin);
-            return View("Detail", model);
+            if (admin != null)
+            {
+                var model = _questionService.GetById(id, admin);
+                ViewBag.AdminName = admin.username;
+                return View("Detail", model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
         }
 
         public JsonResult Save(m_questionViewModel model)

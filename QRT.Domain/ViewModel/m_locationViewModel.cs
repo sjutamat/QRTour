@@ -33,7 +33,7 @@ namespace QRT.Domain.ViewModel
 
     public class SearchDataLocation
     {
-        public long id { get; set; }
+        public string id { get; set; }
         public string title { get; set; }
         public string route { get; set; }
     }

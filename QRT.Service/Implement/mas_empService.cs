@@ -16,68 +16,91 @@ namespace QRT.Service.Implement
         #region Utility
         private readonly Imas_empRepository _emp;
         private readonly Imas_companyService _compservice;
-        //private ValidateHandler Validator;
+        private readonly Imas_adminService _admin;
         public mas_empService(Imas_empRepository imas_emprepository
-            ,Imas_companyService imascompanyservice)
+            ,Imas_companyService imascompanyservice
+            ,Imas_adminService imasadminservice
+            )
         {
             _emp = imas_emprepository;
             _compservice = imascompanyservice;
+            _admin = imasadminservice;
         }
 
 
-        //private ValidateHandler ValidateModel(m_empViewModel model)
-        //{
-        //    Validator = new ValidateHandler();
-        //    //if (String.IsNullOrEmpty(model.comp_name))
-        //    //    Validator.AddMessage(MessageLevel.Error, "กรุณาระบุ Email");
-
-        //    if (String.IsNullOrEmpty(model.fname))
-        //        Validator.AddMessage(MessageLevel.Error, "Please enter FirstName");
-
-        //    return Validator;
-        //}
+       
         #endregion
 
-        public m_empViewModel GetAllEmp()
+        public m_empViewModel GetAllEmp(UserViewModel user)
         {
             m_empViewModel model = new m_empViewModel();
-            var data = _emp.Filter(c => c.emp_active != "D",inc=>inc.mas_company).ToList();
-            if (data != null)
+            model.s_empData = new List<EmpData>();
+            model.s_emp = new SearchDataEmp();
+            model.company = new List<comp_item>();
+            var admin = _admin.GetById(user);
+            if (admin != null)
             {
-                var emp = data.Select(x => new EmpData()
-                {
-                    id = x.emp_id,
-                    title = x.emp_title,
-                    name = x.emp_fname + " " + x.emp_surname,
-                    code = x.emp_code,
-                    comp_name = x.mas_company.comp_name,
-                    status = x.emp_active == "A" ? "Active" : "Deactive",
-                }).OrderByDescending(c => c.created_date).ToList();
-
-                model.s_empData = emp;
+                var empData = _emp.GetEmployeeByAdminId(admin.id);
+                model.s_empData = empData;
                 model.company = _compservice.GetCompany();
-                return model;
             }
-            else
-            {
-                model.s_empData = new List<EmpData>();
-                return model;
 
-            }
+            return model;
+            // var data = _emp.Filter(c => c.emp_active != "D",inc=>inc.mas_company).ToList();
+            //if (data != null)
+            //{
+            //    var emp = data.Select(x => new EmpData()
+            //    {
+            //        id = x.emp_id,
+            //        title = x.emp_title,
+            //        name = x.emp_fname + " " + x.emp_surname,
+            //        code = x.emp_code,
+            //        comp_name = x.mas_company.comp_name,
+            //        status = x.emp_active == "A" ? "Active" : "Deactive",
+            //    }).OrderByDescending(c => c.created_date).ToList();
+
+            //    model.s_empData = emp;
+            //    model.company = _compservice.GetCompany();
+            //    return model;
+            //}
+            //else
+            //{
+            //    model.s_empData = new List<EmpData>();
+            //    return model;
+
+            //}
         }
 
 
         public m_empViewModel FilterEmp(m_empViewModel model)
         {
             var name = model.s_emp.name;
+            var fname = string.Empty;
+            var lname = string.Empty;
+            string[] words = name.Split(' ');
+            if (words.Count() > 1 && words.Any())
+            {
+                fname = words[0];
+                lname = words[1];
+            }
+            else
+            {
+                fname = words[0];
+            }
+
             var code = model.s_emp.code;
             var comp = Convert.ToInt32(model.s_emp.comp);
             
             var data = _emp.Filter(c => c.emp_active == "A", inc => inc.mas_company).ToList();
 
-            if (!String.IsNullOrEmpty(name))
+            if (!String.IsNullOrEmpty(fname) && !string.IsNullOrEmpty(lname))
             {
-                data = data.Where(c => c.emp_fname.ToUpper().Contains(name.ToUpper()) || c.emp_surname.ToUpper().Contains(name.ToUpper())).ToList();
+                data = data.Where(c => c.emp_fname.ToUpper().Contains(fname.ToUpper()) || c.emp_surname.ToUpper().Contains(lname.ToUpper())).ToList();
+            }
+
+            if (!String.IsNullOrEmpty(fname) && String.IsNullOrEmpty(lname))
+            {
+                data = data.Where(c => c.emp_fname.ToUpper().Contains(name.ToUpper()) || c.emp_surname.ToUpper().Contains(name.ToUpper()) || c.emp_fname.ToUpper().Equals(name.ToUpper()) || c.emp_surname.ToUpper().Equals(name.ToUpper())).ToList();
             }
 
             if (!String.IsNullOrEmpty(code))

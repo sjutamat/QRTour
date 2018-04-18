@@ -39,7 +39,7 @@ namespace QRT.Controllers
         public ActionResult Index()
         {
             var data = _locationService.GetAllLocation(admin);
-           
+            ViewBag.AdminName = admin.username;
             return View(data);
         }
 
@@ -47,20 +47,45 @@ namespace QRT.Controllers
         [AllowAnonymous]
         public ActionResult Index(m_locationViewModel model)
         {
-            var data = _locationService.FilterLocation(model,admin);
-            return View(data);
+            if (admin != null)
+            {
+                var data = _locationService.FilterLocation(model, admin);
+                ViewBag.AdminName = admin.username;
+                return View(data);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
         }
 
         public ActionResult Add()
         {
-            var model = _locationService.GetRoute(admin);
-            return View("Detail",model);
+            if (admin != null)
+            {
+                var model = _locationService.GetRoute(admin);
+                ViewBag.AdminName = admin.username;
+                return View("Detail", model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
         }
 
         public ActionResult Edit(long id)
         {
-            var model = _locationService.GetById(id,admin);
-            return View("Detail", model);
+            if (admin != null)
+            {
+                var model = _locationService.GetById(id, admin);
+                ViewBag.AdminName = admin.username;
+                return View("Detail", model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
+
         }
 
         public JsonResult Save(m_locationViewModel model)
@@ -131,15 +156,5 @@ namespace QRT.Controllers
             var data = _locationService.GetQuestion(rid,lid,admin);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
-
-        //public System.Web.UI.WebControls.Image QRCode()
-        //{
-        //    byte[] byteImage =_locationService.GenQRCode();
-        //    System.Web.UI.WebControls.Image imgBarCode = new System.Web.UI.WebControls.Image();
-        //    imgBarCode.Height = 150;
-        //    imgBarCode.Width = 150;
-        //    imgBarCode.ImageUrl = "data:image/png;base64," + Convert.ToBase64String(byteImage);
-        //    return imgBarCode;
-        //}
     }
 }

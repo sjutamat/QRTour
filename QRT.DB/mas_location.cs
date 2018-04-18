@@ -19,6 +19,7 @@ namespace QRT.DB
         {
             this.mas_locquestion = new HashSet<mas_locquestion>();
             this.trn_answer = new HashSet<trn_answer>();
+            this.trn_transaction = new HashSet<trn_transaction>();
         }
     
         public long location_id { get; set; }
@@ -36,10 +37,12 @@ namespace QRT.DB
         public string qrcode2 { get; set; }
         public string qrcode2_status { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<mas_locquestion> mas_locquestion { get; set; }
         public virtual mas_route mas_route { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<mas_locquestion> mas_locquestion { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_answer> trn_answer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<trn_transaction> trn_transaction { get; set; }
     }
 }

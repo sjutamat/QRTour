@@ -10,5 +10,6 @@ namespace QRT.Domain.Interface.Service
     public interface Imas_adminService
     {
         UserViewModel Login(Login vm);
+        AdminViewModel GetById(UserViewModel user);
     }
 }

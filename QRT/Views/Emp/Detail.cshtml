@@ -38,7 +38,7 @@
                                             <div class="col-md-4">
                                                 <input type="hidden" name="comp" />
                                                 <input type="hidden" name="comp_name" />
-                                                <select class="form-control" id="Company" onchange="codeGenerate(); return false;">
+                                                <select class="form-control" id="Company" name="comp" onchange="codeGenerate(); return false;">
                                                     <option value="0">--Please select company--</option>
                                                     @if (Model.company != null)
                                                     {
@@ -218,7 +218,7 @@
                 success: function (xhr) {
                     if (xhr==0) { //sp
                         $('[name="code"]').attr('readonly', false);
-                        $('[name="comp"]').val("");
+                        $('[name="code"]').val("");
                         $('[name="comp_name"]').val($("#Company option:selected").text());
                     }else{
                         $('[name="code"]').val(xhr);

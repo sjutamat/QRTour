@@ -918,6 +918,7 @@
     <Content Include="Views\CheckPoint\QuestionCheck.cshtml" />
     <Content Include="Views\CheckPoint\SuccessPage.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\CheckPoint\OverSequent.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

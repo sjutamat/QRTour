@@ -200,28 +200,35 @@
 
         function initObj() {
             var element = $('[id*="checkbox-toggle"]').length;
+            var objmodel = {};
             var obj = {};
             var listObj = [];
             var location_id;
             var question_id;
             var answer_flag;
-            var answer_comment;
+            var answer_comment = $('[name="answer_text"]').val();
             for (var i = 0; i < element; i++) {
-                location_id = ($('[name="location_id[' + i + ']"]').val()),
+                    location_id = ($('[name="location_id[' + i + ']"]').val()),
                     question_id = ($('[name="question_id[' + i + ']"]').val()),
                     answer_flag = ($('[name="answer_flag[' + i + ']"]').val()),
-                    answer_comment = $('[name="answer_text"]').val()
+                    //answer_comment = $('[name="answer_text"]').val()
                 obj = {
                     location_id: location_id,
                     question_id: question_id,
                     answer_flag: answer_flag,
-                    answer_comment: answer_comment
+                   // answer_comment: answer_comment
                 };
                 listObj.push(obj);
             }
+            //objmodel.push(listObj);
+            //objmodel.push(answer_comment);
 
-
-            return listObj;
+            objmodel = {
+                answerlist: listObj,
+                answer_text: answer_comment
+            }
+            //return listObj;
+            return objmodel;
         }
 
 
@@ -242,7 +249,7 @@
                     else
                     {
                        // CloseWindow();
-                        window.location = 'SuccessPage';
+                        window.location = 'SuccessPage?location=' + @Model[0].location_id;
                         //$('#returnMsg').text('Save successfully.');
                         //$('#popUpResult').modal('show');
                     }

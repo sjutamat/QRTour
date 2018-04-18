@@ -40,7 +40,7 @@ namespace QRT.Domain.ViewModel
 
     public class SearchQuestionData
     {
-        public long id { get; set; }
+        public string id { get; set; }
         public string title { get; set; }
         public string route { get; set; }
     }
@@ -71,7 +71,7 @@ namespace QRT.Domain.ViewModel
         public string location_id { get; set; }
         public string question_id { get; set; }
         public string answer_flag { get; set; }
-        public string answer_comment { get; set; }
+        //public string answer_comment { get; set; }
     }
 
 }

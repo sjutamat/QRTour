@@ -4,14 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using QRT.DB;
-using QRT.Domain.ViewModel;
 
 namespace QRT.Domain.Interface.Repository
 {
-    public interface Imas_empRepository:IRepositoryBase<mas_emp>
+    public interface Itrn_transactionRepository : IRepositoryBase<trn_transaction>
     {
-        List<EmpData> GetEmployeeByAdminId(long admin_id);
     }
-
-  
 }

@@ -25,7 +25,12 @@ namespace QRT.DB
         public string transaction_picture { get; set; }
         public string session_id { get; set; }
         public Nullable<System.DateTime> transaction_cdate { get; set; }
+        public Nullable<bool> transaction_answer { get; set; }
+        public Nullable<long> location_id { get; set; }
+        public Nullable<long> route_id { get; set; }
     
+        public virtual mas_location mas_location { get; set; }
+        public virtual mas_route mas_route { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_answer> trn_answer { get; set; }
     }

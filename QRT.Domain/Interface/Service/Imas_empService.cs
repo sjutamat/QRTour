@@ -9,7 +9,7 @@ namespace QRT.Domain.Interface.Service
 {
     public interface Imas_empService
     {
-        m_empViewModel GetAllEmp();
+        m_empViewModel GetAllEmp(UserViewModel user);
         m_empViewModel FilterEmp(m_empViewModel model);
         m_empViewModel GetById(long id);
         void Save(m_empViewModel model);
@@ -17,6 +17,5 @@ namespace QRT.Domain.Interface.Service
         m_empViewModel GetEmp();
         string GetNewCode(long compid);
         EmpData CheckEmp(string emp_code, string pw);
-        //EmpData ChkEmployee(string emp_code);
     }
 }

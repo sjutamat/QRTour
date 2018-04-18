@@ -27,6 +27,10 @@ namespace QRT.Controllers
             if (String.IsNullOrEmpty(model.title))
                 Validator.AddMessage(MessageLevel.Error, "Please enter Title");
 
+
+            //if (model.comp_id == null || model.comp_id == 0  )
+            //    Validator.AddMessage(MessageLevel.Error, "Please select company");
+            
             
             return Validator;
         }
@@ -35,30 +39,63 @@ namespace QRT.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var data = _routeService.GetAllRoute(admin);
-            return View(data);
+            if (admin != null)
+            {
+                var data = _routeService.GetAllRoute(admin);
+                ViewBag.AdminName = admin.username;
+                return View(data);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
         }
 
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Index(m_routeViewModel model)
         {
-            var data = _routeService.FilterRoute(model,admin);
-            return View(model);
+            if (admin !=null)
+            {
+                var data = _routeService.FilterRoute(model, admin);
+                ViewBag.AdminName = admin.username;
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
         }
 
 
         public ActionResult Add()
         {
-            var model = _routeService.GetRoute(admin);
-            return View("Detail", model);
+            if (admin != null)
+            {
+                var model = _routeService.GetRoute(admin);
+                ViewBag.AdminName = admin.username;
+                return View("Detail", model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
+            
         }
 
 
         public ActionResult Edit(long id)
         {
-            var model = _routeService.GetById(id,admin);
-            return View("Detail",model);
+            if (admin != null)
+            {
+                var model = _routeService.GetById(id, admin);
+                ViewBag.AdminName = admin.username;
+                return View("Detail", model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
         }
 
         public JsonResult Save(m_routeViewModel model)

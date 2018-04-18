@@ -39,7 +39,7 @@ namespace QRT.Service.Implement
         public m_routeViewModel GetAllRoute(UserViewModel user)
         {
             m_routeViewModel model = new m_routeViewModel();
-            var data = _route.Filter(c=>c.adminid_create == user.id, inc => inc.mas_company).ToList();
+            var data = _route.Filter(c=>c.adminid_create == user.id).ToList();
             if (data != null)
             {
                 var route = data.Select(x => new RouteData()
@@ -47,10 +47,10 @@ namespace QRT.Service.Implement
                     id = x.route_id,
                     title = x.route_title,
                     description = x.route_desc,
-                    comp_name = x.mas_company.comp_name,
                     status = x.route_active == "A" ? "Active" : "Deactive",
                     created_date = x.route_cdate,
                 }).OrderByDescending(c => c.created_date).ToList();
+                model.s_route = new SearchData();
                 model.s_routeData = route;
                 model.company = _compservice.GetCompany();
                 return model;
@@ -65,22 +65,22 @@ namespace QRT.Service.Implement
 
         public m_routeViewModel FilterRoute(m_routeViewModel model, UserViewModel user)
         {
-            var id = model.s_route.id;
+            var id = (model.s_route.id == null) ? 0 : Convert.ToInt32(model.s_route.id);
             var title = model.s_route.title;
 
-            var data = _route.Filter(c=>c.adminid_create == user.id, inc => inc.mas_company).ToList();
+            var data = _route.Filter(c=>c.adminid_create == user.id).ToList();
 
-            if (model.s_route.id!=0 && model.s_route.title == null)
+            if (id!=0 && model.s_route.title == null)
             {
-                data = data.Where(c => c.route_id == model.s_route.id && c.route_active == "A").ToList();
+                data = data.Where(c => c.route_id == id && c.route_active == "A").ToList();
             }
-            else if (model.s_route.id == 0 && model.s_route.title !=null)
+            else if (id == 0 && model.s_route.title !=null)
             {
                 data = data.Where(c => c.route_title.Contains(model.s_route.title) && c.route_active == "A").ToList();
             }
-            else if(model.s_route.id != 0 && model.s_route.title != null)
+            else if(id != 0 && model.s_route.title != null)
             {
-                data = data.Where(c => c.route_title.Contains(model.s_route.title) && c.route_id == model.s_route.id && c.route_active == "A").ToList();
+                data = data.Where(c => c.route_title.Contains(model.s_route.title) && c.route_id == id && c.route_active == "A").ToList();
             }
             else
             {
@@ -95,14 +95,13 @@ namespace QRT.Service.Implement
                     id = x.route_id,
                     title = x.route_title,
                     description = x.route_desc,
-                    comp_name = x.mas_company.comp_name,
                     status = x.route_active == "A" ? "Active" : "Deactive",
                     created_date = x.route_cdate,
                 }).OrderByDescending(c => c.created_date).ToList();
 
                 model.s_routeData = route;
-                model.s_route.id = id;
-                model.s_route.title = title;
+                //model.s_route.id = id;
+                //model.s_route.title = title;
                 model.company = _compservice.GetCompany();
                 return model;
             }
@@ -117,12 +116,11 @@ namespace QRT.Service.Implement
 
         public m_routeViewModel GetById(long id, UserViewModel user)
         {
-            var data = _route.Filter(c => c.route_id == id && c.adminid_create == user.id, inc => inc.mas_company).SingleOrDefault();
+            var data = _route.Filter(c => c.route_id == id && c.adminid_create == user.id).SingleOrDefault();
             m_routeViewModel route = new m_routeViewModel();
             route.id = data.route_id;
             route.title = data.route_title;
             route.description = data.route_desc;
-            route.comp_id = data.company_id;
             route.status = data.route_active == "A" ? "On" : "Off";
             route.created_date = data.route_cdate;
             route.created_by = data.adminid_create;
@@ -139,7 +137,6 @@ namespace QRT.Service.Implement
                     mas_route route = new mas_route();
                     route.route_title = model.title;
                     route.route_desc = model.description;
-                    route.company_id = model.comp_id;
                     route.route_active = model.status == "On" ? "A" : "D";
                     route.route_cdate = DateTime.Now;
                     route.adminid_create = user.id;
@@ -164,7 +161,6 @@ namespace QRT.Service.Implement
                     {
                         oldData.route_title = model.title;
                         oldData.route_desc = model.description;
-                        oldData.company_id = model.comp_id;
                         oldData.route_active = model.status == "On" ? "A" : "D";
                         oldData.route_udate = DateTime.Now;
                         oldData.adminid_update = user.id;
@@ -201,10 +197,9 @@ namespace QRT.Service.Implement
 
         public List<route_item> GetRouteItem(UserViewModel user)
         {
-            var admin = _admin.Filter(c => c.admin_id == user.id).SingleOrDefault();
+            //var admin = _admin.Filter(c => c.admin_id == user.id).SingleOrDefault();
             List<route_item> itemRoute = new List<route_item>();
-            //var routeData = _route.Filter(c => c.route_active == "A" && c.adminid_create == user.id).ToList();
-            var routeData = _route.Filter(c => c.route_active == "A" && c.company_id == admin.company_id).ToList();
+            var routeData = _route.Filter(c => c.route_active == "A" && c.adminid_create == user.id).ToList();
             if (routeData != null)
             {
                 foreach (var item in routeData)

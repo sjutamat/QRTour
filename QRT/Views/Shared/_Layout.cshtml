@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en-us">
 <head>
     <meta charset="utf-8">
@@ -258,17 +259,18 @@ Use search to find needed section.
         </div>
     </header>
     <aside id="left-panel">
-        @*<div class="login-info">
-                <span>
-                    <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
-                        <img src="~/Content/img/avatars/sunny.png" alt="me" class="online" />
-                        <span>
-                            john.doe
-                        </span>
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-                </span>
-            </div>*@
+       
+        <div class="login-info">
+            <span>
+                <a href="#" id="show-shortcut" >
+                    @*<img src="~/Content/img/avatars/sunny.png" alt="me" class="online" />*@
+                    <span>
+                       Hello @ViewBag.AdminName
+                    </span>
+                    @*<i class="fa fa-angle-down"></i>*@
+                </a>
+            </span>
+        </div>
         <nav>
             <ul>
                 <li class="">
@@ -299,11 +301,11 @@ Use search to find needed section.
                     </a>
                 </li>
                 @*<li class="active">
-                        <a href="\locquestion\Index" title="locquestion_">
+                    <a href="\locquestion\Index" title="locquestion_">
 
-                            <span class="menu-item-parent">Question for Location</span>
-                        </a>
-                    </li>*@
+                        <span class="menu-item-parent">Question for Location</span>
+                    </a>
+                </li>*@
             </ul>
         </nav>
         <span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit"></i> </span>
@@ -344,7 +346,7 @@ Use search to find needed section.
     <script src="~/scripts/datatables/dataTables.tableTools.min.js"></script>
     <script src="~/scripts/datatables/dataTables.bootstrap.min.js"></script>
     <script src="~/scripts/datatable-responsive/datatables.responsive.min.js"></script>
-    
+
     <!-- JQUERY VALIDATE -->
     <script src="~/scripts/js/plugin/jquery-validate/jquery.validate.min.js"></script>
     <!-- Your GOOGLE ANALYTICS CODE Below -->

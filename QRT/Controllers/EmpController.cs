@@ -9,7 +9,7 @@ using Op3ration.ExceptionHandler;
 
 namespace QRT.Controllers
 {
-    public class EmpController : Controller
+    public class EmpController : BaseController
     {
         private readonly Imas_empService _empService;
         private ValidateHandler Validator;
@@ -35,7 +35,8 @@ namespace QRT.Controllers
         // GET: Emp
         public ActionResult Index()
         {
-            var data = _empService.GetAllEmp();
+            var data = _empService.GetAllEmp(admin);
+            ViewBag.AdminName = admin.username;
             return View(data);
         }
 
@@ -44,12 +45,14 @@ namespace QRT.Controllers
         public ActionResult Index(m_empViewModel model)
         {
             var data = _empService.FilterEmp(model);
+            ViewBag.AdminName = admin.username;
             return View(data);
         }
 
         public ActionResult Add()
         {
             var model = _empService.GetEmp();
+            ViewBag.AdminName = admin.username;
             return View("Detail", model);
         }
 
@@ -57,6 +60,7 @@ namespace QRT.Controllers
         public ActionResult Edit(long id)
         {
             var model = _empService.GetById(id);
+            ViewBag.AdminName = admin.username;
             return View("Detail", model);
         }
 

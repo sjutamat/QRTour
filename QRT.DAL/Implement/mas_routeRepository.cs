@@ -18,9 +18,9 @@ namespace QRT.DAL.Implement
         }
 
 
-        public List<mas_route> GetRouteByCompanmy(long? companyId)
+        public List<mas_route> GetRouteByCompanmy(long? admin_id)
         {
-            var data = _dbContext.mas_route.Where(c => c.company_id.Equals(companyId)).ToList();
+            var data = _dbContext.mas_route.Where(c => c.adminid_create.Equals(admin_id)).ToList();
             return data;
         }
     }

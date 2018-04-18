@@ -31,13 +31,13 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">ID</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" name="s_location.id" placeholder="Enter ID" type="text">
+                                    <input class="form-control" name="s_location.id" placeholder="Enter ID" type="text" value="@Model.s_location.id">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Title</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" name="s_location.title" placeholder="Enter Title" type="text">
+                                    <input class="form-control" name="s_location.title" placeholder="Enter Title" type="text" value="@Model.s_location.title">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -189,10 +189,11 @@
                 },
                 "drawCallback": function (oSettings) {
                     responsiveHelper_dt_basic.respond();
-                }
+                },
+                "pageLength": 50
             });
 
-           
+            $('[name="s_location.route"]').val(@Model.s_location.route);
         });
 
         $('[title="location_"]').parent().addClass('active')
@@ -249,44 +250,20 @@
                 url: '@Url.Action("InitPopUp", "Location")',
                 data: { "route_id": route_id, "location_id": location_id},
                 success: function (data) {
-                   
-
                     var options = '';
                     if (data != 0) {
                         $(data).each(function (index, value) {
                             options += '<option value="' + value.id + '" ' + value.set_select + '>' + value.text + '</option>';
                         });
                         
-                      
-                        //$('#initializeDuallistbox').empty();
-                        //$('#initializeDuallistbox').html(options);
-                        //$('#initializeDuallistbox').bootstrapDualListbox();
-                        //$('#initializeDuallistbox').bootstrapDualListbox({
-                        //    preserveSelectionOnMove: 'moved',
-                        //    moveOnSelect: false,
-                        //    nonSelectedFilter: ''
-                        //});
-
-
                         $('#initializeDuallistbox').html(options);
                         var initializeDuallistbox = $('#initializeDuallistbox').bootstrapDualListbox();
-                        //initializeDuallistbox.bootstrapDualListbox('destroy', true);
-                        //initializeDuallistbox.bootstrapDualListbox('getContainer');
                         initializeDuallistbox.bootstrapDualListbox({
                             preserveSelectionOnMove: 'moved',
                             moveOnSelect: false,
                             nonSelectedFilter: ''
                         })
-
-                        //var initializeDuallistbox = $('#initializeDuallistbox').bootstrapDualListbox({
-                        //    preserveSelectionOnMove: 'moved',
-                        //    moveOnSelect: false,
-                        //    nonSelectedFilter: ''
-                            
-                        //});
                         
-                        
-
                         $('[name="location_id"]').val(location_id);
                         $('#popUpQuestion').modal('show');
                     } else {
@@ -340,8 +317,6 @@
 
 
         function destroySelectList() {
-            //$('#initializeDuallistbox').bootstrapDualListbox('refresh', true);
-            
             $('#popUpQuestion').modal('toggle');
         }
 

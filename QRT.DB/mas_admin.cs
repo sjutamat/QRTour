@@ -19,6 +19,5 @@ namespace QRT.DB
         public string admin_password { get; set; }
         public Nullable<System.DateTime> admin_cdate { get; set; }
         public string admin_active { get; set; }
-        public Nullable<long> company_id { get; set; }
     }
 }

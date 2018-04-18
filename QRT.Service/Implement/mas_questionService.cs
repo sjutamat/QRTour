@@ -51,6 +51,7 @@ namespace QRT.Service.Implement
                     created_date = x.question_cdate,
                 }).OrderByDescending(c => c.created_date).ToList();
 
+                model.s_question = new SearchQuestionData();
                 model.s_questionData = question;
                 model.route = _routeservice.GetRouteItem(user);
                 return model;
@@ -65,7 +66,7 @@ namespace QRT.Service.Implement
 
         public m_questionViewModel FilterQuestion(m_questionViewModel model, UserViewModel user)
         {
-            var id = model.s_question.id;
+            var id = (model.s_question.id == null) ? 0 : Convert.ToInt32(model.s_question.id);
             var title = model.s_question.title;
             var route = Convert.ToInt32(model.s_question.route);
 

@@ -25,7 +25,7 @@ namespace QRT.Domain.ViewModel
 
     public class SearchData
     {
-        public long id { get; set; }
+        public string id { get; set; }
         public string title { get; set; }
         public string status { get; set; }
     }
@@ -37,7 +37,7 @@ namespace QRT.Domain.ViewModel
         public string description { get; set; }
         public string status { get; set; }
         public long comp_id { get; set; }
-        public string comp_name { get; set; }
+        //public string comp_name { get; set; }
         public DateTime? created_date { get; set; }
         public DateTime? updated_date { get; set; }
         public int? created_by { get; set; }

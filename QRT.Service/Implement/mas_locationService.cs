@@ -20,18 +20,23 @@ namespace QRT.Service.Implement
         #region utility
         private readonly Imas_locationRepository _location;
         private readonly Imas_routeRepository _route;
+        private readonly Itrn_transactionRepository _trn;
+
         private readonly Imas_routeService _routeservice;
         private readonly Imas_questionService _questservice;
         private readonly Imas_locquestionService _locquestservice;
+        
         //private ValidateHandler Validator;
         public mas_locationService(Imas_locationRepository imas_locationrepository,
             Imas_routeRepository imas_routerepository,
+            Itrn_transactionRepository itrn_TransactionRepository,
             Imas_routeService imasrouteservice,
             Imas_questionService imasquestservice,
             Imas_locquestionService imaslocquestionservice)
         {
             _location = imas_locationrepository;
             _route = imas_routerepository;
+            _trn = itrn_TransactionRepository;
             _routeservice = imasrouteservice;
             _questservice = imasquestservice;
             _locquestservice = imaslocquestionservice;
@@ -81,7 +86,7 @@ namespace QRT.Service.Implement
                     created_date = x.location_cdate,
                     route_name = x.mas_route.route_title,
                 }).OrderByDescending(c => c.created_date).ToList();
-                
+                model.s_location = new SearchDataLocation();
                 model.s_locationData = location;
                 model.route = _routeservice.GetRouteItem(user);
                 return model;
@@ -96,7 +101,7 @@ namespace QRT.Service.Implement
 
         public m_locationViewModel FilterLocation(m_locationViewModel model, UserViewModel user)
         {
-            var id = model.s_location.id;
+            var id = (model.s_location.id == null) ? 0 : Convert.ToInt32(model.s_location.id);
             var title = model.s_location.title;
             var route = Convert.ToInt32(model.s_location.route);
 
@@ -161,6 +166,28 @@ namespace QRT.Service.Implement
             location.created_date = data.location_cdate;
             location.created_by = data.adminid_create;
             location.route = _routeservice.GetRouteItem(user);
+
+            return location;
+        }
+
+        public m_locationViewModel GetLocationById(long id)
+        {
+            var data = _location.Filter(c => c.location_id == id).SingleOrDefault();
+            m_locationViewModel location = new m_locationViewModel();
+            location.id = data.location_id;
+            location.route_id = data.route_id;
+            location.title = data.location_title;
+            location.description = data.location_desc;
+            location.status = data.location_active == "A" ? "On" : "Off";
+            location.seq_number = data.seq_number;
+            location.qrcode1 = data.qrcode1;
+            location.qrcode2 = data.qrcode2;
+            location.code1_status = data.qrcode1_status == "A" ? "On" : "Off";
+            location.code2_status = data.qrcode2_status == "A" ? "On" : "Off";
+
+            location.created_date = data.location_cdate;
+            location.created_by = data.adminid_create;
+           // location.route = _routeservice.GetRouteItem(user);
 
             return location;
         }
@@ -277,7 +304,42 @@ namespace QRT.Service.Implement
             {
                 return false;
             }
-            
+        }
+
+        public string ChkOverSequentNumber(string locationId ,EmpData emp)
+        {
+            var locateionData = _location.Filter(c => c.qrcode1.Equals(locationId) && c.qrcode1_status.Equals("A") || c.qrcode2.Equals(locationId) && c.qrcode2_status.Equals("A")).SingleOrDefault().location_id;
+            var loId = Convert.ToInt32(locateionData);
+            var sq = _trn.Filter(c => c.location_id == loId, inc => inc.mas_location).SingleOrDefault();
+            var sequent = _trn.Filter(c => c.location_id == loId && c.session_id == emp.id.ToString(),inc=>inc.mas_location);
+            int? previous = 0;
+            var ls = "";
+            if (sequent != null)
+            {
+                var lastSequent = sequent.OrderByDescending(o => o.transaction_cdate).First().mas_location;
+                previous = lastSequent.seq_number + 1;
+                if (sq != null && sq.mas_location.seq_number != 1)
+                {
+                    if (previous == sq.mas_location.seq_number)
+                    {
+                        return null; //not over
+                    }
+                    else
+                    {
+                        ls = lastSequent.location_title;
+                        return ls; // over
+                    }
+                }
+                else
+                {
+                    return null; //not over
+                }
+                
+            }
+            else
+            {
+                return ls;
+            }
         }
         //public byte[] GenQRCode()
         //{

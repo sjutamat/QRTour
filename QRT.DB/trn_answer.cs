@@ -23,11 +23,10 @@ namespace QRT.DB
         public string session_id { get; set; }
         public Nullable<System.DateTime> answer_cdate { get; set; }
         public string answer_picture { get; set; }
-        public string answer_flag { get; set; }
     
         public virtual mas_emp mas_emp { get; set; }
-        public virtual mas_location mas_location { get; set; }
         public virtual mas_question mas_question { get; set; }
+        public virtual mas_location mas_location { get; set; }
         public virtual trn_transaction trn_transaction { get; set; }
     }
 }

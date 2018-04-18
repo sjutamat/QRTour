@@ -31,13 +31,13 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Code</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" name="s_emp.code" placeholder="Enter Code" type="text">
+                                    <input class="form-control" name="s_emp.code" placeholder="Enter Code" type="text" value="@Model.s_emp.code">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Name</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" name="s_emp.name" placeholder="Enter Name" type="text">
+                                    <input class="form-control" name="s_emp.name" placeholder="Enter Name" type="text" value="@Model.s_emp.name">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -89,21 +89,21 @@
                                     </thead>
                                     <tbody>
                                         @if (Model.s_empData != null && Model.s_empData.Any())
-                            {
-                                for (int i = 0; i < Model.s_empData.Count; i++)
-                                {
-                                    <tr>
-                                        <td>@Model.s_empData[i].code</td>
-                                        <td>@Model.s_empData[i].name</td>
-                                        <td>@Model.s_empData[i].comp_name</td>
-                                        <td>@Model.s_empData[i].status</td>
-                                        <td>
-                                            <a href="\Emp\Edit\?id=@Model.s_empData[i].id" class="btn btn-defalt"><i class="fa fa-edit"></i></a>
-                                            <a href="#" onclick="WarningAlert(@Model.s_empData[i].id);" class="btn btn-defalt"><i class="fa fa-trash-o"></i></a>
-                                        </td>
-                                    </tr>
-                    }
-                }
+                                            {
+                                                for (int i = 0; i < Model.s_empData.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td>@Model.s_empData[i].code</td>
+                                                        <td>@Model.s_empData[i].name</td>
+                                                        <td>@Model.s_empData[i].comp_name</td>
+                                                        <td>@Model.s_empData[i].status</td>
+                                                        <td>
+                                                            <a href="\Emp\Edit\?id=@Model.s_empData[i].id" class="btn btn-defalt"><i class="fa fa-edit"></i></a>
+                                                            <a href="#" onclick="WarningAlert(@Model.s_empData[i].id);" class="btn btn-defalt"><i class="fa fa-trash-o"></i></a>
+                                                        </td>
+                                                       </tr>
+                                                 }
+                                            }
 
                                     </tbody>
                                 </table>
@@ -182,8 +182,11 @@
                 },
                 "drawCallback": function (oSettings) {
                     responsiveHelper_dt_basic.respond();
-                }
+                },
+                "pageLength": 50
             });
+
+            $('[name="s_emp.comp"]').val(@Model.s_emp.comp)
 
         });
 

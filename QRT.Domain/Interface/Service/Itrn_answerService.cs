@@ -9,6 +9,7 @@ namespace QRT.Domain.Interface.Service
 {
     public interface Itrn_answerService
     {
-        void SaveAnswer(List<Answer> model, EmpData emp);
+        //void SaveAnswer(List<Answer> model, EmpData emp);
+        void SaveAnswer(answer model, EmpData emp);
     }
 }
