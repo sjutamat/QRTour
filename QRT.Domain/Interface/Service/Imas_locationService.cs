@@ -22,5 +22,6 @@ namespace QRT.Domain.Interface.Service
         //byte[] GenQRCode();
         bool ChkSequentNumber(string locationId);
         string ChkOverSequentNumber(string locationId, EmpData emp);
+       
     }
 }

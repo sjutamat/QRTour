@@ -302,32 +302,49 @@ namespace QRT.Service.Implement
             }
             else
             {
-                return false;
+                return false; 
             }
         }
-
+        /// <summary>
+        /// for check over the sequent.
+        /// </summary>
+        /// <param name="locationId">Is guid from scan qrcode</param>
+        /// <param name="emp"></param>
+        /// <returns></returns>
         public string ChkOverSequentNumber(string locationId ,EmpData emp)
         {
-            var locateionData = _location.Filter(c => c.qrcode1.Equals(locationId) && c.qrcode1_status.Equals("A") || c.qrcode2.Equals(locationId) && c.qrcode2_status.Equals("A")).SingleOrDefault().location_id;
-            var loId = Convert.ToInt32(locateionData);
-            var sq = _trn.Filter(c => c.location_id == loId, inc => inc.mas_location).SingleOrDefault();
-            var sequent = _trn.Filter(c => c.location_id == loId && c.session_id == emp.id.ToString(),inc=>inc.mas_location);
+            
+            //current location
+            var locateionData = _location.Filter(c => c.qrcode1.Equals(locationId) && c.qrcode1_status.Equals("A") || c.qrcode2.Equals(locationId) && c.qrcode2_status.Equals("A")).SingleOrDefault();
+            //current location_id is not guid.
+           
+            var routeId = locateionData.route_id;
+            //previous sequent by location id == locationId
+            
+            var sq = locateionData.seq_number; //current sequent
+
+            //all sequent by location id and employee id
+
+            var sequent = _trn.Filter(c => c.route_id == routeId && c.session_id == emp.id.ToString(), inc => inc.mas_location).OrderByDescending(o => o.transaction_id).
+                Select(s => new { s.mas_location.seq_number, s.mas_location.location_title }).FirstOrDefault();
+            
+            //if sequent is null, This route is not checked.
             int? previous = 0;
             var ls = "";
-            if (sequent != null)
+            if (sequent != null && sequent.seq_number.HasValue)
             {
-                var lastSequent = sequent.OrderByDescending(o => o.transaction_cdate).First().mas_location;
-                previous = lastSequent.seq_number + 1;
-                if (sq != null && sq.mas_location.seq_number != 1)
+                previous = sequent.seq_number.Value + 1; //previous sequent
+                if (sq != null && sq != 1)
                 {
-                    if (previous == sq.mas_location.seq_number)
+                    if (previous == sq)
                     {
-                        return null; //not over
+                        ls = null;
+                        return ls;
                     }
-                    else
+                    else 
                     {
-                        ls = lastSequent.location_title;
-                        return ls; // over
+                        ls = "ไม่สามารถเข้าถึงสถานที่นี้ได้ เนื่องจากสถานที่แห่งนี้อาจได้รับการตรวจสอบแล้ว หรือ คุณข้ามการตรวจสอบสถานที่ก่อนหน้า. สถานที่ล่าสุดที่คุณตรวจสอบคือ " + sequent.location_title;
+                        return ls;
                     }
                 }
                 else
@@ -338,9 +355,20 @@ namespace QRT.Service.Implement
             }
             else
             {
-                return ls;
+                if (sq != null && sq == 1)
+                {
+                    return null;
+                }
+                else
+                {
+                    ls = "ไม่สามารถเข้าถึงสถานที่นี้ได้ เนื่องจากสถานที่แห่งนี้อาจได้รับการตรวจสอบแล้ว หรือ คุณข้ามการตรวจสอบสถานที่ก่อนหน้า.";
+                    return ls;
+                }
+
             }
         }
+
+
         //public byte[] GenQRCode()
         //{
         //    string code = "";

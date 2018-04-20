@@ -51,7 +51,28 @@ namespace QRT.Service.Implement
                 {
                     List<trn_answer> ans = new List<trn_answer>();
                     var lid = Convert.ToInt32(model.answerlist[0].location_id);
-                    var route_id = _location.Filter(c => c.location_id == lid).SingleOrDefault().route_id;
+                    var locationData = _location.Filter(c => c.location_id == lid).Select(s => new
+                    {
+                        r_id = s.route_id,
+                        sq = s.seq_number
+                    }).SingleOrDefault();
+
+                    //var route_id = _location.Filter(c => c.location_id == lid).SingleOrDefault().route_id;
+                    var route_id = locationData.r_id;
+                    var sequent = locationData.sq;
+                    long? round_number = 0;
+                    if (sequent == 1)
+                    {
+                        var trn_round_number = _trn.All().OrderByDescending(o => o.round_number).Select(s => s.round_number).FirstOrDefault();
+                        if (trn_round_number != null)
+                        {
+                            round_number = trn_round_number + 1;
+                        }
+                    }
+                    else
+                    {
+                        round_number = _trn.Filter(c => c.route_id == route_id && c.emp_id == emp.id).OrderByDescending(o => o.round_number).Select(s => s.round_number).SingleOrDefault();
+                    }
                     var getflag = model.answerlist.Where(c => c.answer_flag == "No").ToList();
 
                     bool flag = true;
@@ -67,6 +88,8 @@ namespace QRT.Service.Implement
                     trn.transaction_answer = flag; //true = yes, false = no
                     trn.location_id = Convert.ToInt32(model.answerlist[0].location_id);
                     trn.route_id = route_id;
+                    trn.round_number = round_number;
+                    trn.emp_id = emp.id;
                     _trn.Create(trn);
 
                     var trn_id = _trn.All().OrderByDescending(c=>c.transaction_id).First().transaction_id;

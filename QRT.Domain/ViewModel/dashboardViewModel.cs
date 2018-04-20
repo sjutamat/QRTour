@@ -25,9 +25,19 @@ namespace QRT.Domain.ViewModel
         public long emp_id { get; set; }
         public string emp_name { get; set; }
         public string comp_name { get; set; }
-        public List<answerDetailList> answerList { get; set; }
+        public List<employeeData> listEmpData { get; set; }
     }
 
+    public class employeeData
+    {
+        public long id { get; set; }
+        public string name { get; set; }
+        public DateTime? start_time { get; set; } //เวลาของ Location ที่ 1
+        public DateTime? end_time { get; set; } // เวลาของ Location สุดท้าย
+        public string start_time_string { get; set; }
+        public string end_time_string { get; set; }
+        public List<answerDetailList> answerSummary { get; set; }
+    }
 
     public class answerDetailList
     {

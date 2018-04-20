@@ -17,15 +17,15 @@
         <EntityTypeShape EntityType="QRCodeTourModel.mas_admin" Width="1.5" PointX="8.375" PointY="0.75" />
         <EntityTypeShape EntityType="QRCodeTourModel.mas_location" Width="1.5" PointX="1" PointY="7.625" />
         <EntityTypeShape EntityType="QRCodeTourModel.mas_route" Width="1.5" PointX="0.75" PointY="2.875" />
-        <EntityTypeShape EntityType="QRCodeTourModel.trn_transaction" Width="1.5" PointX="5.25" PointY="0.875" />
         <AssociationConnector Association="QRCodeTourModel.FK_mas_location_mas_route" />
         <AssociationConnector Association="QRCodeTourModel.FK_mas_locquestion_mas_location" />
         <AssociationConnector Association="QRCodeTourModel.FK_trn_answer_mas_location" />
-        <AssociationConnector Association="QRCodeTourModel.FK_trn_transaction_mas_location" />
         <AssociationConnector Association="QRCodeTourModel.FK_mas_question_mas_route" />
+        <EntityTypeShape EntityType="QRCodeTourModel.trn_transaction" Width="1.5" PointX="5.25" PointY="0.75" />
+        <AssociationConnector Association="QRCodeTourModel.FK_trn_transaction_mas_location" />
         <AssociationConnector Association="QRCodeTourModel.FK_trn_transaction_mas_route" />
         <AssociationConnector Association="QRCodeTourModel.FK_trn_answer_trn_transaction" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

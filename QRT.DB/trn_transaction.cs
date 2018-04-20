@@ -28,6 +28,8 @@ namespace QRT.DB
         public Nullable<bool> transaction_answer { get; set; }
         public Nullable<long> location_id { get; set; }
         public Nullable<long> route_id { get; set; }
+        public Nullable<long> emp_id { get; set; }
+        public Nullable<long> round_number { get; set; }
     
         public virtual mas_location mas_location { get; set; }
         public virtual mas_route mas_route { get; set; }

@@ -132,17 +132,17 @@ namespace QRT.Controllers
                 string password = Request.Cookies["EmpCookies"]["password"];
                 EmpData employee = _empservice.CheckEmp(code, password);
 
-                var chkOverSeq = _location.ChkOverSequentNumber(location, employee);
-                if (chkOverSeq != null)
-                {
-                    return RedirectToAction("OverSequent", new { previousSequent = chkOverSeq });
-                }
-                else
-                {
+                //var chkOverSeq = _location.ChkOverSequentNumber(location, employee);
+                //if (chkOverSeq != null)
+                //{
+                //    return RedirectToAction("OverSequent", new { previousSequent = chkOverSeq });
+                //}
+                //else
+                //{
                     ViewBag.Name = employee.name;
                     ViewBag.LocationName = data[0].location_name;
                     return View(data);
-                }
+                //}
                
             }
             else

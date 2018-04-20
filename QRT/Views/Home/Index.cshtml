@@ -62,87 +62,117 @@
                             </form>
                         </div>
                     </article>
-
-
-
-
             <article class="col-sm-12">
-                    @if (Model.reportList != null && Model.reportList.Any())
-                    {
-                        for (int i = 0; i < Model.reportList.Count; i++)
-                        {
-                            <div class="jarviswidget jarviswidget-color-darken" id="wid-id-@i" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-deletebutton="false">
-                                <header>
-                                    <strong style="font-size:18px; margin-left:8px;">@Model.reportList[i].name</strong>
-                                </header>
-                                <div>
-                                    <div class="widget-body">
-                                        @if (Model.reportList[i].answerList != null && Model.reportList[i].answerList.Any())
-                        {
-                <div class="widget-body-toolbar">
-                    <div class="col-sm-12">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label><strong>Start Time :</strong></label>
-                                    <label>@Model.reportList[i].start_time_string</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label><strong>End Time :</strong></label>
-                                    <label>@Model.reportList[i].end_time_string</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label><strong>Staff name :</strong></label>
-                                    <label>@Model.reportList[i].emp_name</label>
-                                </div>
+            @if (Model.reportList != null && Model.reportList.Any())
+            {
+                for (int i = 0; i < Model.reportList.Count; i++)
+                {
+                    <div class="jarviswidget jarviswidget-color-darken" id="wid-id-@i" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-deletebutton="false">
+                        <header>
+                            <strong style="font-size:18px; margin-left:8px;">@Model.reportList[i].name</strong>
+                        </header>
+                        <div>
+                            <div class="widget-body">
+                                @if (Model.reportList[i].listEmpData != null && Model.reportList[i].listEmpData.Any())
+                                {
+                                    for (int e = 0; e < Model.reportList[i].listEmpData.Count; e++)
+                                    {
+                                    @*<div class="widget-body-toolbar">*@
+                                        <div class="col-sm-12" style="margin-top: 60px;">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label><strong>Start Time :</strong></label>
+                                                        <label>@Model.reportList[i].listEmpData[e].start_time_string</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label><strong>End Time :</strong></label>
+                                                        <label>@Model.reportList[i].listEmpData[e].end_time_string</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label><strong>Staff name :</strong></label>
+                                                        <label>@Model.reportList[i].listEmpData[e].name</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="row col-sm-12">
+                                                    <table id="dt_basic@(e)" class="table table-striped table-bordered table-hover" width="100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th data-hide="phone">จุดตรวจ</th>
+                                                                <th data-class="expand"><i class="fa fa-fw fa-bullhorn text-muted hidden-md hidden-sm hidden-xs"></i> เวลาที่บันทึก</th>
+                                                                <th><i class="fa fa-fw fa-comments text-muted hidden-md hidden-sm hidden-xs"></i> สถานะ</th>
+                                                                <th><i class="fa fa-fw fa-lightbulb-o text-muted hidden-md hidden-sm hidden-xs"></i>หมายเหตุ</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @for (int d = 0; d < Model.reportList[i].listEmpData[e].answerSummary.Count; d++)
+                                                            {
+                                                                <tr>
+                                                                    <td>@Model.reportList[i].listEmpData[e].answerSummary[d].location_name</td>
+                                                                    <td>@Model.reportList[i].listEmpData[e].answerSummary[d].answer_cdate_string</td>
+                                                                    <td>@Model.reportList[i].listEmpData[e].answerSummary[d].answer_flag</td>
+                                                                    <td>@Model.reportList[i].listEmpData[e].answerSummary[d].answer_comment</td>
+                                                                    <td></td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      @*</div>*@
+                                    
+
+                                    @*<div class="row col-sm-12">
+                                        <table id="dt_basic@(e)" class="table table-striped table-bordered table-hover" width="100%">
+                                        
+                                            <thead>
+                                                <tr>
+                                                    <th data-hide="phone">จุดตรวจ</th>
+                                                    <th data-class="expand"><i class="fa fa-fw fa-bullhorn text-muted hidden-md hidden-sm hidden-xs"></i> เวลาที่บันทึก</th>
+                                                    <th><i class="fa fa-fw fa-comments text-muted hidden-md hidden-sm hidden-xs"></i> สถานะ</th>
+                                                    <th><i class="fa fa-fw fa-lightbulb-o text-muted hidden-md hidden-sm hidden-xs"></i>หมายเหตุ</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int d = 0; d < Model.reportList[i].listEmpData[e].answerSummary.Count; d++)
+                                                {
+                                            <tr>
+                                                <td>@Model.reportList[i].listEmpData[e].answerSummary[d].location_name</td>
+                                                <td>@Model.reportList[i].listEmpData[e].answerSummary[d].answer_cdate_string</td>
+                                                <td>@Model.reportList[i].listEmpData[e].answerSummary[d].answer_flag</td>
+                                                <td>@Model.reportList[i].listEmpData[e].answerSummary[d].answer_comment</td>
+                                                <td></td>
+                                            </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>*@
+                                    }
+
+                                }
+                                else
+                                {
+                                <p>
+                                    <label>Not have any data.</label>
+                                </p>
+                                }
+
                             </div>
                         </div>
                     </div>
-                </div>
+                                }
 
-                <div class="row col-sm-12">
-                    <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
-                        <thead>
-                            <tr>
-                                <th data-hide="phone">จุดตรวจ</th>
-                                <th data-class="expand"><i class="fa fa-fw fa-bullhorn text-muted hidden-md hidden-sm hidden-xs"></i> เวลาที่บันทึก</th>
-                                <th><i class="fa fa-fw fa-comments text-muted hidden-md hidden-sm hidden-xs"></i> สถานะ</th>
-                                <th><i class="fa fa-fw fa-lightbulb-o text-muted hidden-md hidden-sm hidden-xs"></i>หมายเหตุ</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (int a = 0; a < Model.reportList[i].answerList.Count; a++)
-                            {
-                                <tr>
-                                    <td>@Model.reportList[i].answerList[a].location_name</td>
-                                    <td>@Model.reportList[i].answerList[a].answer_cdate_string</td>
-                                    <td>@Model.reportList[i].answerList[a].answer_flag</td>
-                                    <td>@Model.reportList[i].answerList[a].answer_comment</td>
-                                    <td></td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                    }
-                    else
-                    {
-                                    <p>
-                                        <label>Not have any data.</label>
-                                    </p>
-                    }
-
-                                            </div>
-                                        </div>
-                                    </div>
-                    }
-
-                    }
+                                }
                     </article>
                 </div>
             </section>
@@ -163,25 +193,27 @@
             $('[title!="blank_"]').parent().removeClass('active')
 
 
-            $('#dt_basic').dataTable({
-                "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>" +
-                    "t" +
-                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
-                "autoWidth": true,
-                "oLanguage": {
-                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
-                },
-                "preDrawCallback": function () {
-                    if (!responsiveHelper_dt_basic) {
-                        responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#dt_basic'), breakpointDefinition);
+            $('[id*="dt_basic"]').each(function () {
+                $(this).dataTable({
+                    "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>" +
+                        "t" +
+                        "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                    "autoWidth": true,
+                    "oLanguage": {
+                        "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
                     }
-                },
-                "rowCallback": function (nRow) {
-                    responsiveHelper_dt_basic.createExpandIcon(nRow);
-                },
-                "drawCallback": function (oSettings) {
-                    responsiveHelper_dt_basic.respond();
-                }
+                    //,"preDrawCallback": function () {
+                    //    if (!responsiveHelper_dt_basic) {
+                    //        responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#dt_basic'), breakpointDefinition);
+                    //    }
+                    //},
+                    //"rowCallback": function (nRow) {
+                    //    responsiveHelper_dt_basic.createExpandIcon(nRow);
+                    //},
+                    //"drawCallback": function (oSettings) {
+                    //    responsiveHelper_dt_basic.respond();
+                    //}
+                })
             });
         });
     </script>

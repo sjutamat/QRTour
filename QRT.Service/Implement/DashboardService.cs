@@ -11,287 +11,170 @@ namespace QRT.Service.Implement
 {
      public class DashboardService : IDashboardService
     {
-        private readonly Itrn_answerService _answerService;
+        //private readonly Itrn_answerService _answerService;
         private readonly Imas_routeRepository _route;
         private readonly Imas_adminRepository _admin;
         private readonly Itrn_transactionRepository _trn;
         private readonly Itrn_answerRepository _answer;
         private readonly Imas_locationRepository _location;
+        private readonly Imas_empRepository _emp;
         public DashboardService(
-            Itrn_answerService itrnanswerservice
-            ,Imas_routeRepository irouterepository
+            //Itrn_answerService itrnanswerservice
+            Imas_routeRepository irouterepository
             ,Imas_adminRepository iadminrepository
             ,Itrn_transactionRepository itrnrepository
             ,Itrn_answerRepository ianswerrepository
             ,Imas_locationRepository ilocationrepository
+            ,Imas_empRepository iemprepository
             )
         {
-            _answerService = itrnanswerservice;
+           // _answerService = itrnanswerservice;
             _route = irouterepository;
             _admin = iadminrepository;
             _trn = itrnrepository;
             _answer = ianswerrepository;
             _location = ilocationrepository;
+            _emp = iemprepository;
         }
 
 
         public List<answerHeader> GetAnswer(int admin_id)
         {
-            //dashboardViewModel model = new dashboardViewModel();
-            List<answerHeader> headers = new List<answerHeader>();
-            var currentSdate = DateTime.Now.Date;
-            var currentEdate = DateTime.Now.AddDays(1);
-          //  var admin = _admin.Filter(c => c.admin_id.Equals(admin_id)).SingleOrDefault();
-            //get route
-            //var route = _route.GetRouteByCompanmy(admin.company_id);
-            var route = _route.Filter(c => c.adminid_create == admin_id && c.route_active == "A").ToList();
-            if (route != null && route.Any())
+            var route1 = _route.Filter(c => c.adminid_create == admin_id && c.route_active == "A").ToList();
+            var startDate = DateTime.Now.Date;
+            var endDate = DateTime.Now.AddDays(1).Date;
+            List<answerHeader> routeList = new List<answerHeader>();
+            if (route1.Count() > 0 && route1.Any())
             {
-                for (int i = 0; i < route.Count(); i++)
+                foreach (var ritem in route1)
                 {
-                    var r_id = route[i].route_id;
-                    var trnData = _trn.Filter(c => c.route_id == r_id, inc => inc.mas_route).ToList();
+                    answerHeader r = new answerHeader();
+                    r.name = ritem.route_title;
+                    r.start_time = null;
+                    r.end_time = null;
                     
-                    List<answerDetailList> detail = new List<answerDetailList>();
 
-
-                    var location = _trn.Filter(c => c.route_id == r_id)
-                                .GroupBy(g => new
-                                {
-                                    g.location_id
-                                }).ToList();
-                    
-                    foreach (var item in location)
+                    List<employeeData> empList = new List<employeeData>();
+                    var trn = _trn.Filter(c => c.route_id == ritem.route_id)
+                        .Where(c=>c.transaction_cdate >= startDate && c.transaction_cdate < endDate )
+                        .GroupBy(g => g.session_id)
+                        .Select(grp => grp.ToList())
+                        .ToList();
+                    if (trn.Count() > 0 && trn.Any())
                     {
-                        //all answer in each location
-                        var location_key = item.Key;
-                        var detaildata = _trn.Filter(c => c.location_id == location_key.location_id && (c.transaction_cdate >= currentSdate && c.transaction_cdate<= currentEdate), inc => inc.mas_location, incl => incl.mas_route).OrderBy(o=>o.transaction_cdate).FirstOrDefault();
-                        var dataans = _answer.Filter(c => c.session_id == detaildata.session_id,inc=>inc.mas_emp).FirstOrDefault();
-                        if (detaildata != null)
+                        
+                        foreach (var t in trn)
                         {
-                           
-                            answerDetailList d = new answerDetailList();
-                            d.location_id = detaildata.location_id;
-                            d.location_name = detaildata.mas_location.location_title;
-                            d.answer_cdate = detaildata.transaction_cdate;
-                            d.answer_cdate_string = detaildata.transaction_cdate.Value.ToShortTimeString();
-                            d.answer_flag = (detaildata.transaction_answer == true) ? "Yes" : "No";
-                            d.answer_comment = detaildata.transaction_comment;
-                            d.answer_emp_name = dataans.mas_emp.emp_fname + " " + dataans.mas_emp.emp_surname;
-                            detail.Add(d);
+                            
+                            employeeData e = new employeeData();
+                            if (t.Any())
+                            {
+                                List<answerDetailList> ansList = new List<answerDetailList>();
+                                foreach (var a in t)
+                                {
+                                    answerDetailList d = new answerDetailList();
+                                    d.location_id = a.location_id;
+                                    d.location_name = _location.Filter(c => c.location_id == a.location_id).Select(s => s.location_title).SingleOrDefault();
+                                    d.answer_cdate = a.transaction_cdate;
+                                    d.answer_cdate_string = a.transaction_cdate.Value.ToString("HH:mm");
+                                    d.answer_flag = a.transaction_answer == true ? "Yes" : "No";
+                                    d.answer_comment = a.transaction_comment;
+                                    d.answer_emp_name = a.session_id;
+                                    ansList.Add(d);
+                                }
+                                var emp_id = Convert.ToInt32(t.Select(s=>s.session_id).FirstOrDefault());
+                                var employee = _emp.Filter(c => c.emp_id == emp_id).SingleOrDefault();
+                                e.id = employee.emp_id;
+                                e.name = employee.emp_fname + " " + employee.emp_surname;
+                                e.answerSummary = ansList;
+                                e.start_time = ansList.Select(s => s.answer_cdate).First();
+                                e.end_time = ansList.Select(s => s.answer_cdate).Last();
+                                e.start_time_string = ansList.Select(s => s.answer_cdate).First().Value.ToString("dd/MM/yyyy HH:mm");
+                                e.end_time_string = ansList.Select(s => s.answer_cdate).Last().Value.ToString("dd/MM/yyyy HH:mm");
+                                empList.Add(e);
+                            }
                         }
-
                     }
-                    answerHeader h = new answerHeader();
-                    h.route_id = route[i].route_id;
-                    h.name = route[i].route_title;
-
-                    //get last transaction on this route.
-
-
-                    //get location
-                    //var locationlist = _location.Filter(c => c.route_id == r_id).ToList().OrderBy(s=>s.seq_number).ToList();
-                    //if (locationlist != null && locationlist.Any())
-                    //{
-                    //    foreach (var item in locationlist)
-                    //    {
-                    //        //all answer in each location
-                    //        var ans = _answer.Filter(c => c.location_id == item.location_id, inc => inc.mas_location, incl => incl.mas_emp).ToList();
-                    //        var jdata = _answer.Filter(c => c.location_id == item.location_id, inc => inc.mas_location, incl => incl.mas_emp)
-                    //            .GroupBy(g => new {
-                    //                g.answer_cdate,
-                    //                g.emp_id
-                    //            }).Select(grp => grp.ToList()).ToList();
-
-
-                    //        if (ans != null && ans.Any())
-                    //        {
-                    //            var summary_flag = ans.Where(c => c.answer_txt == "No        ").ToList();
-                    //            if (summary_flag.Count() == 0)
-                    //            {
-                    //                answerDetailList d = new answerDetailList();
-                    //                d.location_id = item.location_id;
-                    //                d.location_name = item.location_title;
-                    //                d.answer_cdate = ans[0].answer_cdate;
-                    //                d.answer_cdate_string = ans[0].answer_cdate.Value.ToShortTimeString();
-                    //                d.answer_flag = "Yes";
-                    //                d.answer_comment = ans[0].answer_txt;
-                    //                d.answer_emp_name = ans[0].mas_emp.emp_fname + " " + ans[0].mas_emp.emp_surname;
-                    //                detail.Add(d);
-                    //            }
-                    //            else
-                    //            {
-                    //                answerDetailList d = new answerDetailList();
-                    //                d.location_id = item.location_id;
-                    //                d.location_name = item.location_title;
-                    //                d.answer_cdate = ans[0].answer_cdate;
-                    //                d.answer_cdate_string = ans[0].answer_cdate.Value.ToShortTimeString();
-                    //                d.answer_flag = "No";
-                    //                d.answer_comment = ans[0].answer_txt;
-                    //                d.answer_emp_name = ans[0].mas_emp.emp_fname + " " + ans[0].mas_emp.emp_surname;
-                    //                detail.Add(d);
-                    //            }
-                    //        }
-
-                    //    }
-                    //}
-
-                    h.start_time = (detail != null && detail.Any()) ? detail.Last().answer_cdate : DateTime.Now;
-                    //h.start_time_string = h.start_time.Value.ToShortDateString();
-                    h.start_time_string = h.start_time.Value.ToString();
-                    h.end_time = (detail != null && detail.Any()) ? detail.First().answer_cdate : DateTime.Now;
-                    //h.end_time_string = h.end_time.Value.ToShortDateString();
-                    h.end_time_string = h.end_time.Value.ToString();
-                    h.emp_name = (detail != null && detail.Any()) ? detail.First().answer_emp_name : "";
-                    h.answerList = detail;
-                    headers.Add(h);
+                    r.start_time_string = string.Empty;
+                    r.end_time_string = string.Empty;
+                    r.listEmpData = empList;
+                    routeList.Add(r);
                 }
-                //model.reportList.Add(headers);
             }
-           
-
-            return headers;
+            return routeList;
         }
 
         public List<answerHeader> GetAnswerFilter(dashboardViewModel model,int admin_id)
         {
-            List<answerHeader> headers = new List<answerHeader>();
-            
-            var rt = (model.s_dashboard.route != null) ? Convert.ToInt32(model.s_dashboard.route) : 0;
-            
+            var route = model.s_dashboard.route !="" ? Convert.ToInt32(model.s_dashboard.route) : 0;
+            var startDate = !String.IsNullOrEmpty(model.s_dashboard.date_start) ? Convert.ToDateTime(model.s_dashboard.date_start) : DateTime.Now.Date;
+            var endDate = !String.IsNullOrEmpty(model.s_dashboard.date_end) ? Convert.ToDateTime(model.s_dashboard.date_end) : DateTime.Now.AddDays(1).Date;
 
-
-            //DateTime startDate = DateTime.ParseExact(model.s_dashboard.date_start, "yyyy-MM-dd HH:mm:ss,fff",
-            //                           System.Globalization.CultureInfo.InvariantCulture);
-
-            //DateTime endDate = DateTime.ParseExact(model.s_dashboard.date_end, "yyyy-MM-dd HH:mm:ss,fff",
-            //                           System.Globalization.CultureInfo.InvariantCulture);
-
-
-
-            //var admin = _admin.Filter(c => c.admin_id.Equals(admin_id)).SingleOrDefault();
-            //get route
-            List<DB.mas_route> route = new List<DB.mas_route>();
-            if (rt != 0)
+            var route1 = _route.Filter(c => c.adminid_create == admin_id && c.route_active == "A").ToList();
+            if (route != 0 )
             {
-                route = _route.Filter(c => c.route_id == rt && c.adminid_create == admin_id && c.route_active == "A").ToList(); // only 1 row
-            }
-            else
-            {
-                route = _route.Filter(c => c.adminid_create == admin_id && c.route_active == "A").ToList(); // only 1 row
+                route1 = route1.Where(c => c.adminid_create == admin_id && c.route_id == route).ToList();
             }
             
-            
-            
-            if (route != null && route.Any())
+            List<answerHeader> routeList = new List<answerHeader>();
+            if (route1.Count() > 0 && route1.Any())
             {
-                for (int i = 0; i < route.Count(); i++)
+                foreach (var ritem in route1)
                 {
-                   
-                    List<answerDetailList> detail = new List<answerDetailList>();
-                    answerHeader h = new answerHeader();
-                    var r_id = route[i].route_id;
-                    h.route_id = route[i].route_id;
-                    h.name = route[i].route_title;
+                    answerHeader r = new answerHeader();
+                    r.name = ritem.route_title;
+                    r.start_time = null;
+                    r.end_time = null;
 
-                    //get location
-                    var locationlist = _location.Filter(c => c.route_id == r_id).ToList().OrderBy(s => s.seq_number).ToList();
-                    if (locationlist != null && locationlist.Any())
+
+                    List<employeeData> empList = new List<employeeData>();
+                    var trn = _trn.Filter(c => c.route_id == ritem.route_id)
+                        .Where(c => c.transaction_cdate >= startDate && c.transaction_cdate < endDate)
+                        .GroupBy(g => g.session_id)
+                        .Select(grp => grp.ToList())
+                        .ToList();
+                    if (trn.Count() > 0 && trn.Any())
                     {
-                        foreach (var item in locationlist)
+
+                        foreach (var t in trn)
                         {
-                            //all answer in each location
-                            //var ans = _answer.Filter(c => c.location_id == item.location_id && (c.answer_cdate<= sDate && c.answer_cdate >= eDate), inc => inc.mas_location, incl => incl.mas_emp).ToList();
 
-                            var ans = _answer.Filter(c => c.location_id == item.location_id , inc => inc.mas_location, incl => incl.mas_emp).ToList();
-
-                            var jdata = _answer.Filter(c => c.location_id == item.location_id, inc => inc.mas_location, incl => incl.mas_emp)
-                                .GroupBy(g => new {
-                                    g.answer_cdate,
-                                    g.emp_id
-                                }).Select(grp => grp.ToList()).ToList();
-
-
-                            if (ans != null && ans.Any())
+                            employeeData e = new employeeData();
+                            if (t.Any())
                             {
-                                var summary_flag = ans.Where(c => c.answer_txt == "No        ").ToList();
-                                if (summary_flag.Count() == 0)
+                                List<answerDetailList> ansList = new List<answerDetailList>();
+                                foreach (var a in t)
                                 {
                                     answerDetailList d = new answerDetailList();
-                                    d.location_id = item.location_id;
-                                    d.location_name = item.location_title;
-                                    d.answer_cdate = ans[0].answer_cdate;
-                                    d.answer_cdate_string = ans[0].answer_cdate.Value.ToShortTimeString();
-                                    d.answer_flag = "Yes";
-                                    d.answer_comment = ans[0].answer_txt;
-                                    d.answer_emp_name = ans[0].mas_emp.emp_fname + " " + ans[0].mas_emp.emp_surname;
-                                    detail.Add(d);
+                                    d.location_id = a.location_id;
+                                    d.location_name = _location.Filter(c => c.location_id == a.location_id).Select(s => s.location_title).SingleOrDefault();
+                                    d.answer_cdate = a.transaction_cdate;
+                                    d.answer_cdate_string = a.transaction_cdate.Value.ToString("HH:mm");
+                                    d.answer_flag = a.transaction_answer == true ? "Yes" : "No";
+                                    d.answer_comment = a.transaction_comment;
+                                    d.answer_emp_name = a.session_id;
+                                    ansList.Add(d);
                                 }
-                                else
-                                {
-                                    answerDetailList d = new answerDetailList();
-                                    d.location_id = item.location_id;
-                                    d.location_name = item.location_title;
-                                    d.answer_cdate = ans[0].answer_cdate;
-                                    d.answer_cdate_string = ans[0].answer_cdate.Value.ToShortTimeString();
-                                    d.answer_flag = "No";
-                                    d.answer_comment = ans[0].answer_txt;
-                                    d.answer_emp_name = ans[0].mas_emp.emp_fname + " " + ans[0].mas_emp.emp_surname;
-                                    detail.Add(d);
-                                }
+                                var emp_id = Convert.ToInt32(t.Select(s => s.session_id).FirstOrDefault());
+                                var employee = _emp.Filter(c => c.emp_id == emp_id).SingleOrDefault();
+                                e.id = employee.emp_id;
+                                e.name = employee.emp_fname + " " + employee.emp_surname;
+                                e.answerSummary = ansList;
+                                e.start_time = ansList.Select(s => s.answer_cdate).First();
+                                e.end_time = ansList.Select(s => s.answer_cdate).Last();
+                                e.start_time_string = ansList.Select(s => s.answer_cdate).First().Value.ToString("dd/MM/yyyy HH:mm");
+                                e.end_time_string = ansList.Select(s => s.answer_cdate).Last().Value.ToString("dd/MM/yyyy HH:mm");
+                                empList.Add(e);
                             }
-
                         }
                     }
-
-                    var sDate = new DateTime();
-                    var eDate = new DateTime();
-                    //if (model.s_dashboard.date_start != null)
-                    //    sDate = Convert.ToDateTime(model.s_dashboard.date_start);
-                    //if (model.s_dashboard.date_end != null)
-                    //    eDate = Convert.ToDateTime(model.s_dashboard.date_end);
-
-
-                    if (model.s_dashboard.date_start != null && model.s_dashboard.date_end !=null)
-                    {
-                        sDate = Convert.ToDateTime(model.s_dashboard.date_start);
-                        eDate = Convert.ToDateTime(model.s_dashboard.date_end);
-                        detail = detail.Where(c => c.answer_cdate >= sDate && c.answer_cdate <= eDate).ToList();
-                        h.answerList = detail;
-                    }
-                    else if (model.s_dashboard.date_start != null && model.s_dashboard.date_end == null)
-                    {
-                        sDate = Convert.ToDateTime(model.s_dashboard.date_start);
-                        eDate = Convert.ToDateTime(model.s_dashboard.date_start).AddDays(1);
-                        detail = detail.Where(c => c.answer_cdate >= sDate || c.answer_cdate <= eDate).ToList();
-                        h.answerList = detail;
-                    }
-                    else if (model.s_dashboard.date_start == null && model.s_dashboard.date_end != null)
-                    {
-                        eDate = Convert.ToDateTime(model.s_dashboard.date_start).AddDays(1);
-                        detail = detail.Where(c => c.answer_cdate >= sDate && c.answer_cdate <= eDate).ToList();
-                        h.answerList = detail;
-                    }
-                    else
-                    {
-                        h.answerList = detail;
-                    }
-
-                    
-
-                    h.start_time = (detail != null && detail.Any()) ? detail.First().answer_cdate : DateTime.Now;
-                    h.start_time_string = h.start_time.Value.ToShortDateString();
-                    h.end_time = (detail != null && detail.Any()) ? detail.Last().answer_cdate : DateTime.Now;
-                    h.end_time_string = h.end_time.Value.ToShortDateString();
-                    h.emp_name = (detail != null && detail.Any()) ? detail.First().answer_emp_name : "";
-                    
-                    headers.Add(h);
+                    r.start_time_string = string.Empty;
+                    r.end_time_string = string.Empty;
+                    r.listEmpData = empList;
+                    routeList.Add(r);
                 }
-                //model.reportList.Add(headers);
             }
-
-
-            return headers;
+            return routeList;
         }
     }
 }
