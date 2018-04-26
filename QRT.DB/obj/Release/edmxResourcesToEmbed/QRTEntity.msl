@@ -117,6 +117,8 @@
     <EntitySetMapping Name="trn_transaction">
       <EntityTypeMapping TypeName="QRCodeTourModel.trn_transaction">
         <MappingFragment StoreEntitySet="trn_transaction">
+          <ScalarProperty Name="round_number" ColumnName="round_number" />
+          <ScalarProperty Name="emp_id" ColumnName="emp_id" />
           <ScalarProperty Name="route_id" ColumnName="route_id" />
           <ScalarProperty Name="location_id" ColumnName="location_id" />
           <ScalarProperty Name="transaction_answer" ColumnName="transaction_answer" />

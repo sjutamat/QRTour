@@ -71,7 +71,7 @@ namespace QRT.Service.Implement
                     }
                     else
                     {
-                        round_number = _trn.Filter(c => c.route_id == route_id && c.emp_id == emp.id).OrderByDescending(o => o.round_number).Select(s => s.round_number).SingleOrDefault();
+                        round_number = _trn.Filter(c => c.route_id == route_id && c.emp_id == emp.id).OrderByDescending(o => o.round_number).FirstOrDefault().round_number;
                     }
                     var getflag = model.answerlist.Where(c => c.answer_flag == "No").ToList();
 

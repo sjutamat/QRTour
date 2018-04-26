@@ -11,5 +11,6 @@ namespace QRT.Domain.Interface.Service
     {
         List<comp_item> GetCompany();
         comp_item GetById(long id);
+        List<comp_item> GetCompanyByAdmin(long adminId);
     }
 }

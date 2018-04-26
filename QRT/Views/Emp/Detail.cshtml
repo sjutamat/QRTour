@@ -25,7 +25,14 @@
                             <div class="widget-body">
                                 <form id="formSave" class="form-horizontal">
                                     <fieldset>
-                                        <legend>Add New Employee</legend>
+                                        @if (Model.id != null && Model.id == 0)
+                                        {
+                                          <legend>Add New Employee</legend>
+                                        }
+                                        else
+                                        {
+                                          <legend>Edit Employee</legend>
+                                        }
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">ID</label>
                                             <div class="col-md-10">
@@ -41,12 +48,12 @@
                                                 <select class="form-control" id="Company" name="comp" onchange="codeGenerate(); return false;">
                                                     <option value="0">--Please select company--</option>
                                                     @if (Model.company != null)
-                                                    {
-                                                        for (int i = 0; i < Model.company.Count; i++)
-                                                        {
-                                                           <option value="@Model.company[i].id">@Model.company[i].text</option>
-                                                        }
-                                                    }
+                {
+                    for (int i = 0; i < Model.company.Count; i++)
+                    {
+                                    <option value="@Model.company[i].id">@Model.company[i].text</option>
+}
+}
                                                 </select>
                                             </div>
                                             <div class="col-md-4">

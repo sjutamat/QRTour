@@ -1,0 +1,48 @@
+﻿@model  QRT.Domain.ViewModel.dashboardViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var AdminName = ViewBag.AdminName;
+}
+
+<div id="main" role="main">
+    <!-- RIBBON -->
+    <div id="ribbon">
+        <!-- breadcrumb -->
+        <ol class="breadcrumb">
+            <li>Home</li>
+            <li>Blank</li>
+        </ol>
+    </div>
+
+    <div id="content">
+        <div class="row">
+            <section id="widget-grid" class="col-sm-12">
+                <div class="row">
+                   
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+
+</div>
+@section Scripts {
+    <script src="~/scripts/js/smartwidgets/jarvis.widget.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('[title="blank_"]').parent().addClass('active')
+            $('[title!="blank_"]').parent().removeClass('active')
+            pageSetUp();
+            var url = '@QRT.helper.AppSetting.qr_extend';
+            $.ajax({
+                url: "http://10.10.2.13:18031/qr_extend/authen.php?admin_user=" + "@(ViewBag.AdminName)",
+                type: 'GET',
+                success: function (data) {
+                    window.location.href = "/Home/Index/";
+                }
+            });
+        });
+    </script>
+}

@@ -42,33 +42,10 @@ namespace QRT.Service.Implement
             {
                 var empData = _emp.GetEmployeeByAdminId(admin.id);
                 model.s_empData = empData;
-                model.company = _compservice.GetCompany();
+                model.company = _compservice.GetCompanyByAdmin(admin.id);
             }
 
             return model;
-            // var data = _emp.Filter(c => c.emp_active != "D",inc=>inc.mas_company).ToList();
-            //if (data != null)
-            //{
-            //    var emp = data.Select(x => new EmpData()
-            //    {
-            //        id = x.emp_id,
-            //        title = x.emp_title,
-            //        name = x.emp_fname + " " + x.emp_surname,
-            //        code = x.emp_code,
-            //        comp_name = x.mas_company.comp_name,
-            //        status = x.emp_active == "A" ? "Active" : "Deactive",
-            //    }).OrderByDescending(c => c.created_date).ToList();
-
-            //    model.s_empData = emp;
-            //    model.company = _compservice.GetCompany();
-            //    return model;
-            //}
-            //else
-            //{
-            //    model.s_empData = new List<EmpData>();
-            //    return model;
-
-            //}
         }
 
 
@@ -140,9 +117,10 @@ namespace QRT.Service.Implement
         }
 
 
-        public m_empViewModel GetById(long id)
+        public m_empViewModel GetById(long id,UserViewModel user)
         {
             var data = _emp.Filter(c => c.emp_id == id).SingleOrDefault();
+            var admin = _admin.GetById(user);
             m_empViewModel emp = new m_empViewModel();
             emp.id = data.emp_id;
             emp.title = data.emp_title;
@@ -152,7 +130,7 @@ namespace QRT.Service.Implement
             emp.comp = data.emp_comp;
             emp.status = data.emp_active == "A" ? "On" : "Off";
 
-            emp.company = _compservice.GetCompany();
+            emp.company = _compservice.GetCompanyByAdmin(admin.id);
             return emp;
         }
 
@@ -237,10 +215,14 @@ namespace QRT.Service.Implement
             }
         }
 
-        public m_empViewModel GetEmp()
+        public m_empViewModel GetEmp(UserViewModel user)
         {
             m_empViewModel emp = new m_empViewModel();
-            emp.company = _compservice.GetCompany();
+            var admin = _admin.GetById(user);
+            if (admin != null)
+            {
+                emp.company = _compservice.GetCompanyByAdmin(admin.id);
+            }
             return emp;
         }
 

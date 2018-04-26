@@ -1,4 +1,5 @@
-﻿using QRT.Domain.ViewModel;
+﻿using QRT.DB;
+using QRT.Domain.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,6 @@ namespace QRT.Domain.Interface.Service
         //byte[] GenQRCode();
         bool ChkSequentNumber(string locationId);
         string ChkOverSequentNumber(string locationId, EmpData emp);
-       
+        mas_location GetLocationByCode(string code);
     }
 }

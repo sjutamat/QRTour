@@ -53,7 +53,6 @@ namespace QRT.Service.Implement
                     r.start_time = null;
                     r.end_time = null;
                     
-
                     List<employeeData> empList = new List<employeeData>();
                     var trn = _trn.Filter(c => c.route_id == ritem.route_id)
                         .Where(c=>c.transaction_cdate >= startDate && c.transaction_cdate < endDate )
@@ -62,21 +61,20 @@ namespace QRT.Service.Implement
                         .ToList();
                     if (trn.Count() > 0 && trn.Any())
                     {
-                        
                         foreach (var t in trn)
                         {
-                            
                             employeeData e = new employeeData();
                             if (t.Any())
                             {
                                 List<answerDetailList> ansList = new List<answerDetailList>();
                                 foreach (var a in t)
                                 {
+                                    var l = _location.Filter(c => c.location_id == a.location_id).SingleOrDefault();
                                     answerDetailList d = new answerDetailList();
-                                    d.location_id = a.location_id;
-                                    d.location_name = _location.Filter(c => c.location_id == a.location_id).Select(s => s.location_title).SingleOrDefault();
+                                    d.location_id = a.transaction_id;
+                                    d.location_name = l.seq_number + "." + l.location_title;
                                     d.answer_cdate = a.transaction_cdate;
-                                    d.answer_cdate_string = a.transaction_cdate.Value.ToString("HH:mm");
+                                    d.answer_cdate_string = a.transaction_cdate.Value.ToString("dd/MM/yyyy HH:mm");
                                     d.answer_flag = a.transaction_answer == true ? "Yes" : "No";
                                     d.answer_comment = a.transaction_comment;
                                     d.answer_emp_name = a.session_id;
@@ -104,12 +102,18 @@ namespace QRT.Service.Implement
             return routeList;
         }
 
+
+
         public List<answerHeader> GetAnswerFilter(dashboardViewModel model,int admin_id)
         {
             var route = model.s_dashboard.route !="" ? Convert.ToInt32(model.s_dashboard.route) : 0;
-            var startDate = !String.IsNullOrEmpty(model.s_dashboard.date_start) ? Convert.ToDateTime(model.s_dashboard.date_start) : DateTime.Now.Date;
-            var endDate = !String.IsNullOrEmpty(model.s_dashboard.date_end) ? Convert.ToDateTime(model.s_dashboard.date_end) : DateTime.Now.AddDays(1).Date;
-
+            var startDate = !String.IsNullOrEmpty(model.s_dashboard.date_start) ? DateTime.ParseExact(model.s_dashboard.date_start, "dd/MM/yyyy", null) : DateTime.Now;
+            var endDate = !String.IsNullOrEmpty(model.s_dashboard.date_end) ? DateTime.ParseExact(model.s_dashboard.date_end, "dd/MM/yyyy", null) : DateTime.Now.AddDays(1).Date;
+            
+            if (startDate == endDate)
+            {
+                endDate = endDate.AddDays(1).Date;
+            }
             var route1 = _route.Filter(c => c.adminid_create == admin_id && c.route_active == "A").ToList();
             if (route != 0 )
             {
@@ -125,31 +129,29 @@ namespace QRT.Service.Implement
                     r.name = ritem.route_title;
                     r.start_time = null;
                     r.end_time = null;
-
-
+                    
                     List<employeeData> empList = new List<employeeData>();
                     var trn = _trn.Filter(c => c.route_id == ritem.route_id)
-                        .Where(c => c.transaction_cdate >= startDate && c.transaction_cdate < endDate)
+                        .Where(c => c.transaction_cdate >= startDate && c.transaction_cdate <= endDate)
                         .GroupBy(g => g.session_id)
                         .Select(grp => grp.ToList())
                         .ToList();
                     if (trn.Count() > 0 && trn.Any())
                     {
-
                         foreach (var t in trn)
                         {
-
                             employeeData e = new employeeData();
                             if (t.Any())
                             {
                                 List<answerDetailList> ansList = new List<answerDetailList>();
                                 foreach (var a in t)
                                 {
+                                    var l = _location.Filter(c => c.location_id == a.location_id).SingleOrDefault();
                                     answerDetailList d = new answerDetailList();
-                                    d.location_id = a.location_id;
-                                    d.location_name = _location.Filter(c => c.location_id == a.location_id).Select(s => s.location_title).SingleOrDefault();
+                                    d.location_id = a.transaction_id;
+                                    d.location_name = l.seq_number + "." + l.location_title;
                                     d.answer_cdate = a.transaction_cdate;
-                                    d.answer_cdate_string = a.transaction_cdate.Value.ToString("HH:mm");
+                                    d.answer_cdate_string = a.transaction_cdate.Value.ToString("dd/MM/yyyy HH:mm");
                                     d.answer_flag = a.transaction_answer == true ? "Yes" : "No";
                                     d.answer_comment = a.transaction_comment;
                                     d.answer_emp_name = a.session_id;

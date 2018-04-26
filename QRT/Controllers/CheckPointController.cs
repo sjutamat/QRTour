@@ -44,9 +44,8 @@ namespace QRT.Controllers
 
             EmpData model = _empservice.CheckEmp(vm.username, vm.password);
             HttpCookie cdata = UserInfo.CreateEmpCookie(model);
-            if (chk != null)
+            if (chk.code != null)
             {
-                
                 Response.Cookies.Add(cdata);
                 var id = vm.location_id;
 
@@ -59,12 +58,10 @@ namespace QRT.Controllers
                 {
                     return RedirectToAction("QuestionCheck", new { location = vm.location_id });
                 }
-
-                //return RedirectToAction("QuestionCheck", new { location = vm.location_id });
             }
             else
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { location = vm.location_id});
             }
         }
         
@@ -111,7 +108,6 @@ namespace QRT.Controllers
                     {
                         return RedirectToAction("QuestionCheck", new { location = locationid });
                     }
-                    
                 }
                 else  //if not has cookie redirect to Login
                 {
@@ -127,23 +123,22 @@ namespace QRT.Controllers
             var employeecode = Request.Cookies["EmpCookies"].Value;
             if (employeecode != null && data.Any())
             {
-
                 string code = Request.Cookies["EmpCookies"]["code"];
                 string password = Request.Cookies["EmpCookies"]["password"];
                 EmpData employee = _empservice.CheckEmp(code, password);
 
-                //var chkOverSeq = _location.ChkOverSequentNumber(location, employee);
-                //if (chkOverSeq != null)
-                //{
-                //    return RedirectToAction("OverSequent", new { previousSequent = chkOverSeq });
-                //}
-                //else
+                //var chkLocation = _location.GetLocationByCode(location).adminid_create;
+                //if (chkLocation == employee.created_by)
                 //{
                     ViewBag.Name = employee.name;
                     ViewBag.LocationName = data[0].location_name;
                     return View(data);
                 //}
-               
+                //else
+                //{
+                //    return RedirectToAction("CrossRoute");
+                //}
+                
             }
             else
             {
@@ -181,6 +176,12 @@ namespace QRT.Controllers
         public ActionResult OverSequent(string previousSequent)
         {
             ViewBag.previousLocation = previousSequent;
+            return View();
+        }
+
+        public ActionResult CrossRoute(string crossAlert)
+        {
+            ViewBag.CrossRoute = "ไม่สามารถสแกนจุดที่อยู่นอกเส้นทางของท่านได้ กรุณาตรวจสอบเส้นทางของท่าน และสแกนใหม่ให้ถูกต้อง";
             return View();
         }
     }

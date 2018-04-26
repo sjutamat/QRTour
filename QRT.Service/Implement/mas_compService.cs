@@ -46,6 +46,25 @@ namespace QRT.Service.Implement
         }
 
 
+
+        public List<comp_item> GetCompanyByAdmin(long adminId)
+        {
+            List<comp_item> itemComp = new List<comp_item>();
+            var compData = _comp.Filter(c=>c.admin_id == adminId).ToList();
+            if (compData != null)
+            {
+                foreach (var item in compData)
+                {
+                    comp_item c = new comp_item();
+                    c.id = item.comp_id;
+                    c.text = item.comp_name;
+                    c.flag_internal = item.flag_internal;
+                    itemComp.Add(c);
+                }
+            }
+            return itemComp;
+        }
+
         public comp_item GetById(long id)
         {
             var compData = _comp.Filter(c => c.comp_id == id).SingleOrDefault();

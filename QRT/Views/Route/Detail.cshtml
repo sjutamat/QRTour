@@ -25,7 +25,14 @@
                             <div class="widget-body">
                                 <form id="formSave" class="form-horizontal">
                                     <fieldset>
+                                        @if (Model.id != null && Model.id == 0)
+                                        {
                                         <legend>Add New Route</legend>
+                                        }
+                                        else
+                                        {
+                                        <legend>Edit Route</legend>
+                                        }
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">ID</label>
                                             <div class="col-md-8">

@@ -262,6 +262,8 @@ namespace QRT.Service.Implement
             _locquestservice.Save(model,user);
         }
 
+
+
         public void UpdateStatus(long id, UserViewModel user)
         {
             var oldData = _location.Filter(c => c.location_id == id).SingleOrDefault();
@@ -305,6 +307,8 @@ namespace QRT.Service.Implement
                 return false; 
             }
         }
+
+
         /// <summary>
         /// for check over the sequent.
         /// </summary>
@@ -343,7 +347,7 @@ namespace QRT.Service.Implement
                     }
                     else 
                     {
-                        ls = "ไม่สามารถเข้าถึงสถานที่นี้ได้ เนื่องจากสถานที่แห่งนี้อาจได้รับการตรวจสอบแล้ว หรือ คุณข้ามการตรวจสอบสถานที่ก่อนหน้า. สถานที่ล่าสุดที่คุณตรวจสอบคือ " + sequent.location_title;
+                        ls = "ไม่สามารถสแกนจุดนี้ได้ เนื่องจากจุดนี้อาจถูกสแกนแล้ว หรือ คุณข้ามการสแกนจุดก่อนหน้า. สถานที่ล่าสุดที่คุณสแกนคือ " + sequent.location_title;
                         return ls;
                     }
                 }
@@ -361,7 +365,7 @@ namespace QRT.Service.Implement
                 }
                 else
                 {
-                    ls = "ไม่สามารถเข้าถึงสถานที่นี้ได้ เนื่องจากสถานที่แห่งนี้อาจได้รับการตรวจสอบแล้ว หรือ คุณข้ามการตรวจสอบสถานที่ก่อนหน้า.";
+                    ls = "ไม่สามารถสแกนจุดนี้ได้ เนื่องจากจุดนี้อาจถูกสแกนแล้ว หรือ คุณข้ามการสแกนจุดก่อนหน้า.";
                     return ls;
                 }
 
@@ -369,6 +373,11 @@ namespace QRT.Service.Implement
         }
 
 
+        public mas_location GetLocationByCode(string code)
+        {
+            var query = _location.Filter(c => c.qrcode1.Equals(code) && c.qrcode1_status.Equals("A") || c.qrcode2.Equals(code) && c.qrcode2_status.Equals("A")).SingleOrDefault();
+            return query;
+        }
         //public byte[] GenQRCode()
         //{
         //    string code = "";

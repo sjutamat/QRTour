@@ -25,7 +25,15 @@
                             <div class="widget-body">
                                 <form id="formSave" class="form-horizontal">
                                     <fieldset>
+                                        @if (Model.id != null && Model.id == 0)
+                                        {
                                         <legend>Add New Question</legend>
+                                        }
+                                        else
+                                        {
+                                        <legend>Edit Question</legend>
+                                        }
+                                        
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">ID</label>
                                             <div class="col-md-10">
@@ -40,12 +48,12 @@
                                                 <select class="form-control" id="Route" onchange="selectRoute(); return false;">
                                                     <option value="">--Please select--</option>
                                                     @if (Model.route != null)
-                                                    {
-                                                        for (int i = 0; i < Model.route.Count; i++)
-                                                        {
-                                                            <option value="@Model.route[i].id">@Model.route[i].text</option>
-                                                        }
-                                                    }
+                {
+                    for (int i = 0; i < Model.route.Count; i++)
+                    {
+                                    <option value="@Model.route[i].id">@Model.route[i].text</option>
+}
+}
                                                 </select>
                                             </div>
                                         </div>

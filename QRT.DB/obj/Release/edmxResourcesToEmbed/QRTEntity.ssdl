@@ -117,6 +117,8 @@
     <Property Name="transaction_answer" Type="bit" />
     <Property Name="location_id" Type="bigint" />
     <Property Name="route_id" Type="bigint" />
+    <Property Name="emp_id" Type="bigint" />
+    <Property Name="round_number" Type="bigint" />
   </EntityType>
   <Association Name="FK_mas_emp_mas_company">
     <End Role="mas_company" Type="Self.mas_company" Multiplicity="1" />

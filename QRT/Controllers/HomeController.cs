@@ -35,7 +35,6 @@ namespace QRT.Controllers
             {
                 return RedirectToAction("Index", "User");
             }
-           
         }
 
         [HttpPost]
@@ -53,7 +52,12 @@ namespace QRT.Controllers
             {
                 return RedirectToAction("Index", "User");
             }
+        }
 
+        public ActionResult Authen()
+        {
+            ViewBag.AdminName = admin.username;
+            return View("AuthenPage");
         }
     }
 }

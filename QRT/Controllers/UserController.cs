@@ -23,17 +23,20 @@ namespace QRT.Controllers
             return View("Login");
         }
 
+        [HttpPost]
         public ActionResult Login(Login vm)
         {
             var m = _service.Login(vm);
             if (m!=null)
             {
                 UserInfo.Set(m);
-                return Redirect("~/Home/Index/");
+                return Redirect("~/Home/Authen/");
+                //return Redirect("~/Home/Index/");
             }
             else
             {
-                return Redirect("~");
+                ViewBag.ErrorMessage = " username/password ไม่ถูกต้อง";
+                return View();
             }
         }
 
@@ -42,5 +45,7 @@ namespace QRT.Controllers
             UserInfo.Logout();
             return Redirect("~");
         }
+
+        
     }
 }

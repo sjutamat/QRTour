@@ -51,7 +51,7 @@ namespace QRT.Controllers
 
         public ActionResult Add()
         {
-            var model = _empService.GetEmp();
+            var model = _empService.GetEmp(admin);
             ViewBag.AdminName = admin.username;
             return View("Detail", model);
         }
@@ -59,7 +59,7 @@ namespace QRT.Controllers
 
         public ActionResult Edit(long id)
         {
-            var model = _empService.GetById(id);
+            var model = _empService.GetById(id,admin);
             ViewBag.AdminName = admin.username;
             return View("Detail", model);
         }

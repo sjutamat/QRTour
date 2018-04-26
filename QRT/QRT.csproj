@@ -274,6 +274,7 @@
     <Content Include="Content\img\logo-pale.png" />
     <Content Include="Content\img\logo-white.png" />
     <Content Include="Content\img\logo.png" />
+    <Content Include="Content\img\logospw.jpg" />
     <Content Include="Content\img\logo_paragon.png" />
     <Content Include="Content\img\mappin-default.png" />
     <Content Include="Content\img\minus.png" />
@@ -841,6 +842,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CheckPointController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\EmpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
@@ -851,6 +853,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="helper\AppSetting.cs" />
     <Compile Include="helper\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -919,6 +922,8 @@
     <Content Include="Views\CheckPoint\SuccessPage.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\CheckPoint\OverSequent.cshtml" />
+    <Content Include="Views\CheckPoint\CrossRoute.cshtml" />
+    <Content Include="Views\Home\AuthenPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -931,6 +936,7 @@
     <Folder Include="Content\img\realestate\thumbs\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\Company\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QRT.DAL\QRT.DAL.csproj">

@@ -4,15 +4,225 @@
 }
 
 <!DOCTYPE html>
-
-<html>
+<html lang="en-us" id="extr-page">
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title> Success Page</title>
+    <meta charset="utf-8">
+    <title>Siam Paragon - QRTour</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- #CSS Links -->
+    <!-- Basic Styles -->
+    <link href="~/Content/css/bootstrap.min.css" media="screen" rel="stylesheet" />
+    <link href="~/Content/css/font-awesome.min.css" media="screen" rel="stylesheet" />
+    <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+    <link rel="stylesheet" type="text/css" media="screen" href="~/Content/css/smartadmin-production-plugins.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="~/Content/css/smartadmin-production.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="~/Content/css/smartadmin-skins.min.css">
+
+    <!-- SmartAdmin RTL Support -->
+    <link rel="stylesheet" type="text/css" media="screen" href="~/Content/css/smartadmin-rtl.min.css">
+
+    <!-- We recommend you use "your_style.css" to override SmartAdmin
+         specific styles this will also ensure you retrain your customization with each SmartAdmin update.
+    <link rel="stylesheet" type="text/css" media="screen" href="css/your_style.css"> -->
+    <!-- Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp -->
+    <link rel="stylesheet" type="text/css" media="screen" href="~/Content/css/demo.min.css">
+
+    <!-- #FAVICONS -->
+    <link rel="shortcut icon" href="~/Content/img/favicon/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="~/Content/img/favicon/favicon.ico" type="image/x-icon">
+
+    <!-- #GOOGLE FONT -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
 </head>
-<body>
-    <div>
-        @Model.title is success
+<body class="animated fadeInDown">
+
+    <header id="header">
+
+        <div id="logo-group">
+            <span id="logo">
+                <img src="/Content/img/logospw.jpg" style="
+                    margin-top: -19px;
+                    margin-left: 107px;
+                ">
+            </span>
+        </div>
+    </header>
+
+    <div id="main" role="main">
+
+        <!-- MAIN CONTENT -->
+        <div id="content" class="container">
+
+            <div class="row">
+                <div class="alert alert-success fade in">
+                    <i class="fa-fw fa fa-check"></i>
+                    <strong>Success</strong>  @Model.title is success.
+                </div>
+            </div>
+        </div>
     </div>
+
+
+    <!--================================================== -->
+    <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
+    <script src="~/scripts/js/plugin/pace/pace.min.js"></script>
+
+    <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>if (!window.jQuery) { document.write('<script src="js/libs/jquery-3.2.1.min.js"><\/script>'); }</script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script>if (!window.jQuery.ui) { document.write('<script src="js/libs/jquery-ui.min.js"><\/script>'); }</script>
+
+    <!-- IMPORTANT: APP CONFIG -->
+    <script src="~/scripts/js/app.config.js"></script>
+
+    <!-- JS TOUCH : include this plugin for mobile drag / drop touch events
+    <script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> -->
+    <!-- BOOTSTRAP JS -->
+    <script src="~/scripts/js/bootstrap/bootstrap.min.js"></script>
+
+    <!-- JQUERY VALIDATE -->
+    <script src="~/scripts/js/plugin/jquery-validate/jquery.validate.min.js"></script>
+
+    <!-- JQUERY MASKED INPUT -->
+    <script src="~/scripts/js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+
+    <!--[if IE 8]>
+
+        <h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+
+    <![endif]-->
+    <!-- MAIN APP JS FILE -->
+    <script src="~/scripts/js/app.min.js"></script>
+
+    <script>
+        runAllForms();
+        //$(function () {
+        //    // Validation
+        //    $("#login-form").validate({
+        //        // Rules for form validation
+        //        rules: {
+        //            username: {
+        //                required: true,
+        //                //email : true
+        //            },
+        //            password: {
+        //                required: true,
+        //                minlength: 3,
+        //                maxlength: 20
+        //            }
+        //        },
+
+        //        // Messages for form validation
+        //        messages: {
+        //            username: {
+        //                required: 'Please enter your username',
+        //                //email : 'Please enter a VALID email address'
+        //            },
+        //            password: {
+        //                required: 'Please enter your password'
+        //            }
+        //        },
+
+        //        // Do not change code below
+        //        errorPlacement: function (error, element) {
+        //            error.insertAfter(element.parent());
+        //        }
+        //    });
+        //});
+
+        //$('[name="checkbox-toggle0"]').click(function () {
+        //    alert("test");
+        //})
+        //$('[id*="checkbox-toggle"]').each(function () {
+        //    var d = $(this).attr('id');
+        //    $(this).click(function () {
+        //        if ($(this).prop('checked') == true) {
+        //            var index = $(this).attr('id').replace('checkbox-toggle', '');
+        //            $('[name="answer_flag[' + index + ']"]').val('YES');
+        //        }
+        //    })
+        //})
+
+
+        //function initObj() {
+        //    var element = $('[id*="checkbox-toggle"]').length;
+        //    var objmodel = {};
+        //    var obj = {};
+        //    var listObj = [];
+        //    var location_id;
+        //    var question_id;
+        //    var answer_flag;
+        //    var answer_comment = $('[name="answer_text"]').val();
+        //    for (var i = 0; i < element; i++) {
+        //            location_id = ($('[name="location_id[' + i + ']"]').val()),
+        //            question_id = ($('[name="question_id[' + i + ']"]').val()),
+        //            answer_flag = ($('[name="answer_flag[' + i + ']"]').val()),
+        //            //answer_comment = $('[name="answer_text"]').val()
+        //        obj = {
+        //            location_id: location_id,
+        //            question_id: question_id,
+        //            answer_flag: answer_flag,
+        //           // answer_comment: answer_comment
+        //        };
+        //        listObj.push(obj);
+        //    }
+        //    //objmodel.push(listObj);
+        //    //objmodel.push(answer_comment);
+
+        //    objmodel = {
+        //        answerlist: listObj,
+        //        answer_text: answer_comment
+        //    }
+        //    //return listObj;
+        //    return objmodel;
+        //}
+
+
+        @*$('#submitSave').click(function () {
+            object = initObj();
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST",
+                url: '@Url.Action("SaveToAnwser", "CheckPoint")',
+                data: JSON.stringify({ model: object }),
+                success: function (xhr) {
+                    if (xhr != "success") {
+                        window.location = 'QuestionCheck?location=' + @Model[0].location_id;
+                        //$('#returnMsg').text(xhr.returnMsg);
+                        //$('#popUpResult').modal('show');
+                    }
+                    else
+                    {
+                       // CloseWindow();
+                        window.location = 'SuccessPage?location=' + @Model[0].location_id;
+                        //$('#returnMsg').text('Save successfully.');
+                        //$('#popUpResult').modal('show');
+                    }
+
+                },
+                error: function (xhr) {
+                }
+            })
+            return false;
+        })
+
+        function CloseWindow() {
+            var answer = confirm("Do you want to close this window ?");
+            if (answer) {
+
+                netscape.security.PrivilegeManager.enablePrivilege('UniversalBrowserWrite');
+                window.close();
+            }
+            else {
+                stop;
+            }
+        }*@
+    </script>
 </body>
 </html>
