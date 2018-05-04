@@ -15,14 +15,17 @@ namespace QRT.Service.Implement
     {
         #region Utility
         private readonly Imas_empRepository _emp;
+        private readonly Imas_companyRepository _comp;
         private readonly Imas_companyService _compservice;
         private readonly Imas_adminService _admin;
         public mas_empService(Imas_empRepository imas_emprepository
-            ,Imas_companyService imascompanyservice
+            , Imas_companyRepository imas_comprepository
+            , Imas_companyService imascompanyservice
             ,Imas_adminService imasadminservice
             )
         {
             _emp = imas_emprepository;
+            _comp = imas_comprepository;
             _compservice = imascompanyservice;
             _admin = imasadminservice;
         }
@@ -119,18 +122,22 @@ namespace QRT.Service.Implement
 
         public m_empViewModel GetById(long id,UserViewModel user)
         {
-            var data = _emp.Filter(c => c.emp_id == id).SingleOrDefault();
-            var admin = _admin.GetById(user);
+            var admin = _admin.GetById(user); 
+            var data = _emp.GetEmployeeById(id, admin.id).SingleOrDefault();
             m_empViewModel emp = new m_empViewModel();
-            emp.id = data.emp_id;
-            emp.title = data.emp_title;
-            emp.fname = data.emp_fname;
-            emp.sname = data.emp_surname;
-            emp.code = data.emp_code;
-            emp.comp = data.emp_comp;
-            emp.status = data.emp_active == "A" ? "On" : "Off";
-
-            emp.company = _compservice.GetCompanyByAdmin(admin.id);
+            if (data != null)
+            {
+                    emp.id = data.id;
+                    emp.title = data.title;
+                    emp.fname = data.fname;
+                    emp.sname = data.sname;
+                    emp.code = data.code;
+                    emp.comp = data.comp;
+                    emp.status = data.status == "Active" ? "On" : "Off";
+                    emp.company = _compservice.GetCompanyByAdmin(admin.id); ;
+                
+               
+            }
             return emp;
         }
 
@@ -183,9 +190,9 @@ namespace QRT.Service.Implement
                             oldData.emp_fname = model.fname;
                             oldData.emp_surname = model.sname;
                             oldData.emp_comp = model.comp;
-                            oldData.emp_code = model.comp_name + model.code;
+                            oldData.emp_code = model.code;
                             oldData.emp_password = model.password ?? oldData.emp_password;
-                            oldData.emp_active ="A";
+                            oldData.emp_active = model.status == "On" ? "A" : "D";
                             _emp.Update(oldData);
                         }
                         catch (Exception ex)

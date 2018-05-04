@@ -118,13 +118,17 @@ namespace QRT.Service.Implement
         {
             var data = _route.Filter(c => c.route_id == id && c.adminid_create == user.id).SingleOrDefault();
             m_routeViewModel route = new m_routeViewModel();
-            route.id = data.route_id;
-            route.title = data.route_title;
-            route.description = data.route_desc;
-            route.status = data.route_active == "A" ? "On" : "Off";
-            route.created_date = data.route_cdate;
-            route.created_by = data.adminid_create;
-            route.company = _compservice.GetCompany();
+            if (data != null)
+            {
+                route.id = data.route_id;
+                route.title = data.route_title;
+                route.description = data.route_desc;
+                route.status = data.route_active == "A" ? "On" : "Off";
+                route.created_date = data.route_cdate;
+                route.created_by = data.adminid_create;
+                route.company = _compservice.GetCompany();
+            }
+            
             return route;
         }
 

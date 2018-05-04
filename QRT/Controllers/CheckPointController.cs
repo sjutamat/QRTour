@@ -34,6 +34,8 @@ namespace QRT.Controllers
         public ActionResult Index(string location)
         {
             ViewBag.LID = location;
+            var dynamicObject = (dynamic)TempData["ErrorMessage"];
+            ViewBag.ErrorMessage = dynamicObject;
             return View();
         }
 
@@ -61,7 +63,11 @@ namespace QRT.Controllers
             }
             else
             {
+                TempData["ErrorMessage"] = "username/password ไม่ถูกต้อง";
                 return RedirectToAction("Index", new { location = vm.location_id});
+                //ViewBag.ErrorMessage = "username/password ไม่ถูกต้อง";
+                //ViewBag.
+                //return View("Index", vm.location_id);
             }
         }
         

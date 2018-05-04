@@ -82,9 +82,10 @@
                                         <tr>
                                             <th data-hide="phone">ID</th>
                                             <th data-class="expand"><i class="fa fa-fw fa-bullhorn text-muted hidden-md hidden-sm hidden-xs"></i> Title</th>
+                                            <th data-class="expand"><i class="fa fa-fw fa-bullhorn text-muted hidden-md hidden-sm hidden-xs"></i> Sequence Number</th>
                                             <th><i class="fa fa-fw fa-comments text-muted hidden-md hidden-sm hidden-xs"></i> Route</th>
                                             <th><i class="fa fa-fw fa-lightbulb-o text-muted hidden-md hidden-sm hidden-xs"></i>Status</th>
-                                            <th data-hide="phone"><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> Crearted Date</th>
+                                            <th data-hide="phone"><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> Created Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -93,18 +94,19 @@
                                         {
                                             for (int i = 0; i < Model.s_locationData.Count; i++)
                                             {
-                                                <tr>
-                                                    <td>@Model.s_locationData[i].id</td>
-                                                    <td>@Model.s_locationData[i].title</td>
-                                                    <td>@Model.s_locationData[i].route_name</td>
-                                                    <td>@Model.s_locationData[i].status</td>
-                                                    <td>@Model.s_locationData[i].created_date.Value.ToString("MM/dd/yyyy")</td>
-                                                    <td>
-                                                        <a href="\Location\Edit\?id=@Model.s_locationData[i].id" class="btn btn-defalt"><i class="fa fa-edit"></i></a>
-                                                        <a href="#" onclick="WarningAlert(@Model.s_locationData[i].id);" class="btn btn-defalt"><i class="fa fa-trash-o"></i></a>
-                                                        <a href="#" onclick="PopUpQuest(@Model.s_locationData[i].id,@Model.s_locationData[i].route_id);" class="btn btn-defalt"><i class="fa fa-list-alt"></i></a>
-                                                    </td>
-                                                </tr>
+                                        <tr>
+                                            <td>@Model.s_locationData[i].id</td>
+                                            <td>@Model.s_locationData[i].title</td>
+                                            <td>@Model.s_locationData[i].seq_number</td>
+                                            <td>@Model.s_locationData[i].route_name</td>
+                                            <td>@Model.s_locationData[i].status</td>
+                                            <td>@Model.s_locationData[i].created_date.Value.ToString("MM/dd/yyyy")</td>
+                                            <td>
+                                                <a href="\Location\Edit\?id=@Model.s_locationData[i].id" class="btn btn-defalt"><i class="fa fa-edit"></i></a>
+                                                <a href="#" onclick="WarningAlert(@Model.s_locationData[i].id);" class="btn btn-defalt"><i class="fa fa-trash-o"></i></a>
+                                                <a href="#" onclick="PopUpQuest(@Model.s_locationData[i].id,@Model.s_locationData[i].route_id);" class="btn btn-defalt"><i class="fa fa-list-alt"></i></a>
+                                            </td>
+                                        </tr>
                                             }
                                         }
 

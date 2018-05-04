@@ -25,116 +25,262 @@
                             <div class="widget-body">
                                 <form id="formSave" class="form-horizontal">
                                     <fieldset>
-                                        <legend>Add New Location</legend>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">ID</label>
-                                            <div class="col-md-8">
-                                                <label name="id" class="control-label">****</label>
-                                                <input type="hidden" name="id" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label" for="select-1">Route</label>
-                                            <div class="col-md-8">
-                                                <input type="hidden" name="route_id" />
-                                                <select class="form-control" id="Route" onchange="selectRoute(); return false;">
-                                                    <option value="">--Please select--</option>
-                                                    @if (Model.route != null)
-                                                    {
-                                                        for (int i = 0; i < Model.route.Count; i++)
-                                                        {
-                                                            <option value="@Model.route[i].id">@Model.route[i].text</option>
-                                                        }
-                                                    }
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Title</label>
-                                            <div class="col-md-8">
-                                                <input class="form-control" name="title" placeholder="Default Text Field" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Description</label>
-                                            <div class="col-md-8">
-                                                <input class="form-control" name="description" placeholder="Default Text Field" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Sequence</label>
-                                            <div class="col-md-8">
-                                                <input class="form-control" name="seq_number" placeholder="Default Text Field" type="number">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">QR Code 1</label>
-                                            <div class="col-md-6">
-                                                <input class="form-control" name="qrcode1" placeholder="Default Text Field" type="text" readonly>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <a title="Edit QRCode" class="btn btn-info" id="code1" onclick="getNewCode('code1'); return false;"><i class="fa fa-edit"></i></a>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="code1_status" class="checkbox style-0" value="Off" onchange="chkBoxChange(this); return false;" />
-                                                    <span>Active Code 1</span>
-                                                </label>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <a title="Generate QRCode" class="btn btn-info" id="genQrcode" onclick="GenQRCode('qrcode1'); return false;"><i class="fa fa-barcode"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">QR Code 2</label>
-                                            <div class="col-md-6">
-                                                <input class="form-control" name="qrcode2" placeholder="Default Text Field" type="text" readonly>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <a title="Edit QRCode" class="btn btn-info" id="code2" onclick="getNewCode('code2'); return false;"><i class="fa fa-edit"></i></a>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="code2_status" class="checkbox style-0" value="Off" onchange="chkBoxChange(this); return false;">
-                                                    <span>Active Code 2</span>
-                                                </label>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <a title="Generate QRCode" class="btn btn-info" id="genQrcode" onclick="GenQRCode('qrcode2'); return false;"><i class="fa fa-barcode"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Status</label>
-                                            <div class="col-md-7">
-                                                <label class="radio radio-inline">
-                                                    <input type="radio" id="statusOn" class="radiobox" checked value="On" name="status">
-                                                    <span>Active</span>
-                                                </label>
-                                                <label class="radio radio-inline">
-                                                    <input type="radio" id="statusOff" class="radiobox" value="Off" name="status">
-                                                    <span>Deactive</span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div id="qrcodeImg" class="col-sm-12" style="text-align:center;">
+                                        @if (Model.id != 0 && Model.title != null)
+    {
+        if (Model.id != null && Model.id == 0)
+        {
+                                    <legend>Add New Location</legend>
+}
+else
+{
+                                    <legend>Edit Location</legend>
+}
 
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">ID</label>
+                                        <div class="col-md-8">
+                                            <label name="id" class="control-label">****</label>
+                                            <input type="hidden" name="id" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="select-1">Route</label>
+                                        <div class="col-md-8">
+                                            <input type="hidden" name="route_id" />
+                                            <select class="form-control" id="Route" onchange="selectRoute(); return false;">
+                                                <option value="">--Please select--</option>
+                                                @if (Model.route != null)
+            {
+                for (int i = 0; i < Model.route.Count; i++)
+                {
+                                    <option value="@Model.route[i].id">@Model.route[i].text</option>
+}
+}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Title</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="title" placeholder="Default Text Field" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Description</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="description" placeholder="Default Text Field" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Sequence</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="seq_number" placeholder="Default Text Field" type="number">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">QR Code 1</label>
+                                        <div class="col-md-6">
+                                            <input class="form-control" name="qrcode1" placeholder="Default Text Field" type="text" readonly>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a title="Edit QRCode" class="btn btn-info" id="code1" onclick="getNewCode('code1'); return false;"><i class="fa fa-edit"></i></a>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="code1_status" class="checkbox style-0" value="Off" onchange="chkBoxChange(this); return false;" />
+                                                <span>Active Code 1</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a title="Generate QRCode" class="btn btn-info" id="genQrcode" onclick="GenQRCode('qrcode1'); return false;"><i class="fa fa-barcode"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">QR Code 2</label>
+                                        <div class="col-md-6">
+                                            <input class="form-control" name="qrcode2" placeholder="Default Text Field" type="text" readonly>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a title="Edit QRCode" class="btn btn-info" id="code2" onclick="getNewCode('code2'); return false;"><i class="fa fa-edit"></i></a>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="code2_status" class="checkbox style-0" value="Off" onchange="chkBoxChange(this); return false;">
+                                                <span>Active Code 2</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a title="Generate QRCode" class="btn btn-info" id="genQrcode" onclick="GenQRCode('qrcode2'); return false;"><i class="fa fa-barcode"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Status</label>
+                                        <div class="col-md-7">
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="statusOn" class="radiobox" checked value="On" name="status">
+                                                <span>Active</span>
+                                            </label>
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="statusOff" class="radiobox" value="Off" name="status">
+                                                <span>Deactive</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div id="qrcodeImg" class="col-sm-12" style="text-align:center;">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <a href="\Location\Index" class="btn btn-default">
+                                                    Cancel
+                                                </a>
+                                                <a class="btn btn-success" id="submit">
+                                                    <i class="fa fa-save"></i>
+                                                    Submit
+                                                </a>
                                             </div>
                                         </div>
-                                        
-                                        <div class="form-actions">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <a href="\Location\Index" class="btn btn-default">
-                                                        Cancel
-                                                    </a>
-                                                    <a class="btn btn-success" id="submit">
-                                                        <i class="fa fa-save"></i>
-                                                        Submit
-                                                    </a>
-                                                </div>
+                                    </div>
+}
+else if (Model.id == 0 && Model.title == null)
+{
+if (Model.id != null && Model.id == 0)
+{
+                                    <legend>Add New Location</legend>
+}
+else
+{
+                                    <legend>Edit Location</legend>
+}
+
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">ID</label>
+                                        <div class="col-md-8">
+                                            <label name="id" class="control-label">****</label>
+                                            <input type="hidden" name="id" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="select-1">Route</label>
+                                        <div class="col-md-8">
+                                            <input type="hidden" name="route_id" />
+                                            <select class="form-control" id="Route" onchange="selectRoute(); return false;">
+                                                <option value="">--Please select--</option>
+                                                @if (Model.route != null)
+            {
+                for (int i = 0; i < Model.route.Count; i++)
+                {
+                                    <option value="@Model.route[i].id">@Model.route[i].text</option>
+}
+}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Title</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="title" placeholder="Default Text Field" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Description</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="description" placeholder="Default Text Field" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Sequence</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="seq_number" placeholder="Default Text Field" type="number">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">QR Code 1</label>
+                                        <div class="col-md-6">
+                                            <input class="form-control" name="qrcode1" placeholder="Default Text Field" type="text" readonly>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a title="Edit QRCode" class="btn btn-info" id="code1" onclick="getNewCode('code1'); return false;"><i class="fa fa-edit"></i></a>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="code1_status" class="checkbox style-0" value="Off" onchange="chkBoxChange(this); return false;" />
+                                                <span>Active Code 1</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a title="Generate QRCode" class="btn btn-info" id="genQrcode" onclick="GenQRCode('qrcode1'); return false;"><i class="fa fa-barcode"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">QR Code 2</label>
+                                        <div class="col-md-6">
+                                            <input class="form-control" name="qrcode2" placeholder="Default Text Field" type="text" readonly>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a title="Edit QRCode" class="btn btn-info" id="code2" onclick="getNewCode('code2'); return false;"><i class="fa fa-edit"></i></a>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="code2_status" class="checkbox style-0" value="Off" onchange="chkBoxChange(this); return false;">
+                                                <span>Active Code 2</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a title="Generate QRCode" class="btn btn-info" id="genQrcode" onclick="GenQRCode('qrcode2'); return false;"><i class="fa fa-barcode"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Status</label>
+                                        <div class="col-md-7">
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="statusOn" class="radiobox" checked value="On" name="status">
+                                                <span>Active</span>
+                                            </label>
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="statusOff" class="radiobox" value="Off" name="status">
+                                                <span>Deactive</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div id="qrcodeImg" class="col-sm-12" style="text-align:center;">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <a href="\Location\Index" class="btn btn-default">
+                                                    Cancel
+                                                </a>
+                                                <a class="btn btn-success" id="submit">
+                                                    <i class="fa fa-save"></i>
+                                                    Submit
+                                                </a>
                                             </div>
                                         </div>
+                                    </div>
+}
+else
+{
+                                    <div class="row">
+                                        <div class="alert alert-warning fade in">
+                                            <i class="fa-fw fa fa-warning"></i>
+                                            <strong>Warning</strong>  ไม่สามารถเข้าถึงข้อมูลได้.
+                                        </div>
+                                        <div class="col-md-12">
+                                            <a href="\Location\Index" class="btn btn-default">
+                                                Back
+                                            </a>
+                                        </div>
+                                    </div>
+}
                                     </fieldset>
                                 </form>
                             </div>

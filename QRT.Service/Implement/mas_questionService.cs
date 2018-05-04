@@ -111,16 +111,20 @@ namespace QRT.Service.Implement
 
         public m_questionViewModel GetById(long id, UserViewModel user)
         {
-            var data = _question.Filter(c => c.question_id == id, inc => inc.mas_route).SingleOrDefault();
+            var data = _question.Filter(c => c.question_id == id && c.adminid_create == user.id, inc => inc.mas_route).SingleOrDefault();
             m_questionViewModel quest = new m_questionViewModel();
-            quest.id = data.question_id;
-            quest.title = data.question_title;
-            quest.route_id = data.route_id;
-            quest.description = data.question_desc;
-            quest.status = data.question_active == "A" ? "On" : "Off";
-            quest.created_date = data.question_cdate;
-            quest.created_by = data.adminid_create;
-            quest.route = _routeservice.GetRouteItem(user);
+            if (data != null)
+            {
+                quest.id = data.question_id;
+                quest.title = data.question_title;
+                quest.route_id = data.route_id;
+                quest.description = data.question_desc;
+                quest.status = data.question_active == "A" ? "On" : "Off";
+                quest.created_date = data.question_cdate;
+                quest.created_by = data.adminid_create;
+                quest.route = _routeservice.GetRouteItem(user);
+            }
+            
             return quest;
         }
 

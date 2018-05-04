@@ -36,24 +36,12 @@
             $('[title!="blank_"]').parent().removeClass('active')
             pageSetUp();
             var url = '@QRT.helper.AppSetting.qr_extend';
-
-            @*$.get(url + "/qr_extend/authen.php?admin_user="+ '@(ViewBag.AdminName)' , function (data) {
-                $(".result").html(data);
-                alert("Load was performed.");
-
-            });*@
-
             $.ajax({
+                url: "http://10.10.2.13:18031/qr_extend/authen.php?admin_user=" + "@(ViewBag.AdminName)",
                 type: 'GET',
-                url: url + '/qr_extend/authen.php?admin_user='+ '@(ViewBag.AdminName)',
-                dataType: 'text/html',
-                success: function () {
-                    alert("Success");
+                success: function (data) {
                     window.location.href = "/Home/Index/";
-                },
-                error: function () {
-                    alert("Error" + "@(ViewBag.AdminName)");
-                },
+                }
             });
         });
     </script>

@@ -1,4 +1,5 @@
 ﻿using Op3ration.ExceptionHandler;
+using QRT.DB;
 using QRT.Domain.Interface.Repository;
 using QRT.Domain.Interface.Service;
 using QRT.Domain.ViewModel;
@@ -50,7 +51,7 @@ namespace QRT.Service.Implement
         public List<comp_item> GetCompanyByAdmin(long adminId)
         {
             List<comp_item> itemComp = new List<comp_item>();
-            var compData = _comp.Filter(c=>c.admin_id == adminId).ToList();
+            var compData = _comp.Filter(c => c.admin_id == adminId).ToList();
             if (compData != null)
             {
                 foreach (var item in compData)
@@ -65,6 +66,7 @@ namespace QRT.Service.Implement
             return itemComp;
         }
 
+
         public comp_item GetById(long id)
         {
             var compData = _comp.Filter(c => c.comp_id == id).SingleOrDefault();
@@ -77,5 +79,175 @@ namespace QRT.Service.Implement
             }
             return cmodel;
         }
+
+
+        public m_companyViewModel GetAllCompany(UserViewModel user)
+        {
+            m_companyViewModel model = new m_companyViewModel();
+            var data = _comp.Filter(c => c.admin_id == user.id).ToList();
+            if (data != null)
+            {
+                var company = data.Select(x => new Comp_data()
+                {
+                    id = x.comp_id,
+                    title = x.comp_name,
+                    description = x.comp_desc,
+                    flag_internal = x.flag_internal == true ? "Yes" : "No",
+                    admin_id = x.admin_id
+                }).OrderByDescending(o => o.id).ToList();
+
+                model.s_comp = new SearchComp();
+                model.s_compData = company;
+                return model;
+            }
+            else
+            {
+                model.s_compData = new List<Comp_data>();
+                return model;
+            }
+        }
+
+
+        public m_companyViewModel GetFilterCompany(m_companyViewModel model, UserViewModel user)
+        {
+            List<mas_company> data = new List<mas_company>();
+            if (model.s_comp != null)
+            {
+                var id = (model.s_comp.id == null) ? 0 : Convert.ToInt32(model.s_comp.id);
+                var title = model.s_comp.title;
+
+                data = _comp.Filter(c => c.admin_id == user.id).ToList();
+
+                if (id != 0 && model.s_comp.title == null)
+                {
+                    data = data.Where(c => c.comp_id == id).ToList();
+                }
+                else if (id == 0 && model.s_comp.title != null)
+                {
+                    data = data.Where(c => c.comp_name.Contains(model.s_comp.title)).ToList();
+                }
+                else /* (id != 0 && model.s_comp.title != null)*/
+                {
+                    data = data.Where(c => c.comp_name.Contains(model.s_comp.title) && c.comp_id == id).ToList();
+                }
+            }
+            else
+            {
+                data = _comp.Filter(c => c.admin_id == user.id).ToList();
+            }
+                
+
+
+                //var data = _comp.Filter(c => c.admin_id == user.id).ToList();
+                if (data != null)
+                {
+                    var company = data.Select(x => new Comp_data()
+                    {
+                        id = x.comp_id,
+                        title = x.comp_name,
+                        description = x.comp_desc,
+                        flag_internal = x.flag_internal == true ? "Yes" : "No",
+                        admin_id = x.admin_id
+                    }).OrderByDescending(o => o.id).ToList();
+
+                    model.s_comp = new SearchComp();
+                    model.s_compData = company;
+                    return model;
+                }
+                else
+                {
+                    model.s_compData = new List<Comp_data>();
+                    return model;
+                }
+            
+            
+        }
+
+
+
+        public void Save(m_companyViewModel model, UserViewModel user)
+        {
+            if (model.id == 0)
+            {
+                try
+                {
+                    mas_company comp = new mas_company();
+                    comp.comp_name = model.title;
+                    comp.comp_desc = model.description;
+                    comp.flag_internal = model.flag_internal == "On" ? true : false;
+                    comp.admin_id = user.id;
+                    _comp.Create(comp);
+                }
+                catch (Exception ex)
+                {
+                    if (ex.IsValidateHandler())
+                        throw ex.ToValidateHandler();
+                    throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
+                }
+
+            }
+            else
+            {
+                var oldData = _comp.Filter(c => c.comp_id == model.id).SingleOrDefault();
+                if (oldData != null)
+                {
+                    try
+                    {
+                        oldData.comp_name = model.title;
+                        oldData.comp_desc = model.description;
+                        oldData.flag_internal = model.flag_internal == "On" ? true : false;
+                        oldData.admin_id = user.id;
+                        _comp.Update(oldData);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.IsValidateHandler())
+                            throw ex.ToValidateHandler();
+                        throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
+                    }
+
+                }
+
+            }
+        }
+
+
+
+        public m_companyViewModel GetCompanyById(long id, UserViewModel user)
+        {
+            var data = _comp.Filter(c => c.comp_id == id && c.admin_id == user.id).SingleOrDefault();
+            m_companyViewModel comp = new m_companyViewModel();
+            if (data != null)
+            {
+                comp.id = data.comp_id;
+                comp.title = data.comp_name;
+                comp.description = data.comp_desc;
+                comp.flag_internal = data.flag_internal == true ? "On" : "Off";
+                comp.admin_id = data.admin_id;
+            }
+
+            return comp;
+        }
+
+
+        public void UpdateStatus(long id, UserViewModel user)
+        {
+            var oldData = _comp.Filter(c => c.comp_id == id).SingleOrDefault();
+            try
+            {
+                //oldData.route_active = "D";
+                //oldData.route_udate = DateTime.Now;
+                //oldData.adminid_update = user.id;
+                //_route.Update(oldData);
+                _comp.Delete(oldData);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }
+

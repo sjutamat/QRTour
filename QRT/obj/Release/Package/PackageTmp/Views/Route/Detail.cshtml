@@ -25,68 +25,133 @@
                             <div class="widget-body">
                                 <form id="formSave" class="form-horizontal">
                                     <fieldset>
+                                        @if (Model.id != 0 && Model.title != null)
+                                        {
+                                        if (Model.id != null && Model.id == 0)
+                                        {
                                         <legend>Add New Route</legend>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">ID</label>
-                                            <div class="col-md-8">
-                                                <label name="id" class="control-label">****</label>
-                                                <input type="hidden" name="id" />
+                                        }
+                                        else
+                                        {
+                                        <legend>Edit Route</legend>
+                                        }
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">ID</label>
+                                        <div class="col-md-8">
+                                            <label name="id" class="control-label">****</label>
+                                            <input type="hidden" name="id" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Title</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="title" placeholder="Default Text Field" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Description</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="description" placeholder="Default Text Field" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Status</label>
+                                        <div class="col-md-8">
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="statusOn" class="radiobox" checked value="On" name="status">
+                                                <span>Active</span>
+                                            </label>
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="statusOff" class="radiobox" value="Off" name="status">
+                                                <span>Deactive</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <a href="\Route\Index" class="btn btn-default">
+                                                    Cancel
+                                                </a>
+                                                <a class="btn btn-success" id="submit">
+                                                    <i class="fa fa-save"></i>
+                                                    Submit
+                                                </a>
                                             </div>
                                         </div>
-                                        @*<div class="form-group">
-                                            <label class="col-md-2 control-label" for="select-1">Company</label>
-                                            <div class="col-md-8">
-                                                <input type="hidden" name="comp_id" />
-                                                <select class="form-control" id="Company" onchange="selectCompany(); return false;">
-                                                    <option value="">--Please select--</option>
-                                                    @if (Model.company != null)
-                                                    {
-                                                        for (int i = 0; i < Model.company.Count; i++)
-                                                        {
-                                                         <option value="@Model.company[i].id">@Model.company[i].text</option>
-                                                        }
-                                                    }
-                                                </select>
-                                            </div>
-                                        </div>*@
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Title</label>
-                                            <div class="col-md-8">
-                                                <input class="form-control" name="title" placeholder="Default Text Field" type="text">
+                                    </div>
+                                    }
+                                    else if (Model.id == 0 && Model.title == null)
+                                    {
+                                    if (Model.id != null && Model.id == 0)
+                                    {
+                                    <legend>Add New Route</legend>
+                                    }
+                                    else
+                                    {
+                                    <legend>Edit Route</legend>
+                                    }
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">ID</label>
+                                        <div class="col-md-8">
+                                            <label name="id" class="control-label">****</label>
+                                            <input type="hidden" name="id" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Title</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="title" placeholder="Default Text Field" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Description</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="description" placeholder="Default Text Field" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Status</label>
+                                        <div class="col-md-8">
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="statusOn" class="radiobox" checked value="On" name="status">
+                                                <span>Active</span>
+                                            </label>
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="statusOff" class="radiobox" value="Off" name="status">
+                                                <span>Deactive</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <a href="\Route\Index" class="btn btn-default">
+                                                    Cancel
+                                                </a>
+                                                <a class="btn btn-success" id="submit">
+                                                    <i class="fa fa-save"></i>
+                                                    Submit
+                                                </a>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Description</label>
-                                            <div class="col-md-8">
-                                                <input class="form-control" name="description" placeholder="Default Text Field" type="text">
-                                            </div>
+                                    </div>
+}
+else
+{
+                                    <div class="row">
+                                        <div class="alert alert-warning fade in">
+                                            <i class="fa-fw fa fa-warning"></i>
+                                            <strong>Warning</strong>  ไม่สามารถเข้าถึงข้อมูลได้.
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Status</label>
-                                            <div class="col-md-8">
-                                                <label class="radio radio-inline">
-                                                    <input type="radio" id="statusOn" class="radiobox" checked value="On" name="status">
-                                                    <span>Active</span>
-                                                </label>
-                                                <label class="radio radio-inline">
-                                                    <input type="radio" id="statusOff" class="radiobox" value="Off" name="status">
-                                                    <span>Deactive</span>
-                                                </label>
-                                            </div>
+                                        <div class="col-md-12">
+                                            <a href="\Route\Index" class="btn btn-default">
+                                                Back
+                                            </a>
                                         </div>
-                                        <div class="form-actions">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <a href="\Route\Index" class="btn btn-default">
-                                                        Cancel
-                                                    </a>
-                                                    <a class="btn btn-success" id="submit">
-                                                        <i class="fa fa-save"></i>
-                                                        Submit
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    </div>
+}
+
                                     </fieldset>
                                 </form>
                             </div>

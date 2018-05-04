@@ -1,4 +1,4 @@
-﻿@model QRT.Domain.ViewModel.m_questionViewModel
+﻿@model QRT.Domain.ViewModel.m_companyViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,13 +7,13 @@
     <div id="ribbon">
         <ol class="breadcrumb">
             <li>Home</li>
-            <li>Question</li>
+            <li>Route</li>
         </ol>
     </div>
     <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
         <h1 class="page-title txt-color-blueDark">
             <i class="fa-fw fa fa-home"></i>
-            Question
+            Company
         </h1>
     </div>
 
@@ -21,38 +21,23 @@
         <section id="widget-grid" class="">
             <div class="col-xs-12 col-sm-7 col-md-7 col-lg-8">
                 <span class="ribbon-button-alignment pull-right" style="margin-right:25px">
-                    <a href="\Question\Add" id="add" class="btn btn-success" data-title="add"><i class="fa fa-plus"></i> Add</a>
+                    <a href="\Company\Add" id="add" class="btn btn-success" data-title="add"><i class="fa fa-plus"></i> Add</a>
                 </span>
             </div>
             <div class="row">
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="">
-                        <form class="form-horizontal" style="margin-bottom:20px;" action="\Question\Index" method="post">
+                        <form class="form-horizontal" style="margin-bottom:20px;" action="\Company\Index" method="post">
                             <div class="form-group">
                                 <label class="col-md-4 control-label">ID</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" name="s_question.id" placeholder="Enter ID" type="text" value="@Model.s_question.id">
+                                    <input class="form-control" name="s_comp.id" placeholder="Enter ID" type="text" value="@Model.s_comp.id">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Title</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" name="s_question.title" placeholder="Enter Title" type="text" value="@Model.s_question.title">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">Route</label>
-                                <div class="col-md-4">
-                                    <select class="form-control" name="s_question.route" type="text">
-                                        <option value="0">Please select</option>
-                                        @if (Model.route != null)
-                                        {
-                                            for (int i = 0; i < Model.route.Count; i++)
-                                            {
-                                                <option value="@Model.route[i].id">@Model.route[i].text</option>
-                                            }
-                                        }
-                                    </select>
+                                    <input class="form-control" name="s_comp.title" placeholder="Enter Title" type="text" value="@Model.s_comp.title">
                                 </div>
                             </div>
                             <div class="row">
@@ -66,6 +51,7 @@
                         </form>
                     </div>
                 </article>
+
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
                         <header>
@@ -82,30 +68,28 @@
                                         <tr>
                                             <th data-hide="phone">ID</th>
                                             <th data-class="expand"><i class="fa fa-fw fa-bullhorn text-muted hidden-md hidden-sm hidden-xs"></i> Title</th>
-                                            <th data-hide="phone"><i class="fa fa-fw fa-comments text-muted hidden-md hidden-sm hidden-xs"></i> Route</th>
-                                            <th><i class="fa fa-fw fa-lightbulb-o text-muted hidden-md hidden-sm hidden-xs"></i>Status</th>
-                                            <th data-hide="phone"><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> Created Date</th>
+                                            <th data-hide="phone"><i class="fa fa-fw fa-comments text-muted hidden-md hidden-sm hidden-xs"></i> Description</th>
+                                            <th><i class="fa fa-fw fa-lightbulb-o text-muted hidden-md hidden-sm hidden-xs"></i>Internal Company</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (Model.s_questionData != null && Model.s_questionData.Any())
-                            {
-                                for (int i = 0; i < Model.s_questionData.Count; i++)
-                                {
-                                    <tr>
-                                        <td>@Model.s_questionData[i].id</td>
-                                        <td>@Model.s_questionData[i].title</td>
-                                        <td>@Model.s_questionData[i].route_name</td>
-                                        <td>@Model.s_questionData[i].status</td>
-                                        <td>@Model.s_questionData[i].created_date.Value.ToString("MM/dd/yyyy")</td>
-                                        <td>
-                                            <a href="\Question\Edit\?id=@Model.s_questionData[i].id" class="btn btn-defalt"><i class="fa fa-edit"></i></a>
-                                            <a href="#" onclick="WarningAlert(@Model.s_questionData[i].id);" class="btn btn-defalt"><i class="fa fa-trash-o"></i></a>
-                                        </td>
-                                    </tr>
-                    }
-                }
+                                        @if (Model.s_compData != null && Model.s_compData.Any())
+                                        {
+                                            for (int i = 0; i < Model.s_compData.Count; i++)
+                                            {
+                                        <tr>
+                                            <td>@Model.s_compData[i].id</td>
+                                            <td>@Model.s_compData[i].title</td>
+                                            <td>@Model.s_compData[i].description</td>
+                                            <td>@Model.s_compData[i].flag_internal</td>
+                                            <td>
+                                                <a href="\Company\Edit\?id=@Model.s_compData[i].id" class="btn btn-defalt"><i class="fa fa-edit"></i></a>
+                                                <a href="#" onclick="WarningAlert(@Model.s_compData[i].id);" class="btn btn-defalt"><i class="fa fa-trash-o"></i></a>
+                                            </td>
+                                        </tr>
+                                            }
+                                        }
 
                                     </tbody>
                                 </table>
@@ -129,7 +113,7 @@
                 <p id="returnMsg"></p>
             </div>
             <div class="modal-footer">
-                <a href="\Question\Index" class="btn btn-primary">Close</a>
+                <a href="\Company\Index" class="btn btn-primary">Close</a>
             </div>
         </div>
     </div>
@@ -189,11 +173,19 @@
             });
 
 
-            $('[name="s_question.route"]').val(@Model.s_question.route);
+
+
         });
 
-        $('[title="question_"]').parent().addClass('active')
-        $('[title!="question_"]').parent().removeClass('active')
+        $('[title="company_"]').parent().addClass('active');
+        $('[title!="company_"]').parent().removeClass('active');
+
+     @*if (@Model.s_route.id != 0)
+         $('[name="s_route.id"]').val(@Model.s_route.id);
+
+     if (@Model.s_route.title != null)
+        $('[name="s_route.title"]').val(@Model.s_route.title);*@
+
 
         $('#ok').on('click', function () {
             var id = $('#ok').attr('data');
@@ -207,11 +199,11 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 type: "GET",
-                url: '@Url.Action("Delete", "Question")',
+                url: '@Url.Action("Delete", "Company")',
                 data: { "id": id },
                 success: function (data) {
                     if (!data.Success) {
-                        $('#returnMsg').text('Question is deactive.');
+                        $('#returnMsg').text('Delete succeccfully.');
                         $('#popUpResult').modal('show');
                     }
                     else {
@@ -229,7 +221,7 @@
 
 
         function WarningAlert(id) {
-            $('#warningMsg').text('Are you want to deactive this question?');
+            $('#warningMsg').text('Are you want to deactive this company?');
             $('#popUpWarning').modal('show');
             $('#ok').attr('data', id);
         }

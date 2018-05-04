@@ -150,22 +150,26 @@ namespace QRT.Service.Implement
 
         public m_locationViewModel GetById(long id, UserViewModel user)
         {
-            var data = _location.Filter(c => c.location_id == id).SingleOrDefault();
+            var data = _location.Filter(c => c.location_id == id && c.adminid_create == user.id).SingleOrDefault();
             m_locationViewModel location = new m_locationViewModel();
-            location.id = data.location_id;
-            location.route_id = data.route_id;
-            location.title = data.location_title;
-            location.description = data.location_desc;
-            location.status = data.location_active == "A" ? "On" : "Off";
-            location.seq_number = data.seq_number;
-            location.qrcode1 = data.qrcode1;
-            location.qrcode2 = data.qrcode2;
-            location.code1_status = data.qrcode1_status == "A" ? "On" : "Off";
-            location.code2_status = data.qrcode2_status == "A" ? "On" : "Off";
+            if (data != null)
+            {
+                location.id = data.location_id;
+                location.route_id = data.route_id;
+                location.title = data.location_title;
+                location.description = data.location_desc;
+                location.status = data.location_active == "A" ? "On" : "Off";
+                location.seq_number = data.seq_number;
+                location.qrcode1 = data.qrcode1;
+                location.qrcode2 = data.qrcode2;
+                location.code1_status = data.qrcode1_status == "A" ? "On" : "Off";
+                location.code2_status = data.qrcode2_status == "A" ? "On" : "Off";
 
-            location.created_date = data.location_cdate;
-            location.created_by = data.adminid_create;
-            location.route = _routeservice.GetRouteItem(user);
+                location.created_date = data.location_cdate;
+                location.created_by = data.adminid_create;
+                location.route = _routeservice.GetRouteItem(user);
+            }
+            
 
             return location;
         }
@@ -347,7 +351,7 @@ namespace QRT.Service.Implement
                     }
                     else 
                     {
-                        ls = "ไม่สามารถสแกนจุดนี้ได้ เนื่องจากจุดนี้อาจถูกสแกนแล้ว หรือ คุณข้ามการสแกนจุดก่อนหน้า. สถานที่ล่าสุดที่คุณสแกนคือ " + sequent.location_title;
+                        ls = "ไม่สามารถสแกนจุดนี้ได้ เนื่องจากจุดนี้อาจถูกสแกนแล้ว หรือ คุณข้ามการสแกนจุดก่อนหน้า. สถานที่ล่าสุดที่คุณสแกนคือ " + sequent.seq_number + "." + sequent.location_title;
                         return ls;
                     }
                 }
@@ -365,7 +369,7 @@ namespace QRT.Service.Implement
                 }
                 else
                 {
-                    ls = "ไม่สามารถสแกนจุดนี้ได้ เนื่องจากจุดนี้อาจถูกสแกนแล้ว หรือ คุณข้ามการสแกนจุดก่อนหน้า.";
+                    ls = "ไม่สามารถสแกนจุดนี้ได้ เนื่องจากจุดนี้อาจถูกสแกนแล้ว, ท่านข้ามการสแกนจุดก่อนหน้า หรือ จุดที่คุณกำลังสแกนอยู่นอก Route ที่คุณรับผิดชอบ";
                     return ls;
                 }
 

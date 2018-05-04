@@ -108,7 +108,7 @@ namespace QRT.Service.Implement
         {
             var route = model.s_dashboard.route !="" ? Convert.ToInt32(model.s_dashboard.route) : 0;
             var startDate = !String.IsNullOrEmpty(model.s_dashboard.date_start) ? DateTime.ParseExact(model.s_dashboard.date_start, "dd/MM/yyyy", null) : DateTime.Now;
-            var endDate = !String.IsNullOrEmpty(model.s_dashboard.date_end) ? DateTime.ParseExact(model.s_dashboard.date_end, "dd/MM/yyyy", null) : DateTime.Now.AddDays(1).Date;
+            var endDate = !String.IsNullOrEmpty(model.s_dashboard.date_end) ? DateTime.ParseExact(model.s_dashboard.date_end, "dd/MM/yyyy", null).AddDays(1).Date : DateTime.Now.AddDays(1).Date;
             
             if (startDate == endDate)
             {
