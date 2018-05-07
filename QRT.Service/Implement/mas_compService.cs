@@ -122,13 +122,17 @@ namespace QRT.Service.Implement
                 {
                     data = data.Where(c => c.comp_id == id).ToList();
                 }
-                else if (id == 0 && model.s_comp.title != null)
+
+
+                if (id == 0 && model.s_comp.title != null)
                 {
-                    data = data.Where(c => c.comp_name.Contains(model.s_comp.title)).ToList();
+                    data = data.Where(c => c.comp_name.ToUpper().Contains(model.s_comp.title.ToUpper())).ToList();
                 }
-                else /* (id != 0 && model.s_comp.title != null)*/
+
+
+                if(model.s_comp.title != null && id != 0) /* (id != 0 && model.s_comp.title != null)*/
                 {
-                    data = data.Where(c => c.comp_name.Contains(model.s_comp.title) && c.comp_id == id).ToList();
+                    data = data.Where(c => c.comp_name.ToUpper().Contains(model.s_comp.title.ToUpper()) && c.comp_id == id).ToList();
                 }
             }
             else
@@ -150,7 +154,7 @@ namespace QRT.Service.Implement
                         admin_id = x.admin_id
                     }).OrderByDescending(o => o.id).ToList();
 
-                    model.s_comp = new SearchComp();
+                    //model.s_comp = new SearchComp();
                     model.s_compData = company;
                     return model;
                 }

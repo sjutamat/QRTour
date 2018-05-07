@@ -57,16 +57,20 @@ namespace QRT.Service.Implement
             var name = model.s_emp.name;
             var fname = string.Empty;
             var lname = string.Empty;
-            string[] words = name.Split(' ');
-            if (words.Count() > 1 && words.Any())
+            if (name != null)
             {
-                fname = words[0];
-                lname = words[1];
+                string[] words = name.Split(' ');
+                if (words.Count() > 1 && words.Any())
+                {
+                    fname = words[0];
+                    lname = words[1];
+                }
+                else
+                {
+                    fname = words[0];
+                }
             }
-            else
-            {
-                fname = words[0];
-            }
+            
 
             var code = model.s_emp.code;
             var comp = Convert.ToInt32(model.s_emp.comp);

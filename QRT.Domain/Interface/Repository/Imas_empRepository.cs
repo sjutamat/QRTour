@@ -11,6 +11,7 @@ namespace QRT.Domain.Interface.Repository
     public interface Imas_empRepository:IRepositoryBase<mas_emp>
     {
         List<EmpData> GetEmployeeByAdminId(long admin_id);
+        IQueryable<EmpData> GetEmployeeById(long id, long admin_id);
     }
 
   

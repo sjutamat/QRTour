@@ -34,5 +34,26 @@ namespace QRT.DAL.Implement
             var data = empQuery.ToList();
             return data;
         }
+
+
+        public IQueryable<EmpData> GetEmployeeById(long id, long admin_id)
+        {
+            var empQuery = from c in _dbContext.mas_company
+                           join e in _dbContext.mas_emp on c.comp_id equals e.emp_comp
+                           where c.admin_id == admin_id && e.emp_id == id
+                           select new EmpData
+                           {
+                               id = e.emp_id,
+                               title = e.emp_title,
+                               fname = e.emp_fname,
+                               sname =  e.emp_surname,
+                               code = e.emp_code,
+                               comp = e.emp_comp,
+                               comp_name = e.mas_company.comp_name,
+                               status = e.emp_active == "A" ? "Active" : "Deactive",
+                           };
+            var data = empQuery;
+            return data;
+        }
     }
 }

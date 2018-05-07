@@ -148,7 +148,7 @@ namespace QRT.Controllers
             }
             else
             {
-                return RedirectToAction("Index", new { location = location });
+                return RedirectToAction("Alert");
             }
         }
         
@@ -189,6 +189,17 @@ namespace QRT.Controllers
         {
             ViewBag.CrossRoute = "ไม่สามารถสแกนจุดที่อยู่นอกเส้นทางของท่านได้ กรุณาตรวจสอบเส้นทางของท่าน และสแกนใหม่ให้ถูกต้อง";
             return View();
+        }
+
+
+       /// <summary>
+       /// not have any question for the location.
+       /// </summary>
+       /// <returns></returns>
+        public ActionResult Alert()
+        {
+            ViewBag.CrossRoute = "ไม่พบคำถาม โปรดติดต่อ admin ของท่าน";
+            return View("CrossRoute");
         }
     }
 }
