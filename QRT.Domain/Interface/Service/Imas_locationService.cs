@@ -24,5 +24,6 @@ namespace QRT.Domain.Interface.Service
         bool ChkSequentNumber(string locationId);
         string ChkOverSequentNumber(string locationId, EmpData emp);
         mas_location GetLocationByCode(string code);
+        bool ChkQRCodeActive(string locationId);
     }
 }

@@ -70,6 +70,7 @@
                                             <th data-class="expand"><i class="fa fa-fw fa-bullhorn text-muted hidden-md hidden-sm hidden-xs"></i> Title</th>
                                             <th data-hide="phone"><i class="fa fa-fw fa-comments text-muted hidden-md hidden-sm hidden-xs"></i> Description</th>
                                             <th><i class="fa fa-fw fa-lightbulb-o text-muted hidden-md hidden-sm hidden-xs"></i>Internal Company</th>
+                                            <th><i class="fa fa-fw fa-lightbulb-o text-muted hidden-md hidden-sm hidden-xs"></i>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -83,6 +84,7 @@
                                             <td>@Model.s_compData[i].title</td>
                                             <td>@Model.s_compData[i].description</td>
                                             <td>@Model.s_compData[i].flag_internal</td>
+                                            <td>@Model.s_compData[i].flag_active</td>
                                             <td>
                                                 <a href="\Company\Edit\?id=@Model.s_compData[i].id" class="btn btn-defalt"><i class="fa fa-edit"></i></a>
                                                 <a href="#" onclick="WarningAlert(@Model.s_compData[i].id);" class="btn btn-defalt"><i class="fa fa-trash-o"></i></a>

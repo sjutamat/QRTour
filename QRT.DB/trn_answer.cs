@@ -25,8 +25,8 @@ namespace QRT.DB
         public string answer_picture { get; set; }
     
         public virtual mas_emp mas_emp { get; set; }
-        public virtual mas_question mas_question { get; set; }
         public virtual mas_location mas_location { get; set; }
+        public virtual mas_question mas_question { get; set; }
         public virtual trn_transaction trn_transaction { get; set; }
     }
 }

@@ -16,6 +16,7 @@ namespace QRT.Domain.ViewModel
         public string title { get; set; }
         public string description { get; set; }
         public string flag_internal { get; set; }
+        public string flag_active { get; set; }
         public long? admin_id { get; set; }
     }
     public class comp_item
@@ -39,6 +40,7 @@ namespace QRT.Domain.ViewModel
         public string title { get; set; }
         public string description { get; set; }
         public string flag_internal { get; set; }
+        public string flag_active { get; set; }
         public long? admin_id { get; set; }
     }
 }

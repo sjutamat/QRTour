@@ -19,6 +19,7 @@
     <Property Name="comp_desc" Type="nvarchar" MaxLength="250" />
     <Property Name="flag_internal" Type="bit" />
     <Property Name="admin_id" Type="int" />
+    <Property Name="comp_active" Type="nvarchar" MaxLength="5" />
   </EntityType>
   <EntityType Name="mas_emp">
     <Key>

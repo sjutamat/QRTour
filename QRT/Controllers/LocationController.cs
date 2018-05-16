@@ -38,9 +38,17 @@ namespace QRT.Controllers
         // GET: Location
         public ActionResult Index()
         {
-            var data = _locationService.GetAllLocation(admin);
-            ViewBag.AdminName = admin.username;
-            return View(data);
+            if (admin != null)
+            {
+                var data = _locationService.GetAllLocation(admin);
+                ViewBag.AdminName = admin.username;
+                return View(data);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
+            
         }
 
         [HttpPost]
@@ -85,7 +93,6 @@ namespace QRT.Controllers
             {
                 return RedirectToAction("Index", "User");
             }
-
         }
 
         public JsonResult Save(m_locationViewModel model)

@@ -154,6 +154,22 @@
         </div>
     </div>
 </div>
+
+<div class="modal" id="popUpWarningQ" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Warning</h5>
+            </div>
+            <div class="modal-body">
+                <p id="warningMsgQ"></p>
+            </div>
+            <div class="modal-footer">
+                <a href="\Location\Index" class="btn btn-primary">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
 @Html.Partial("_PopUpQuestion")
 
 
@@ -236,9 +252,8 @@
 
 
         function WarningAlert(id) {
-            $('#warningMsg').text('Are you want to deactive this location?');
-            $('#popUpWarning').modal('show');
-            $('#ok').attr('data', id);
+            $('#warningMsgQ').text('Are you want to deactive this location?');
+            $('#popUpWarningQ').modal('show');
         }
 
 

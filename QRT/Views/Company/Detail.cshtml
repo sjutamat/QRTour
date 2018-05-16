@@ -26,131 +26,157 @@
                                 <form id="formSave" class="form-horizontal">
                                     <fieldset>
                                         @if (Model.id != 0 && Model.title != null)
-                                        {
-                                            if (Model.id != null && Model.id == 0)
-                                            {
-                                                <legend>Add New Company</legend>
-                                            }
-                                            else
-                                            {
-                                                <legend>Edit Company</legend>
-                                            }
-                                            <div class="form-group">
-                                                <label class="col-md-2 control-label">ID</label>
-                                                <div class="col-md-8">
-                                                    <label name="id" class="control-label">****</label>
-                                                    <input type="hidden" name="id" />
-                                                </div>
+    {
+        if (Model.id != null && Model.id == 0)
+        {
+                                    <legend>Add New Company</legend>
+}
+else
+{
+                                    <legend>Edit Company</legend>
+}
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">ID</label>
+                                        <div class="col-md-8">
+                                            <label name="id" class="control-label">****</label>
+                                            <input type="hidden" name="id" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Company Code</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="title" placeholder="Default Text Field" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Company Name</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="description" placeholder="Default Text Field" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Internal Company</label>
+                                        <div class="col-md-8">
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="internal" class="radiobox" checked value="On" name="flag_internal">
+                                                <span>Internal</span>
+                                            </label>
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="external" class="radiobox" value="Off" name="flag_internal">
+                                                <span>External</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Status</label>
+                                        <div class="col-md-8">
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="statusOn" class="radiobox" checked value="On" name="flag_active">
+                                                <span>Active</span>
+                                            </label>
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="statusOff" class="radiobox" value="Off" name="flag_active">
+                                                <span>Deactive</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <a href="\Company\Index" class="btn btn-default">
+                                                    Cancel
+                                                </a>
+                                                <a class="btn btn-success" id="submit">
+                                                    <i class="fa fa-save"></i>
+                                                    Submit
+                                                </a>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-md-2 control-label">Company Code</label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control" name="title" placeholder="Default Text Field" type="text">
-                                                </div>
+                                        </div>
+                                    </div>
+}
+else if (Model.id == 0 && Model.title == null)
+{
+if (Model.id != null && Model.id == 0)
+{
+                                    <legend>Add New Company</legend>
+}
+else
+{
+                                    <legend>Edit Company</legend>
+}
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">ID</label>
+                                        <div class="col-md-8">
+                                            <label name="id" class="control-label">****</label>
+                                            <input type="hidden" name="id" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Company Code</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="title" placeholder="Default Text Field" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Company Name</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="description" placeholder="Default Text Field" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Internal Company</label>
+                                        <div class="col-md-8">
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="internal" class="radiobox" checked value="On" name="flag_internal">
+                                                <span>Internal</span>
+                                            </label>
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="external" class="radiobox" value="Off" name="flag_internal">
+                                                <span>External</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Status</label>
+                                        <div class="col-md-8">
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="statusOn" class="radiobox" checked value="On" name="flag_active">
+                                                <span>Active</span>
+                                            </label>
+                                            <label class="radio radio-inline">
+                                                <input type="radio" id="statusOff" class="radiobox" value="Off" name="flag_active">
+                                                <span>Deactive</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <a href="\Company\Index" class="btn btn-default">
+                                                    Cancel
+                                                </a>
+                                                <a class="btn btn-success" id="submit">
+                                                    <i class="fa fa-save"></i>
+                                                    Submit
+                                                </a>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-md-2 control-label">Company Name</label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control" name="description" placeholder="Default Text Field" type="text">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-md-2 control-label">Internal Company</label>
-                                                <div class="col-md-8">
-                                                    <label class="radio radio-inline">
-                                                        <input type="radio" id="statusOn" class="radiobox" checked value="On" name="flag_internal">
-                                                        <span>Internal</span>
-                                                    </label>
-                                                    <label class="radio radio-inline">
-                                                        <input type="radio" id="statusOff" class="radiobox" value="Off" name="flag_internal">
-                                                        <span>External</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="form-actions">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <a href="\Company\Index" class="btn btn-default">
-                                                            Cancel
-                                                        </a>
-                                                        <a class="btn btn-success" id="submit">
-                                                            <i class="fa fa-save"></i>
-                                                            Submit
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        }
-                                        else if (Model.id == 0 && Model.title == null)
-                                        {
-                                            if (Model.id != null && Model.id == 0)
-                                            {
-                                                <legend>Add New Company</legend>
-                                            }
-                                            else
-                                            {
-                                                <legend>Edit Company</legend>
-                                            }
-                                            <div class="form-group">
-                                                <label class="col-md-2 control-label">ID</label>
-                                                <div class="col-md-8">
-                                                    <label name="id" class="control-label">****</label>
-                                                    <input type="hidden" name="id" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-md-2 control-label">Company Code</label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control" name="title" placeholder="Default Text Field" type="text">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-md-2 control-label">Company Name</label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control" name="description" placeholder="Default Text Field" type="text">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-md-2 control-label">Internal Company</label>
-                                                <div class="col-md-8">
-                                                    <label class="radio radio-inline">
-                                                        <input type="radio" id="statusOn" class="radiobox" checked value="On" name="flag_internal">
-                                                        <span>Internal</span>
-                                                    </label>
-                                                    <label class="radio radio-inline">
-                                                        <input type="radio" id="statusOff" class="radiobox" value="Off" name="flag_internal">
-                                                        <span>External</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="form-actions">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <a href="\Company\Index" class="btn btn-default">
-                                                            Cancel
-                                                        </a>
-                                                        <a class="btn btn-success" id="submit">
-                                                            <i class="fa fa-save"></i>
-                                                            Submit
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="row">
-                                                <div class="alert alert-warning fade in">
-                                                    <i class="fa-fw fa fa-warning"></i>
-                                                    <strong>Warning</strong>  ไม่สามารถเข้าถึงข้อมูลได้.
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <a href="\Company\Index" class="btn btn-default">
-                                                        Back
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        }
+                                        </div>
+                                    </div>
+}
+else
+{
+                                    <div class="row">
+                                        <div class="alert alert-warning fade in">
+                                            <i class="fa-fw fa fa-warning"></i>
+                                            <strong>Warning</strong>  ไม่สามารถเข้าถึงข้อมูลได้.
+                                        </div>
+                                        <div class="col-md-12">
+                                            <a href="\Company\Index" class="btn btn-default">
+                                                Back
+                                            </a>
+                                        </div>
+                                    </div>
+}
 
                                     </fieldset>
                                 </form>
@@ -205,10 +231,18 @@
             $('[name="title"]').val('@Model.title');
             $('[name="description"]').val('@Model.description');
             if('@Model.flag_internal' == 'On'){
+                $('#internal').prop('checked',true);
+                $('#external').prop('checked',false);
+            }
+            if('@Model.flag_internal' == 'Off'){
+                $('#internal').prop('checked',false);
+                $('#external').prop('checked',true);
+            }
+            if('@Model.flag_active' == 'On'){
                 $('#statusOn').prop('checked',true);
                 $('#statusOff').prop('checked',false);
             }
-            if('@Model.flag_internal' == 'Off'){
+            if('@Model.flag_active' == 'Off'){
                 $('#statusOn').prop('checked',false);
                 $('#statusOff').prop('checked',true);
             }

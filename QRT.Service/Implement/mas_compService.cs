@@ -51,7 +51,7 @@ namespace QRT.Service.Implement
         public List<comp_item> GetCompanyByAdmin(long adminId)
         {
             List<comp_item> itemComp = new List<comp_item>();
-            var compData = _comp.Filter(c => c.admin_id == adminId).ToList();
+            var compData = _comp.Filter(c => c.admin_id == adminId && c.comp_active == "A").ToList();
             if (compData != null)
             {
                 foreach (var item in compData)
@@ -69,7 +69,7 @@ namespace QRT.Service.Implement
 
         public comp_item GetById(long id)
         {
-            var compData = _comp.Filter(c => c.comp_id == id).SingleOrDefault();
+            var compData = _comp.Filter(c => c.comp_id == id && c.comp_active == "A").SingleOrDefault();
             comp_item cmodel = new comp_item();
             if (compData != null)
             {
@@ -93,6 +93,7 @@ namespace QRT.Service.Implement
                     title = x.comp_name,
                     description = x.comp_desc,
                     flag_internal = x.flag_internal == true ? "Yes" : "No",
+                    flag_active = x.comp_active == "A" ? "Active" : "Deactive",
                     admin_id = x.admin_id
                 }).OrderByDescending(o => o.id).ToList();
 
@@ -179,6 +180,7 @@ namespace QRT.Service.Implement
                     comp.comp_name = model.title;
                     comp.comp_desc = model.description;
                     comp.flag_internal = model.flag_internal == "On" ? true : false;
+                    comp.comp_active = model.flag_active == "On" ? "A" : "D";
                     comp.admin_id = user.id;
                     _comp.Create(comp);
                 }
@@ -200,6 +202,7 @@ namespace QRT.Service.Implement
                         oldData.comp_name = model.title;
                         oldData.comp_desc = model.description;
                         oldData.flag_internal = model.flag_internal == "On" ? true : false;
+                        oldData.comp_active = model.flag_active == "On" ? "A" : "D";
                         oldData.admin_id = user.id;
                         _comp.Update(oldData);
                     }
@@ -227,6 +230,7 @@ namespace QRT.Service.Implement
                 comp.title = data.comp_name;
                 comp.description = data.comp_desc;
                 comp.flag_internal = data.flag_internal == true ? "On" : "Off";
+                comp.flag_active = data.comp_active == "A" ? "On" : "Off";
                 comp.admin_id = data.admin_id;
             }
 
@@ -239,11 +243,9 @@ namespace QRT.Service.Implement
             var oldData = _comp.Filter(c => c.comp_id == id).SingleOrDefault();
             try
             {
-                //oldData.route_active = "D";
-                //oldData.route_udate = DateTime.Now;
-                //oldData.adminid_update = user.id;
-                //_route.Update(oldData);
-                _comp.Delete(oldData);
+                oldData.comp_active = "D";
+                _comp.Update(oldData);
+                //_comp.Delete(oldData);
             }
             catch (Exception)
             {

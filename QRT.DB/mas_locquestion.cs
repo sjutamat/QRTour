@@ -22,7 +22,7 @@ namespace QRT.DB
         public Nullable<int> adminid_create { get; set; }
         public Nullable<int> adminid_update { get; set; }
     
-        public virtual mas_question mas_question { get; set; }
         public virtual mas_location mas_location { get; set; }
+        public virtual mas_question mas_question { get; set; }
     }
 }

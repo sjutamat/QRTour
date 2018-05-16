@@ -28,6 +28,7 @@ namespace QRT.Controllers
                 dashboardViewModel dashboardData = new dashboardViewModel();
                 dashboardData.route = _route.GetRouteItem(admin);
                 dashboardData.reportList = _dashboard.GetAnswer(admin.id);
+                dashboardData.s_dashboard = new SearchDataDashboard();
                 ViewBag.AdminName = admin.username;
                 return View(dashboardData);
             }
@@ -45,6 +46,7 @@ namespace QRT.Controllers
                 dashboardViewModel dashboardData = new dashboardViewModel();
                 dashboardData.route = _route.GetRouteItem(admin);
                 dashboardData.reportList = _dashboard.GetAnswerFilter(model, admin.id);
+                dashboardData.s_dashboard = model.s_dashboard;
                 ViewBag.AdminName = admin.username;
                 return View(dashboardData);
             }

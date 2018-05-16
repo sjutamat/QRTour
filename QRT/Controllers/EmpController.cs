@@ -35,9 +35,17 @@ namespace QRT.Controllers
         // GET: Emp
         public ActionResult Index()
         {
-            var data = _empService.GetAllEmp(admin);
-            ViewBag.AdminName = admin.username;
-            return View(data);
+            if (admin != null)
+            {
+                var data = _empService.GetAllEmp(admin);
+                ViewBag.AdminName = admin.username;
+                return View(data);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
+            
         }
 
         [HttpPost]
@@ -51,17 +59,32 @@ namespace QRT.Controllers
 
         public ActionResult Add()
         {
-            var model = _empService.GetEmp(admin);
-            ViewBag.AdminName = admin.username;
-            return View("Detail", model);
+            if (admin != null)
+            {
+                var model = _empService.GetEmp(admin);
+                ViewBag.AdminName = admin.username;
+                return View("Detail", model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
         }
 
 
         public ActionResult Edit(long id)
         {
-            var model = _empService.GetById(id,admin);
-            ViewBag.AdminName = admin.username;
-            return View("Detail", model);
+            if (admin!=null)
+            {
+                var model = _empService.GetById(id, admin);
+                ViewBag.AdminName = admin.username;
+                return View("Detail", model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "User");
+            }
+            
         }
 
 

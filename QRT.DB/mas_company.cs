@@ -25,6 +25,7 @@ namespace QRT.DB
         public string comp_desc { get; set; }
         public Nullable<bool> flag_internal { get; set; }
         public Nullable<int> admin_id { get; set; }
+        public string comp_active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mas_emp> mas_emp { get; set; }

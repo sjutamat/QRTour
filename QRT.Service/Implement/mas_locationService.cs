@@ -72,7 +72,7 @@ namespace QRT.Service.Implement
         public m_locationViewModel GetAllLocation(UserViewModel user)
         {
             m_locationViewModel model = new m_locationViewModel();
-            var data = _location.Filter(f => f.adminid_create == user.id && f.location_active != "D",inc=> inc.mas_route) .ToList();
+            var data = _location.Filter(f => f.adminid_create == user.id, inc => inc.mas_route).ToList();
             if (data != null)
             {
                 var location = data.Select(x => new LocationData()
@@ -105,7 +105,7 @@ namespace QRT.Service.Implement
             var title = model.s_location.title;
             var route = Convert.ToInt32(model.s_location.route);
 
-            var data = _location.Filter(c => c.location_active == "A" && c.adminid_create == user.id, inc => inc.mas_route).ToList();
+            var data = _location.Filter(c => c.adminid_create == user.id, inc => inc.mas_route).ToList();
             if (id!=0)
             {
                 data = data.Where(c => c.location_id == id).ToList();
@@ -294,10 +294,10 @@ namespace QRT.Service.Implement
 
         public bool ChkSequentNumber(string locationId)
         {
-            var sq = _location.Filter(c => c.qrcode1.Equals(locationId) && c.qrcode1_status.Equals("A")|| c.qrcode2.Equals(locationId) && c.qrcode2_status.Equals("A")).SingleOrDefault().seq_number;
-            if (sq!=null)
+            var sq = _location.Filter(c => c.qrcode1.Equals(locationId) && c.qrcode1_status.Equals("A") || c.qrcode2.Equals(locationId) && c.qrcode2_status.Equals("A")).SingleOrDefault().seq_number;
+            if (sq != null)
             {
-                if (sq==1)
+                if (sq == 1)
                 {
                     return true;
                 }
@@ -308,8 +308,31 @@ namespace QRT.Service.Implement
             }
             else
             {
-                return false; 
+                return false;
             }
+        }
+
+
+        public bool ChkQRCodeActive(string locationId)
+        {
+            var chk = _location.Filter(c => c.qrcode1.Equals(locationId) || c.qrcode2.Equals(locationId)).SingleOrDefault();
+            if (chk!=null)
+            {
+                if (chk.qrcode1 == locationId && chk.qrcode1_status == "A")
+                {
+                    return true;
+                }
+                else if (chk.qrcode2 == locationId && chk.qrcode2_status == "A")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+                
+            return false;
         }
 
 
@@ -324,10 +347,10 @@ namespace QRT.Service.Implement
             
             //current location
             var locateionData = _location.Filter(c => c.qrcode1.Equals(locationId) && c.qrcode1_status.Equals("A") || c.qrcode2.Equals(locationId) && c.qrcode2_status.Equals("A")).SingleOrDefault();
-            //current location_id is not guid.
+            //current location_id is not GUID.
            
-            var routeId = locateionData.route_id;
-            //previous sequent by location id == locationId
+            var routeId = locateionData.route_id; //current route
+            
             
             var sq = locateionData.seq_number; //current sequent
 
@@ -335,23 +358,26 @@ namespace QRT.Service.Implement
 
             var sequent = _trn.Filter(c => c.route_id == routeId && c.session_id == emp.id.ToString(), inc => inc.mas_location).OrderByDescending(o => o.transaction_id).
                 Select(s => new { s.mas_location.seq_number, s.mas_location.location_title }).FirstOrDefault();
-            
+
+            var lastLocation = _trn.Filter(c => c.session_id == emp.id.ToString(), inc => inc.mas_location).OrderByDescending(o => o.transaction_id).
+                Select(s => new { s.mas_location.seq_number, s.mas_location.location_title }).FirstOrDefault();
+
             //if sequent is null, This route is not checked.
             int? previous = 0;
             var ls = "";
             if (sequent != null && sequent.seq_number.HasValue)
             {
                 previous = sequent.seq_number.Value + 1; //previous sequent
-                if (sq != null && sq != 1)
+                if (sq != null && sq != 1)  //not check for sequence 1.
                 {
-                    if (previous == sq)
+                    if (previous == sq) //chk sequence 
                     {
                         ls = null;
                         return ls;
                     }
                     else 
                     {
-                        ls = "ไม่สามารถสแกนจุดนี้ได้ เนื่องจากจุดนี้อาจถูกสแกนแล้ว หรือ คุณข้ามการสแกนจุดก่อนหน้า. สถานที่ล่าสุดที่คุณสแกนคือ " + sequent.seq_number + "." + sequent.location_title;
+                        ls = "ไม่สามารถสแกนจุดนี้ได้ เนื่องจากจุดนี้อาจถูกสแกนแล้ว หรือ คุณข้ามการสแกนจุดก่อนหน้า. สถานที่ล่าสุดที่คุณสแกนคือ " + lastLocation.seq_number + "." + lastLocation.location_title;
                         return ls;
                     }
                 }

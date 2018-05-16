@@ -74,8 +74,8 @@ namespace QRT.Service.Implement
 
             var code = model.s_emp.code;
             var comp = Convert.ToInt32(model.s_emp.comp);
-            
-            var data = _emp.Filter(c => c.emp_active == "A", inc => inc.mas_company).ToList();
+
+            var data = _emp.Filter(c => c.emp_id != 0, inc => inc.mas_company).ToList();
 
             if (!String.IsNullOrEmpty(fname) && !string.IsNullOrEmpty(lname))
             {

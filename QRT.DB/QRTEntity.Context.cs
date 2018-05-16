@@ -25,14 +25,14 @@ namespace QRT.DB
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<mas_company> mas_company { get; set; }
+        public virtual DbSet<mas_admin> mas_admin { get; set; }
         public virtual DbSet<mas_emp> mas_emp { get; set; }
+        public virtual DbSet<mas_location> mas_location { get; set; }
         public virtual DbSet<mas_locquestion> mas_locquestion { get; set; }
         public virtual DbSet<mas_question> mas_question { get; set; }
-        public virtual DbSet<trn_answer> trn_answer { get; set; }
-        public virtual DbSet<mas_admin> mas_admin { get; set; }
-        public virtual DbSet<mas_location> mas_location { get; set; }
         public virtual DbSet<mas_route> mas_route { get; set; }
+        public virtual DbSet<trn_answer> trn_answer { get; set; }
         public virtual DbSet<trn_transaction> trn_transaction { get; set; }
+        public virtual DbSet<mas_company> mas_company { get; set; }
     }
 }

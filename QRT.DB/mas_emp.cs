@@ -29,8 +29,8 @@ namespace QRT.DB
         public long emp_comp { get; set; }
         public string emp_active { get; set; }
     
-        public virtual mas_company mas_company { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<trn_answer> trn_answer { get; set; }
+        public virtual mas_company mas_company { get; set; }
     }
 }

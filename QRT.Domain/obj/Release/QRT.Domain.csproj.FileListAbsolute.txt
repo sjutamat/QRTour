@@ -9,8 +9,8 @@ E:\WorkSpace\QRT\QRT\QRT.Domain\bin\Release\EntityFramework.xml
 E:\WorkSpace\QRT\QRT\QRT.Domain\bin\Release\EntityFramework.SqlServer.xml
 E:\WorkSpace\QRT\QRT\QRT.Domain\bin\Release\QRT.DB.pdb
 E:\WorkSpace\QRT\QRT\QRT.Domain\bin\Release\QRT.DB.dll.config
+E:\WorkSpace\QRT\QRT\QRT.Domain\obj\Release\QRT.Domain.csprojResolveAssemblyReference.cache
 E:\WorkSpace\QRT\QRT\QRT.Domain\obj\Release\QRT.Domain.csproj.CoreCompileInputs.cache
 E:\WorkSpace\QRT\QRT\QRT.Domain\obj\Release\QRT.Domain.csproj.CopyComplete
 E:\WorkSpace\QRT\QRT\QRT.Domain\obj\Release\QRT.Domain.dll
 E:\WorkSpace\QRT\QRT\QRT.Domain\obj\Release\QRT.Domain.pdb
-E:\WorkSpace\QRT\QRT\QRT.Domain\obj\Release\QRT.Domain.csprojResolveAssemblyReference.cache

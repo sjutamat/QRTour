@@ -83,42 +83,51 @@ namespace QRT.Controllers
 
         public ActionResult Question(string locationid)
         {
-            var chkSeq = _location.ChkSequentNumber(locationid);
-            if (chkSeq == true) //chk node 1
+            var chkLocation = _location.ChkQRCodeActive(locationid);
+            if (chkLocation == true)
             {
-                if (Request.Cookies["EmpCookies"] != null) //if has cookie, clear cookie and redirect to Login.
+                var chkSeq = _location.ChkSequentNumber(locationid);
+                if (chkSeq == true) //chk node 1
                 {
-                    UserInfo.ExpireEmpCookie();
-                    return RedirectToAction("Index", new { location = locationid });
+                    if (Request.Cookies["EmpCookies"] != null) //if has cookie, clear cookie and redirect to Login.
+                    {
+                        UserInfo.ExpireEmpCookie();
+                        return RedirectToAction("Index", new { location = locationid });
+                    }
+                    else //if not have cookie, redirect to Login.
+                    {
+                        return RedirectToAction("Index", new { location = locationid });
+                    }
+                    //chk cookie
                 }
-                else //if not have cookie, redirect to Login.
-                {
-                    return RedirectToAction("Index", new { location = locationid });
+                else
+                { //chk cookie
+                    if (Request.Cookies["EmpCookies"] != null)  //if has cookie return view.
+                    {
+                        string code = Request.Cookies["EmpCookies"]["code"];
+                        string password = Request.Cookies["EmpCookies"]["password"];
+                        EmpData employee = _empservice.CheckEmp(code, password);
+
+                        var chkOverSeq = _location.ChkOverSequentNumber(locationid, employee);
+                        if (chkOverSeq != null)
+                        {
+                            return RedirectToAction("OverSequent", new { previousSequent = chkOverSeq });
+                        }
+                        else
+                        {
+                            return RedirectToAction("QuestionCheck", new { location = locationid });
+                        }
+                    }
+                    else  //if not has cookie redirect to Login
+                    {
+                        return RedirectToAction("Index", new { location = locationid });
+                    }
                 }
-                //chk cookie
             }
             else
-            { //chk cookie
-                if (Request.Cookies["EmpCookies"] != null)  //if has cookie return view.
-                {
-                    string code = Request.Cookies["EmpCookies"]["code"];
-                    string password = Request.Cookies["EmpCookies"]["password"];
-                    EmpData employee = _empservice.CheckEmp(code, password);
-
-                    var chkOverSeq = _location.ChkOverSequentNumber(locationid, employee);
-                    if (chkOverSeq != null)
-                    {
-                        return RedirectToAction("OverSequent", new { previousSequent = chkOverSeq });
-                    }
-                    else
-                    {
-                        return RedirectToAction("QuestionCheck", new { location = locationid });
-                    }
-                }
-                else  //if not has cookie redirect to Login
-                {
-                    return RedirectToAction("Index", new { location = locationid });
-                }
+            {
+                var AlertMsg = "QRCode นี้ยังไม่เปิดใช้งาน กรุณาติดต่อ admin ของท่าน";
+                return RedirectToAction("OverSequent",new { previousSequent  = AlertMsg });
             }
         }
 
