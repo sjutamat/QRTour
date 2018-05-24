@@ -18,16 +18,19 @@ namespace QRT.Service.Implement
         private readonly Imas_companyRepository _comp;
         private readonly Imas_companyService _compservice;
         private readonly Imas_adminService _admin;
+        private readonly Imas_locationService _locationservice;
         public mas_empService(Imas_empRepository imas_emprepository
             , Imas_companyRepository imas_comprepository
             , Imas_companyService imascompanyservice
-            ,Imas_adminService imasadminservice
+            , Imas_adminService imasadminservice
+            , Imas_locationService imaslocationservice
             )
         {
             _emp = imas_emprepository;
             _comp = imas_comprepository;
             _compservice = imascompanyservice;
             _admin = imasadminservice;
+            _locationservice = imaslocationservice;
         }
 
 
@@ -156,24 +159,28 @@ namespace QRT.Service.Implement
                 //}
                 //else
                 //{
-                    try
-                    {
-                        mas_emp emp = new mas_emp();
-                        emp.emp_title = model.title;
-                        emp.emp_fname = model.fname;
-                        emp.emp_surname = model.sname;
-                        emp.emp_comp = model.comp;
-                        emp.emp_code = model.comp_name + model.code;
-                        emp.emp_password = model.password;
-                        emp.emp_active = model.status == "On" ? "A" : "D";
-                        _emp.Create(emp);
+                
+                try
+                {
+                    mas_emp emp = new mas_emp();
+                    emp.emp_title = model.title;
+                    emp.emp_fname = model.fname;
+                    emp.emp_surname = model.sname;
+                    emp.emp_comp = model.comp;
+                    emp.emp_code = model.comp_name + model.code;
+                    emp.emp_password = model.password;
+                    emp.emp_active = model.status == "On" ? "A" : "D";
+                    _emp.Create(emp);
+                }
+                catch (Exception ex)
+                {
+                    if (ex.IsValidateHandler())
+                        throw ex.ToValidateHandler();
+                    throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
                     }
-                    catch (Exception ex)
-                    {
-                        if (ex.IsValidateHandler())
-                            throw ex.ToValidateHandler();
-                        throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
-                    }
+                
+                
+                   
                 //}
             }
             else
@@ -266,9 +273,12 @@ namespace QRT.Service.Implement
             return data;
         }
 
-        public EmpData CheckEmp(string emp_code, string pw)
+        public EmpData CheckEmp(string emp_code, string pw,string location_code)
         {
-            var data = _emp.Filter(c => c.emp_code.Equals(emp_code) && c.emp_password.Equals(pw)).SingleOrDefault();
+            var admin_id = _locationservice.GetLocationByCode(location_code).adminid_create;
+            var employee = _emp.Filter(c => c.emp_code.Equals(emp_code) && c.emp_password.Equals(pw), inc => inc.mas_company).ToList();
+            var data = employee.Where(c => c.mas_company.admin_id == admin_id).SingleOrDefault();
+
             EmpData emp = new EmpData();
             if (data != null)
             {
@@ -278,8 +288,22 @@ namespace QRT.Service.Implement
                 emp.name = data.emp_fname + " " + data.emp_surname;
                 emp.fname = data.emp_fname;
                 emp.sname = data.emp_surname;
+                emp.created_by = data.mas_company.admin_id;
             }
             return emp;
+        }
+
+        public string ChkDuplicate(m_empViewModel model)
+        {
+            var data = _emp.Filter(c => c.emp_fname.Equals(model.fname) && c.emp_surname.Equals(model.sname) && c.emp_comp.Equals(model.comp)).ToList();
+            if (data.Any())
+            {
+                return "true"; //Case data is duplicate.
+            }
+            else
+            {
+                return "false"; //Case data is not duplicate.
+            }
         }
 
         //public EmpData ChkEmployee(string emp_code)

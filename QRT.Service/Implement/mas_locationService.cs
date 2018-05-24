@@ -348,58 +348,67 @@ namespace QRT.Service.Implement
             //current location
             var locateionData = _location.Filter(c => c.qrcode1.Equals(locationId) && c.qrcode1_status.Equals("A") || c.qrcode2.Equals(locationId) && c.qrcode2_status.Equals("A")).SingleOrDefault();
             //current location_id is not GUID.
-           
-            var routeId = locateionData.route_id; //current route
-            
-            
-            var sq = locateionData.seq_number; //current sequent
-
-            //all sequent by location id and employee id
-
-            var sequent = _trn.Filter(c => c.route_id == routeId && c.session_id == emp.id.ToString(), inc => inc.mas_location).OrderByDescending(o => o.transaction_id).
-                Select(s => new { s.mas_location.seq_number, s.mas_location.location_title }).FirstOrDefault();
-
-            var lastLocation = _trn.Filter(c => c.session_id == emp.id.ToString(), inc => inc.mas_location).OrderByDescending(o => o.transaction_id).
-                Select(s => new { s.mas_location.seq_number, s.mas_location.location_title }).FirstOrDefault();
-
-            //if sequent is null, This route is not checked.
-            int? previous = 0;
             var ls = "";
-            if (sequent != null && sequent.seq_number.HasValue)
+            if (locateionData.adminid_create != emp.created_by)
             {
-                previous = sequent.seq_number.Value + 1; //previous sequent
-                if (sq != null && sq != 1)  //not check for sequence 1.
-                {
-                    if (previous == sq) //chk sequence 
-                    {
-                        ls = null;
-                        return ls;
-                    }
-                    else 
-                    {
-                        ls = "ไม่สามารถสแกนจุดนี้ได้ เนื่องจากจุดนี้อาจถูกสแกนแล้ว หรือ คุณข้ามการสแกนจุดก่อนหน้า. สถานที่ล่าสุดที่คุณสแกนคือ " + lastLocation.seq_number + "." + lastLocation.location_title;
-                        return ls;
-                    }
-                }
-                else
-                {
-                    return null; //not over
-                }
-                
+                ls = "ไม่สามารถสแกนจุดนี้ได้ เนื่องจากอยู่นอกเหนือขอบเขตความรับผิดชอบของคุณ.";
+                return ls;
             }
             else
             {
-                if (sq != null && sq == 1)
+                var routeId = locateionData.route_id; //current route
+
+
+                var sq = locateionData.seq_number; //current sequent
+
+                //all sequent by location id and employee id
+
+                var sequent = _trn.Filter(c => c.route_id == routeId && c.session_id == emp.id.ToString(), inc => inc.mas_location).OrderByDescending(o => o.transaction_id).
+                    Select(s => new { s.mas_location.seq_number, s.mas_location.location_title }).FirstOrDefault();
+
+                var lastLocation = _trn.Filter(c => c.session_id == emp.id.ToString(), inc => inc.mas_location).OrderByDescending(o => o.transaction_id).
+                    Select(s => new { s.mas_location.seq_number, s.mas_location.location_title }).FirstOrDefault();
+
+                //if sequent is null, This route is not checked.
+                int? previous = 0;
+
+                if (sequent != null && sequent.seq_number.HasValue)
                 {
-                    return null;
+                    previous = sequent.seq_number.Value + 1; //previous sequent
+                    if (sq != null && sq != 1)  //not check for sequence 1.
+                    {
+                        if (previous == sq) //chk sequence 
+                        {
+                            ls = null;
+                            return ls;
+                        }
+                        else
+                        {
+                            ls = "ไม่สามารถสแกนจุดนี้ได้ เนื่องจากจุดนี้อาจถูกสแกนแล้ว หรือ คุณข้ามการสแกนจุดก่อนหน้า. สถานที่ล่าสุดที่คุณสแกนคือ " + lastLocation.seq_number + "." + lastLocation.location_title;
+                            return ls;
+                        }
+                    }
+                    else
+                    {
+                        return null; //not over
+                    }
+
                 }
                 else
                 {
-                    ls = "ไม่สามารถสแกนจุดนี้ได้ เนื่องจากจุดนี้อาจถูกสแกนแล้ว, ท่านข้ามการสแกนจุดก่อนหน้า หรือ จุดที่คุณกำลังสแกนอยู่นอก Route ที่คุณรับผิดชอบ";
-                    return ls;
-                }
+                    if (sq != null && sq == 1)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        ls = "ไม่สามารถสแกนจุดนี้ได้ เนื่องจากจุดนี้อาจถูกสแกนแล้ว, ท่านข้ามการสแกนจุดก่อนหน้า หรือ จุดที่คุณกำลังสแกนอยู่นอก Route ที่คุณรับผิดชอบ";
+                        return ls;
+                    }
 
+                }
             }
+            
         }
 
 

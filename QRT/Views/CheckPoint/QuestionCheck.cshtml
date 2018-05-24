@@ -89,9 +89,13 @@
                                 <label class="cke_label">
                                     @ViewBag.Name
                                 </label>
-                                <button id="submitSave" type="submit" class="btn btn-primary">
-                                    Submit
-                                </button>
+                                @if (ViewBag.EnableSave == "1")
+                                {
+                                    <button id="submitSave" type="submit" class="btn btn-primary">
+                                        Submit
+                                    </button>
+                                }
+
                             </footer>
                         </form>
                     </div>
@@ -184,15 +188,15 @@
             });
         });
 
-        //$('[name="checkbox-toggle0"]').click(function () {
-        //    alert("test");
-        //})
         $('[id*="checkbox-toggle"]').each(function () {
             var d = $(this).attr('id');
             $(this).click(function () {
                 if ($(this).prop('checked') == true) {
                     var index = $(this).attr('id').replace('checkbox-toggle', '');
-                    $('[name="answer_flag[' + index + ']"]').val('YES');
+                    $('[name="answer_flag[' + index + ']"]').val('Yes');
+                } else {
+                    var index = $(this).attr('id').replace('checkbox-toggle', '');
+                    $('[name="answer_flag[' + index + ']"]').val('No');
                 }
             })
         })
@@ -246,12 +250,14 @@
                         //$('#returnMsg').text(xhr.returnMsg);
                         //$('#popUpResult').modal('show');
                     }
+                    else if (xhr == "disable")
+                    {
+                        window.location = 'OverSequent?previousSequent=' + xhr;
+                    }
                     else
                     {
                        // CloseWindow();
                         window.location = 'SuccessPage?location=' + @Model[0].location_id;
-                        //$('#returnMsg').text('Save successfully.');
-                        //$('#popUpResult').modal('show');
                     }
 
                 },
@@ -272,6 +278,9 @@
                 stop;
             }
         }
+
+
+       
     </script>
 </body>
 </html>

@@ -107,8 +107,25 @@ namespace QRT.Controllers
                 }
                 else
                 {
-                    _empService.Save(model);
-                    returnMsg = "success";
+                    if (model.id == 0) //case add
+                    {
+                        var Chk = _empService.ChkDuplicate(model);
+                        if (Chk == "false")
+                        {
+                            _empService.Save(model);
+                            returnMsg = "success";
+                        }
+                        else
+                        {
+                            returnMsg = "Employee is already.";
+                        }
+                    }
+                    else //case edit 
+                    {
+                        _empService.Save(model);
+                        returnMsg = "success";
+                    }
+                    
                 }
             }
             else

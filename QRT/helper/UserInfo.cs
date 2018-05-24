@@ -45,12 +45,14 @@ namespace QRT.helper
         }
 
 
-        public static HttpCookie CreateEmpCookie(EmpData model)
+        public static HttpCookie CreateEmpCookie(EmpData model, string location)
         {
             ExpireEmpCookie();
             HttpCookie EmpCookies = new HttpCookie("EmpCookies");
             EmpCookies.Values.Add("code", model.code);
             EmpCookies.Values.Add("password", model.password);
+            EmpCookies.Values.Add("Location", location);
+            EmpCookies.Values.Add("EnableSave", "1");
             EmpCookies.Expires = DateTime.Now.AddMinutes(90);
             return EmpCookies;
         }
@@ -58,11 +60,6 @@ namespace QRT.helper
 
         public static HttpCookie ExpireEmpCookie()
         {
-            //HttpCookie EmpCookies = new HttpCookie("EmpCookies");
-            //EmpCookies.Value = model.code;
-            //EmpCookies.Expires = DateTime.Now.AddHours(1);
-
-
             HttpCookie EmpCookies = HttpContext.Current.Request.Cookies["EmpCookies"];
             if (EmpCookies != null)
             {

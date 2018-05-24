@@ -42,11 +42,11 @@ namespace QRT.Controllers
         [HttpPost]
         public ActionResult SingIn(EmpLogin vm)
         {
-            var chk = _empservice.CheckEmp(vm.username, vm.password);
-
-            EmpData model = _empservice.CheckEmp(vm.username, vm.password);
-            HttpCookie cdata = UserInfo.CreateEmpCookie(model);
-            if (chk.code != null)
+            // var chk = _empservice.CheckEmp(vm.username, vm.password);
+            HttpContext.Session["SUBMIT_KEY"] = null;
+            EmpData model = _empservice.CheckEmp(vm.username, vm.password,vm.location_id);
+            HttpCookie cdata = UserInfo.CreateEmpCookie(model, vm.location_id);
+            if (model.code != null)
             {
                 Response.Cookies.Add(cdata);
                 var id = vm.location_id;
@@ -106,7 +106,7 @@ namespace QRT.Controllers
                     {
                         string code = Request.Cookies["EmpCookies"]["code"];
                         string password = Request.Cookies["EmpCookies"]["password"];
-                        EmpData employee = _empservice.CheckEmp(code, password);
+                        EmpData employee = _empservice.CheckEmp(code, password, locationid);
 
                         var chkOverSeq = _location.ChkOverSequentNumber(locationid, employee);
                         if (chkOverSeq != null)
@@ -115,6 +115,7 @@ namespace QRT.Controllers
                         }
                         else
                         {
+                            HttpContext.Session["SUBMIT_KEY"] = 0;
                             return RedirectToAction("QuestionCheck", new { location = locationid });
                         }
                     }
@@ -134,29 +135,29 @@ namespace QRT.Controllers
 
         public ActionResult QuestionCheck(string location)
         {
+            if (HttpContext.Session["SUBMIT_KEY"]==null)
+            {
+                HttpContext.Session["SUBMIT_KEY"] = 0;
+            }
+            
             List<QuestionList> data = _questservice.GetQuestionByLocation(location);
             var employeecode = Request.Cookies["EmpCookies"].Value;
             if (employeecode != null && data.Any())
             {
                 string code = Request.Cookies["EmpCookies"]["code"];
                 string password = Request.Cookies["EmpCookies"]["password"];
-                EmpData employee = _empservice.CheckEmp(code, password);
+                string enable = Request.Cookies["EmpCookies"]["EnableSave"];
+                ViewBag.EnableSave = enable;
+                EmpData employee = _empservice.CheckEmp(code, password, location);
 
-                //var chkLocation = _location.GetLocationByCode(location).adminid_create;
-                //if (chkLocation == employee.created_by)
-                //{
-                    ViewBag.Name = employee.name;
-                    ViewBag.LocationName = data[0].location_name;
-                    return View(data);
-                //}
-                //else
-                //{
-                //    return RedirectToAction("CrossRoute");
-                //}
+                ViewBag.Name = employee.name;
+                ViewBag.LocationName = data[0].location_name;
+                return View(data);
                 
             }
             else
             {
+                HttpContext.Session["SUBMIT_KEY"] = 1;
                 return RedirectToAction("Alert");
             }
         }
@@ -168,16 +169,32 @@ namespace QRT.Controllers
             var employeecode = Request.Cookies["EmpCookies"].Value;
             string code = Request.Cookies["EmpCookies"]["code"];
             string password = Request.Cookies["EmpCookies"]["password"];
-            EmpData employee = _empservice.CheckEmp(code, password);
+            string location = Request.Cookies["EmpCookies"]["Location"];
+            string enableSave = Request.Cookies["EmpCookies"]["EnableSave"];
+            EmpData employee = _empservice.CheckEmp(code, password, location);
+            var aa = HttpContext.Session["SUBMIT_KEY"].ToString();
+            //var aaa = Request.Cookies["EmpCookies"]["EnableSave"];
             if (model != null)
             {
-                _answerservice.SaveAnswer(model, employee);
-                returnMsg = "success";
+                if (aa == "0")
+                {
+                    _answerservice.SaveAnswer(model, employee);
+
+                    HttpContext.Session["SUBMIT_KEY"] = 1;
+                    Request.Cookies["EmpCookies"]["EnableSave"] = "0";
+                    var aaa = Request.Cookies["EmpCookies"].Value;
+                    returnMsg = "success";
+                }
+                else
+                {
+                    returnMsg = "disable";
+                }
+                
             }
             else
             {
                 returnMsg = "Model is null";
-            }
+            }            
             return Json(returnMsg, JsonRequestBehavior.AllowGet);
         }
 

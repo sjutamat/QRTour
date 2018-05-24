@@ -16,6 +16,7 @@ namespace QRT.Domain.Interface.Service
         void UpdateStatus(long id);
         m_empViewModel GetEmp(UserViewModel user);
         string GetNewCode(long compid);
-        EmpData CheckEmp(string emp_code, string pw);
+        EmpData CheckEmp(string emp_code, string pw, string location_code);
+        string ChkDuplicate(m_empViewModel model);
     }
 }

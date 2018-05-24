@@ -55,8 +55,12 @@
                                             Search
                                         </button>
                                         <button type="button" id="ExportToExcel" class="btn btn-defalt">
-                                            <i class="fa fa-file-excel-o"></i>
+                                            <i class="fa fa-file-excel-o" style="color:green"></i>
                                             Export To Excel
+                                        </button>
+                                        <button type="button" id="SummaryReport" class="btn btn-defalt">
+                                            <i class="fa fa-file-excel-o" style="color:green"></i>
+                                            Summary Report
                                         </button>
                                     </div>
                                 </div>
@@ -199,12 +203,22 @@
                 var sdate = start_date == "" ? GetDate() : GetDate(start_date);
                 var end_date = $('#dateend_filter').val();
                 var edate = end_date == "" ? GetDate() : GetDate(end_date);
-                //var sdate = start_date == "" ? GetDate() : start_date.replace(/\//g, '-');
-                //var edate = end_date == "" ? GetDate() : end_date.replace(/\//g, '-');
-
                 var url = '@QRT.helper.AppSetting.qr_extend';
                 window.location.href = url + "/qr_extend/export.php?route_id=" + route_id + "&date1=" + sdate + "&date2=" + edate;
                 //window.location.href = url + "/qr_extend/index.php?route_id=" + route_id + "&date1=" + sdate + "&date2=" + edate;
+            })
+
+     
+            
+            $('#SummaryReport').click(function () {
+                var route_id = $('[name="s_dashboard.route"]').val();
+                var start_date = $('#datestart_filter').val();
+                var sdate = start_date == "" ? GetDate() : GetDate(start_date);
+                var end_date = $('#dateend_filter').val();
+                var edate = end_date == "" ? GetDate() : GetDate(end_date);
+                var url = '@QRT.helper.AppSetting.qr_extend';
+                window.location.href = url + "/qr_extend/SummaryReport.php?route_id=" + route_id + "&date1=" + sdate + "&date2=" + edate;
+                 //window.location.href = url + "/qr_extend/index.php?route_id=" + route_id + "&date1=" + sdate + "&date2=" + edate;
             })
 
             function GetDate() {
