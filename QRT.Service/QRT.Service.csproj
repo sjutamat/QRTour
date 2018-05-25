@@ -83,6 +83,7 @@
     <Compile Include="Implement\mas_locquestionService.cs" />
     <Compile Include="Implement\mas_questionService.cs" />
     <Compile Include="Implement\mas_routeService.cs" />
+    <Compile Include="Implement\mas_viewerService.cs" />
     <Compile Include="Implement\trn_answerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

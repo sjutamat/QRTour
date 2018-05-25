@@ -142,8 +142,10 @@ namespace QRT.Service.Implement
                     emp.comp = data.comp;
                     emp.status = data.status == "Active" ? "On" : "Off";
                     emp.company = _compservice.GetCompanyByAdmin(admin.id); ;
-                
-               
+            }
+            else
+            {
+                emp.id = id;
             }
             return emp;
         }

@@ -850,6 +850,7 @@
     <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\ViewerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -926,6 +927,8 @@
     <Content Include="Views\Home\AuthenPage.cshtml" />
     <Content Include="Views\Company\Index.cshtml" />
     <Content Include="Views\Company\Detail.cshtml" />
+    <Content Include="Views\Viewer\Index.cshtml" />
+    <Content Include="Views\Viewer\Detail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

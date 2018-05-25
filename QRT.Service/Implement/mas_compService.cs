@@ -233,6 +233,10 @@ namespace QRT.Service.Implement
                 comp.flag_active = data.comp_active == "A" ? "On" : "Off";
                 comp.admin_id = data.admin_id;
             }
+            else
+            {
+                comp.id = id;
+            }
 
             return comp;
         }

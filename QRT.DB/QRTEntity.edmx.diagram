@@ -25,6 +25,7 @@
         <AssociationConnector Association="QRCodeTourModel.FK_trn_answer_trn_transaction" />
         <EntityTypeShape EntityType="QRCodeTourModel.mas_company" Width="1.5" PointX="3" PointY="1" />
         <AssociationConnector Association="QRCodeTourModel.FK_mas_emp_mas_company" />
+        <EntityTypeShape EntityType="QRCodeTourModel.mas_user" Width="1.5" PointX="7.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

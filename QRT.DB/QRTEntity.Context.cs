@@ -34,5 +34,6 @@ namespace QRT.DB
         public virtual DbSet<trn_answer> trn_answer { get; set; }
         public virtual DbSet<trn_transaction> trn_transaction { get; set; }
         public virtual DbSet<mas_company> mas_company { get; set; }
+        public virtual DbSet<mas_user> mas_user { get; set; }
     }
 }

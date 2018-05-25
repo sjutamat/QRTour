@@ -169,6 +169,10 @@ namespace QRT.Service.Implement
                 location.created_by = data.adminid_create;
                 location.route = _routeservice.GetRouteItem(user);
             }
+            else
+            {
+                location.id = id;
+            }
             
 
             return location;

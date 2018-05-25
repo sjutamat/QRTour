@@ -74,6 +74,9 @@
     <Compile Include="mas_route.cs">
       <DependentUpon>QRTEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="mas_user.cs">
+      <DependentUpon>QRTEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QRTEntity.Context.cs">
       <AutoGen>True</AutoGen>

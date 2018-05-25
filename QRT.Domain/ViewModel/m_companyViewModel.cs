@@ -10,7 +10,7 @@ namespace QRT.Domain.ViewModel
     {
         public SearchComp s_comp { get; set; }
         public List<Comp_data> s_compData { get; set; }
-      //  public List<comp_item> company { get; set; }
+      //public List<comp_item> company { get; set; }
 
         public long id { get; set; }
         public string title { get; set; }

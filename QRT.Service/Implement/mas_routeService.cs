@@ -128,6 +128,10 @@ namespace QRT.Service.Implement
                 route.created_by = data.adminid_create;
                 route.company = _compservice.GetCompany();
             }
+            else
+            {
+                route.id = id;
+            }
             
             return route;
         }

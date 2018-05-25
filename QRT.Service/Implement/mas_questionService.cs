@@ -124,6 +124,10 @@ namespace QRT.Service.Implement
                 quest.created_by = data.adminid_create;
                 quest.route = _routeservice.GetRouteItem(user);
             }
+            else
+            {
+                quest.id = id;
+            }
             
             return quest;
         }

@@ -66,6 +66,7 @@
     <Compile Include="Implement\mas_locquestionRepository.cs" />
     <Compile Include="Implement\mas_questionRepository.cs" />
     <Compile Include="Implement\mas_routeRepository.cs" />
+    <Compile Include="Implement\mas_viewerRepository.cs" />
     <Compile Include="Implement\RepositoryBase.cs" />
     <Compile Include="Implement\trn_answerRepository.cs" />
     <Compile Include="Implement\trn_transactionRepository.cs" />
