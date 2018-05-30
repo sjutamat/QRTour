@@ -11,5 +11,6 @@ namespace QRT.Domain.Interface.Service
     {
         UserViewModel Login(Login vm);
         AdminViewModel GetById(UserViewModel user);
+        string GetAdminName(int id);
     }
 }

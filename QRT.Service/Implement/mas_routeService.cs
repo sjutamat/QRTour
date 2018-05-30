@@ -17,15 +17,19 @@ namespace QRT.Service.Implement
         #region utility
         private readonly Imas_routeRepository _route;
         private readonly Imas_adminRepository _admin;
+        private readonly Imas_viewerRepository _viewer;
         private readonly Imas_companyService _compservice;
        
         public mas_routeService(Imas_routeRepository imas_routerepository
             ,Imas_companyService imascompservice
-            ,Imas_adminRepository imas_adminrepository)
+            ,Imas_adminRepository imas_adminrepository
+            ,Imas_viewerRepository imas_viewerrepository)
         {
             _route = imas_routerepository;
             _admin = imas_adminrepository;
+            _viewer = imas_viewerrepository;
             _compservice = imascompservice;
+            
         }
         #endregion
 
@@ -207,7 +211,16 @@ namespace QRT.Service.Implement
         {
             //var admin = _admin.Filter(c => c.admin_id == user.id).SingleOrDefault();
             List<route_item> itemRoute = new List<route_item>();
-            var routeData = _route.Filter(c => c.route_active == "A" && c.adminid_create == user.id).ToList();
+            int? admin_id;
+            if (user.role != 1)
+            {
+                admin_id = _viewer.Filter(c => c.user_id == user.id).Select(s => s.admin_id).SingleOrDefault();
+            }
+            else
+            {
+                admin_id = user.id;
+            }
+            var routeData = _route.Filter(c => c.route_active == "A" && c.adminid_create == admin_id).ToList();
             if (routeData != null)
             {
                 foreach (var item in routeData)

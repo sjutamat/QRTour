@@ -275,44 +275,44 @@ Use search to find needed section.
         <nav>
             <ul>
                 <li class="">
-                    <a href="\Home\Index" title="blank_"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
-                </li>
-                <li class="active">
-                    <a href="\Route\Index" title="route_">
-
-                        <span class="menu-item-parent">Route</span>
+                    <a href="\Home\Index" title="blank_">
+                        <i class="fa fa-lg fa-fw fa-home"></i>
+                        <span class="menu-item-parent">Dashboard</span>
                     </a>
                 </li>
-                <li class="active">
-                    <a href="\Location\Index" title="location_">
-
-                        <span class="menu-item-parent">Location</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="\Question\Index" title="question_">
-
-                        <span class="menu-item-parent">Question</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="\Emp\Index" title="emp_">
-
-                        <span class="menu-item-parent">Employee</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="\Company\Index" title="company_">
-
-                        <span class="menu-item-parent">Company</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="\Viewer\Index" title="viewer_">
-
-                        <span class="menu-item-parent">Report Viewer</span>
-                    </a>
-                </li>
+                @if (ViewBag.Role == 1)
+                {
+                        <li class="active">
+                            <a href="\Route\Index" title="route_">
+                                <span class="menu-item-parent">Route</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="\Location\Index" title="location_">
+                                <span class="menu-item-parent">Location</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="\Question\Index" title="question_">
+                                <span class="menu-item-parent">Question</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="\Emp\Index" title="emp_">
+                                <span class="menu-item-parent">Employee</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="\Company\Index" title="company_">
+                                <span class="menu-item-parent">Company</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="\Viewer\Index" title="viewer_">
+                                <span class="menu-item-parent">Report Viewer</span>
+                            </a>
+                        </li>
+                }
             </ul>
         </nav>
         <span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit"></i> </span>

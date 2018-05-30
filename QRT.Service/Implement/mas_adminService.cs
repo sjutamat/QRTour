@@ -45,5 +45,12 @@ namespace QRT.Service.Implement
             }
             return data;
         }
+
+
+        public string GetAdminName(int id)
+        {
+            var adminData = _admin.Filter(c => c.admin_id == id).Select(s=>s.admin_user).SingleOrDefault();
+            return adminData;
+        }
     }
 }

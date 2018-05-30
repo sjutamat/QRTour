@@ -60,6 +60,79 @@ namespace QRT.Service.Implement
             } 
         }
 
+
+
+        public m_viewerViewModel FilterViewer(m_viewerViewModel model, UserViewModel user)
+        {
+            var name = model.s_viewer.name;
+            var fname = string.Empty;
+            var lname = string.Empty;
+            if (name != null)
+            {
+                string[] words = name.Split(' ');
+                if (words.Count() > 1 && words.Any())
+                {
+                    fname = words[0];
+                    lname = words[1];
+                }
+                else
+                {
+                    fname = words[0];
+                }
+            }
+
+
+            //var code = model.s_viewer.id;
+            var id = Convert.ToInt32(model.s_viewer.id);
+            var status = model.s_viewer.status;
+            var data = _viewer.Filter(c => c.admin_id == user.id).ToList();
+
+            if (!String.IsNullOrEmpty(fname) && !string.IsNullOrEmpty(lname))
+            {
+                data = data.Where(c => c.user_fname.ToUpper().Contains(fname.ToUpper()) || c.user_surname.ToUpper().Contains(lname.ToUpper())).ToList();
+            }
+
+            if (!String.IsNullOrEmpty(fname) && String.IsNullOrEmpty(lname))
+            {
+                data = data.Where(c => c.user_fname.ToUpper().Contains(name.ToUpper()) || c.user_surname.ToUpper().Contains(name.ToUpper()) || c.user_fname.ToUpper().Equals(name.ToUpper()) || c.user_surname.ToUpper().Equals(name.ToUpper())).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(model.s_viewer.id))
+            {
+                data = data.Where(c => c.user_id == id).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(model.s_viewer.status))
+            {
+                data = data.Where(c => c.user_active == status).ToList();
+            }
+
+
+            if (data != null)
+            {
+                var viewer = data.Select(s => new ViewerData()
+                {
+                    id = s.user_id.ToString(),
+                    name = s.user_fname + " " + s.user_surname,
+                    first_name = s.user_fname,
+                    last_name = s.user_surname,
+                    status = s.user_active.Trim() == "A" ? "Active" : "Deactive"
+                }).ToList();
+
+                model.s_viewerData = viewer;
+                //model.s_viewer = new SearchViewer();
+                return model;
+            }
+            else
+            {
+                model.s_viewerData = new List<ViewerData>();
+                //model.s_viewer = new SearchViewer();
+                return model;
+
+            }
+        }
+
+
         public m_viewerViewModel GetById(int id, UserViewModel user)
         {
             var data = _viewer.Filter(c => c.user_id == id && c.admin_id == user.id).SingleOrDefault();
@@ -70,7 +143,7 @@ namespace QRT.Service.Implement
                 viewer.username = data.user_login;
                 viewer.first_name = data.user_fname;
                 viewer.last_name = data.user_surname;
-                viewer.status = data.user_active == "A" ? "On" : "Off";
+                viewer.status = data.user_active.Trim() == "A" ? "On" : "Off";
             }
             else
             {
@@ -88,7 +161,6 @@ namespace QRT.Service.Implement
 
                 try
                 {
-                    
                     mas_user viewer = new mas_user();
                     viewer.user_fname = model.first_name;
                     viewer.user_surname = model.last_name;
@@ -134,6 +206,23 @@ namespace QRT.Service.Implement
         }
 
 
+        public void UpdateStatus(long id, UserViewModel user)
+        {
+            var oldData = _viewer.Filter(c => c.user_id == id).SingleOrDefault();
+            try
+            {
+                oldData.user_active = "D";
+                _viewer.Update(oldData);
+                //_comp.Delete(oldData);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
         public string ChkDuplicate(m_viewerViewModel model)
         {
             //var adm = _admin.All().ToList();
@@ -160,5 +249,21 @@ namespace QRT.Service.Implement
         }
 
 
+        public UserViewModel Login(Login vm)
+        {
+            var query = _viewer.Filter(f => f.user_login.Equals(vm.username) && f.user_password.Equals(vm.password)).ToList()
+                .Select(s => new UserViewModel()
+                {
+                    username = s.user_login,
+                    id = s.user_id
+                }).FirstOrDefault();
+            return query;
+        }
+
+        public int GetAdminID(int id)
+        {
+            var data = _viewer.Filter(c => c.user_id == id).SingleOrDefault().admin_id;
+            return Convert.ToInt32(data);
+        }
     }
 }

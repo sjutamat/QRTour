@@ -54,6 +54,7 @@
       <End Role="mas_company" EntitySet="mas_company" />
       <End Role="mas_emp" EntitySet="mas_emp" />
     </AssociationSet>
+    <EntitySet Name="mas_user" EntityType="QRCodeTourModel.mas_user" />
   </EntityContainer>
   <EntityType Name="mas_admin">
     <Key>
@@ -330,4 +331,19 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="mas_user">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="user_login" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="user_password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="user_fname" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="user_surname" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="authen_view" Type="Int32" Nullable="false" />
+    <Property Name="authen_edit" Type="Int32" Nullable="false" />
+    <Property Name="user_active" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="user_cdate" Type="DateTime" Precision="3" />
+    <Property Name="admin_id" Type="Int32" />
+  </EntityType>
 </Schema>

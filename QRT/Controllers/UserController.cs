@@ -12,9 +12,12 @@ namespace QRT.Controllers
     public class UserController : Controller
     {
         private readonly Imas_adminService _service;
-        public UserController(Imas_adminService imasadminservice)
+        private readonly Imas_viewerService _viewer;
+        public UserController(Imas_adminService imasadminservice
+            , Imas_viewerService imasviewerservice)
         {
             _service = imasadminservice;
+            _viewer = imasviewerservice;
         }
 
         // GET: User
@@ -27,11 +30,19 @@ namespace QRT.Controllers
         public ActionResult Login(Login vm)
         {
             var m = _service.Login(vm);
-            if (m!=null)
+            var v = _viewer.Login(vm);
+            if (m != null && v == null)
             {
+                m.role = 1;
                 UserInfo.Set(m);
                 return Redirect("~/Home/Authen/");
                 //return Redirect("~/Home/Index/");
+            }
+            else if (v != null && m == null)
+            {
+                v.role = Convert.ToInt16(RolesEnum.Roles.Viewer);
+                UserInfo.Set(v);
+                return Redirect("~/Home/Authen/");
             }
             else
             {

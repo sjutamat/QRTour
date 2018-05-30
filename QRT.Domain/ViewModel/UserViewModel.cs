@@ -10,6 +10,7 @@ namespace QRT.Domain.ViewModel
     {
         public int id { get; set; }
         public string username { get; set; }
+        public int role { get; set; }
     }
 
     public class Login

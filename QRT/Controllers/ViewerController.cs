@@ -44,7 +44,7 @@ namespace QRT.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Index", "Viewer");
             }
         }
 
@@ -54,13 +54,13 @@ namespace QRT.Controllers
         {
             if (admin != null)
             {
-                var data = _viewerService.GetAllReportViewer(admin);
+                var data = _viewerService.FilterViewer(model, admin);
                 ViewBag.AdminName = admin.username;
                 return View(data);
             }
             else
             {
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Index", "Viewer");
             }
         }
 
@@ -75,15 +75,24 @@ namespace QRT.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Index", "Viewer");
             }
            
         }
 
 
-        public ActionResult Edit()
+        public ActionResult Edit(int id)
         {
-            return View();
+            if (admin != null)
+            {
+                var model = _viewerService.GetById(id, admin);
+                ViewBag.AdminName = admin.username;
+                return View("Detail", model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Viewer");
+            }
         }
 
 
@@ -134,7 +143,8 @@ namespace QRT.Controllers
 
         public JsonResult Delete(long id)
         {
-            string returnMsg = "";
+            _viewerService.UpdateStatus(id, admin);
+            string returnMsg = "success";
             return Json(returnMsg, JsonRequestBehavior.AllowGet);
         }
     }

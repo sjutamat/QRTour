@@ -857,6 +857,7 @@
     <Compile Include="helper\AppSetting.cs" />
     <Compile Include="helper\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RolesEnum.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

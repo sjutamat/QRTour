@@ -92,6 +92,21 @@
     <Property Name="adminid_create" Type="int" />
     <Property Name="adminid_update" Type="int" />
   </EntityType>
+  <EntityType Name="mas_user">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="user_login" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="user_password" Type="nvarchar" MaxLength="50" />
+    <Property Name="user_fname" Type="nvarchar" MaxLength="250" />
+    <Property Name="user_surname" Type="nvarchar" MaxLength="250" />
+    <Property Name="authen_view" Type="int" Nullable="false" />
+    <Property Name="authen_edit" Type="int" Nullable="false" />
+    <Property Name="user_active" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="user_cdate" Type="datetime" />
+    <Property Name="admin_id" Type="int" />
+  </EntityType>
   <EntityType Name="trn_answer">
     <Key>
       <PropertyRef Name="answer_id" />
@@ -261,6 +276,7 @@
     <EntitySet Name="mas_locquestion" EntityType="Self.mas_locquestion" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="mas_question" EntityType="Self.mas_question" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="mas_route" EntityType="Self.mas_route" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="mas_user" EntityType="Self.mas_user" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="trn_answer" EntityType="Self.trn_answer" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="trn_transaction" EntityType="Self.trn_transaction" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_mas_emp_mas_company" Association="Self.FK_mas_emp_mas_company">

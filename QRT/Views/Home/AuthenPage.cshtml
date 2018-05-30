@@ -37,7 +37,7 @@
             pageSetUp();
             var url = '@QRT.helper.AppSetting.qr_extend';
             $.ajax({
-                url: "http://10.10.2.13:18031/qr_extend/authen.php?admin_user=" + "@(ViewBag.AdminName)",
+                url: "http://10.10.2.13:18031/qr_extend/authen.php?admin_user=" + "@(ViewBag.Admin_Name)",
                 type: 'GET',
                 success: function (data) {
                     window.location.href = "/Home/Index/";
