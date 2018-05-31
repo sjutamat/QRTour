@@ -69,6 +69,7 @@
     <Compile Include="Implement\mas_viewerRepository.cs" />
     <Compile Include="Implement\RepositoryBase.cs" />
     <Compile Include="Implement\trn_answerRepository.cs" />
+    <Compile Include="Implement\trn_hotkeyRepository.cs" />
     <Compile Include="Implement\trn_transactionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

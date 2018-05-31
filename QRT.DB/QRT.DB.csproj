@@ -96,6 +96,9 @@
     <Compile Include="trn_answer.cs">
       <DependentUpon>QRTEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="trn_hotkey.cs">
+      <DependentUpon>QRTEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="trn_transaction.cs">
       <DependentUpon>QRTEntity.tt</DependentUpon>
     </Compile>

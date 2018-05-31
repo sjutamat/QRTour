@@ -30,6 +30,8 @@ namespace QRT.DB
         public Nullable<long> route_id { get; set; }
         public Nullable<long> emp_id { get; set; }
         public Nullable<long> round_number { get; set; }
+        public Nullable<long> hotkey_id { get; set; }
+        public string hotkey_remark { get; set; }
     
         public virtual mas_location mas_location { get; set; }
         public virtual mas_route mas_route { get; set; }

@@ -1,0 +1,156 @@
+﻿@model QRT.Domain.ViewModel.m_locationViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="main" role="main">
+    <div id="ribbon">
+        <ol class="breadcrumb">
+            <li>Generate Hotkey</li>
+        </ol>
+    </div>
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+        <h1 class="page-title txt-color-blueDark">
+            <i class="fa fa-lg fa-fw fa-map-marker"></i>
+            Generete Hotkey
+        </h1>
+    </div>
+    <div id="content">
+        <section id="widget-grid" class="">
+            <div class="row">
+                <article class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+                        <div>
+                            <div class="widget-body">
+                                <form id="formSave" class="form-horizontal">
+                                    <fieldset>
+                                        <legend>Generate Hotkey</legend>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">Hot Key</label>
+                                            <div class="col-md-4">
+                                                <input type="hidden" name="id" />
+                                                <input class="form-control" name="keycode" placeholder="Generate Key" type="text" readonly>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a title="Generate Hotkey" class="btn btn-info" id="HotKeyGen" onclick="getNewHotKey(); return false;"><i class="fa fa-edit"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <a href="\Home\Index" class="btn btn-default">
+                                                        Cancel
+                                                    </a>
+                                                    <a class="btn btn-success" id="submit">
+                                                        <i class="fa fa-save"></i>
+                                                        Submit
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="modal" id="popUpResult" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Infomation</h5>
+            </div>
+            <div class="modal-body">
+                <p id="returnMsg"></p>
+            </div>
+            <div class="modal-footer">
+                <a href="\Home\Index" class="btn btn-primary">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="popUpWarning" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Infomation</h5>
+            </div>
+            <div class="modal-body">
+                <div id="returnMsgWarning"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/scripts/custom/coreDetail.js"></script>
+    <script src="~/scripts/js/plugin/jquery.qrcode.min.js"></script>
+    <script type="text/javascript">
+        
+        $('#submit').click(function () {
+            Save();
+        });
+
+        function Save() {
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST",
+                url: '@Url.Action("SaveHotKey", "Home")',
+                data: JSON.stringify({ model: $('#formSave').serializeObject() }),
+                success: function (xhr) {
+                    if (xhr == "success") {
+                        $('#returnMsg').text('Save successfully.');
+                        $('#popUpResult').modal('show');
+                    }
+                    else
+                    {
+                        $('#returnMsgWarning').html("");
+                        $('#returnMsgWarning').append(xhr);
+                        $('#popUpWarning').modal('show');
+                    }
+                },
+                error: function (xhr) {
+                    $('#returnMsgWarning').append(xhr);
+                    $('#popUpWarning').modal('show');
+                }
+            })
+        }
+
+
+        $('[title="hotkey_"]').parent().addClass('active')
+        $('[title!="hotkey_"]').parent().removeClass('active')
+
+        $('#md').click(function () {
+            $('#popUpResult').modal('show')
+        });
+
+
+
+
+        function getNewHotKey(){
+            $.ajax({
+                contentType:"application/json; charset=utf-8",
+                dataType:"json",
+                type:"GET",
+                url: '@Url.Action("GenerateRandomNo", "Home")',
+                success:function(data){
+                    if(data!=null){
+                        $('[name="keycode"]').val(data);
+                    }
+                }
+            });
+        }
+       
+    </script>
+}
+

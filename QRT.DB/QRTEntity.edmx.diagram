@@ -5,14 +5,18 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="e7144ea5629641a798b1f128e171e3e0" Name="Diagram1">
-        <EntityTypeShape EntityType="QRCodeTourModel.mas_admin" Width="1.5" PointX="7.75" PointY="0.75" />
-        <EntityTypeShape EntityType="QRCodeTourModel.mas_emp" Width="1.5" PointX="5.25" PointY="0.75" />
-        <EntityTypeShape EntityType="QRCodeTourModel.mas_location" Width="1.5" PointX="3" PointY="5" />
-        <EntityTypeShape EntityType="QRCodeTourModel.mas_locquestion" Width="1.5" PointX="5.25" PointY="10.875" />
-        <EntityTypeShape EntityType="QRCodeTourModel.mas_question" Width="1.5" PointX="3" PointY="10.25" />
-        <EntityTypeShape EntityType="QRCodeTourModel.mas_route" Width="1.5" PointX="0.75" PointY="7.75" />
-        <EntityTypeShape EntityType="QRCodeTourModel.trn_answer" Width="1.5" PointX="7.5" PointY="7.5" />
-        <EntityTypeShape EntityType="QRCodeTourModel.trn_transaction" Width="1.5" PointX="5.25" PointY="6.125" />
+        <EntityTypeShape EntityType="QRCodeTourModel.mas_admin" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="QRCodeTourModel.mas_company" Width="1.5" PointX="3.75" PointY="1.25" />
+        <EntityTypeShape EntityType="QRCodeTourModel.mas_emp" Width="1.5" PointX="6" PointY="1" />
+        <EntityTypeShape EntityType="QRCodeTourModel.mas_location" Width="1.5" PointX="3" PointY="9.25" />
+        <EntityTypeShape EntityType="QRCodeTourModel.mas_locquestion" Width="1.5" PointX="5.25" PointY="8.125" />
+        <EntityTypeShape EntityType="QRCodeTourModel.mas_question" Width="1.5" PointX="3" PointY="5.25" />
+        <EntityTypeShape EntityType="QRCodeTourModel.mas_route" Width="1.5" PointX="0.75" PointY="7.875" />
+        <EntityTypeShape EntityType="QRCodeTourModel.mas_user" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="QRCodeTourModel.trn_answer" Width="1.5" PointX="8.25" PointY="7.75" />
+        <EntityTypeShape EntityType="QRCodeTourModel.trn_hotkey" Width="1.5" PointX="5.75" PointY="4.75" />
+        <EntityTypeShape EntityType="QRCodeTourModel.trn_transaction" Width="1.5" PointX="5.25" PointY="11.875" />
+        <AssociationConnector Association="QRCodeTourModel.FK_mas_emp_mas_company" />
         <AssociationConnector Association="QRCodeTourModel.FK_trn_answer_mas_emp" />
         <AssociationConnector Association="QRCodeTourModel.FK_mas_location_mas_route" />
         <AssociationConnector Association="QRCodeTourModel.FK_mas_locquestion_mas_location" />
@@ -23,9 +27,6 @@
         <AssociationConnector Association="QRCodeTourModel.FK_trn_answer_mas_question" />
         <AssociationConnector Association="QRCodeTourModel.FK_trn_transaction_mas_route" />
         <AssociationConnector Association="QRCodeTourModel.FK_trn_answer_trn_transaction" />
-        <EntityTypeShape EntityType="QRCodeTourModel.mas_company" Width="1.5" PointX="3" PointY="1" />
-        <AssociationConnector Association="QRCodeTourModel.FK_mas_emp_mas_company" />
-        <EntityTypeShape EntityType="QRCodeTourModel.mas_user" Width="1.5" PointX="7.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

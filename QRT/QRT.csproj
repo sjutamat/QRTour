@@ -930,6 +930,7 @@
     <Content Include="Views\Company\Detail.cshtml" />
     <Content Include="Views\Viewer\Index.cshtml" />
     <Content Include="Views\Viewer\Detail.cshtml" />
+    <Content Include="Views\Home\HotKey.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -67,6 +67,7 @@
     <Compile Include="Interface\Repository\Imas_viewerRepository.cs" />
     <Compile Include="Interface\Repository\IRepositoryBase.cs" />
     <Compile Include="Interface\Repository\Itrn_answerRepository.cs" />
+    <Compile Include="Interface\Repository\Itrn_hotkeyRepository.cs" />
     <Compile Include="Interface\Repository\Itrn_transactionRepository.cs" />
     <Compile Include="Interface\Service\IDashboardService.cs" />
     <Compile Include="Interface\Service\Imas_adminService.cs" />

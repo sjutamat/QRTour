@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Op3ration.ExceptionHandler;
+using QRT.DB;
 using QRT.Domain.Interface.Repository;
 using QRT.Domain.Interface.Service;
 using QRT.Domain.ViewModel;
@@ -18,6 +20,7 @@ namespace QRT.Service.Implement
         private readonly Itrn_answerRepository _answer;
         private readonly Imas_locationRepository _location;
         private readonly Imas_empRepository _emp;
+        private readonly Itrn_hotkeyRepository _hotkey;
         public DashboardService(
             //Itrn_answerService itrnanswerservice
             Imas_routeRepository irouterepository
@@ -26,6 +29,7 @@ namespace QRT.Service.Implement
             ,Itrn_answerRepository ianswerrepository
             ,Imas_locationRepository ilocationrepository
             ,Imas_empRepository iemprepository
+            ,Itrn_hotkeyRepository itrnhotkeyrepository
             )
         {
            // _answerService = itrnanswerservice;
@@ -35,6 +39,7 @@ namespace QRT.Service.Implement
             _answer = ianswerrepository;
             _location = ilocationrepository;
             _emp = iemprepository;
+            _hotkey = itrnhotkeyrepository;
         }
 
 
@@ -101,8 +106,6 @@ namespace QRT.Service.Implement
             }
             return routeList;
         }
-
-
 
         public List<answerHeader> GetAnswerFilter(dashboardViewModel model,int admin_id)
         {
@@ -177,6 +180,28 @@ namespace QRT.Service.Implement
                 }
             }
             return routeList;
+        }
+
+        public void SaveHotKey(hotkey model, UserViewModel admin)
+        {
+            // start.AddMinutes(20) > DateTime.UtcNow;
+            try
+            {
+                var start = DateTime.Now;
+                trn_hotkey hk = new trn_hotkey();
+                hk.hotkey_code = model.keycode.ToString();
+                hk.hotkey_cdate = start;
+                hk.hotkey_expiredate = start.AddMinutes(5);
+                hk.hotkey_active = "A";
+                hk.admin_id = admin.id;
+                _hotkey.Create(hk);
+            }
+            catch (Exception ex)
+            {
+                if (ex.IsValidateHandler())
+                    throw ex.ToValidateHandler();
+                throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
+            }
         }
     }
 }

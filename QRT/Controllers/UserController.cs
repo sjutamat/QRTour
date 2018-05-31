@@ -33,14 +33,13 @@ namespace QRT.Controllers
             var v = _viewer.Login(vm);
             if (m != null && v == null)
             {
-                m.role = 1;
+                m.role = (int)RolesEnum.Roles.Admin;
                 UserInfo.Set(m);
                 return Redirect("~/Home/Authen/");
-                //return Redirect("~/Home/Index/");
             }
             else if (v != null && m == null)
             {
-                v.role = Convert.ToInt16(RolesEnum.Roles.Viewer);
+                v.role = (int)RolesEnum.Roles.Viewer;
                 UserInfo.Set(v);
                 return Redirect("~/Home/Authen/");
             }

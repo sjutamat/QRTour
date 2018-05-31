@@ -58,4 +58,10 @@ namespace QRT.Domain.ViewModel
         public string date_end { get; set; }
         public string route { get; set; }
     }
+
+    public class hotkey
+    {
+        public int id { get; set; }
+        public int keycode { get; set; }
+    }
 }
