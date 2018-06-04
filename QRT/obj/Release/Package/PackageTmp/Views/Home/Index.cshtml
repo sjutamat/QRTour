@@ -126,7 +126,12 @@
                                                                     <td>@Model.reportList[i].listEmpData[e].answerSummary[d].location_name</td>
                                                                     <td>@Model.reportList[i].listEmpData[e].answerSummary[d].answer_cdate_string</td>
                                                                     <td>@Model.reportList[i].listEmpData[e].answerSummary[d].answer_flag</td>
-                                                                    <td>@Model.reportList[i].listEmpData[e].answerSummary[d].answer_comment</td>
+                                                                    <td>
+                                                                        @Model.reportList[i].listEmpData[e].answerSummary[d].answer_comment
+                                                                        <p style="color:red">
+                                                                            @Model.reportList[i].listEmpData[e].answerSummary[d].hotkey_comment
+                                                                        </p>
+                                                                    </td>
                                                                     <td></td>
                                                                 </tr>
                                                             }

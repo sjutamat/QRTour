@@ -75,6 +75,16 @@ namespace QRT.Service.Implement
                                 foreach (var a in t)
                                 {
                                     var l = _location.Filter(c => c.location_id == a.location_id).SingleOrDefault();
+                                    string pin;
+                                    if (a.hotkey_id != null && a.hotkey_id != 0)
+                                    {
+                                        var data = _hotkey.Filter(c => c.hotkey_id == a.hotkey_id).SingleOrDefault();
+                                        pin = data.hotkey_code;
+                                    }
+                                    else
+                                    {
+                                        pin = "";
+                                    }
                                     answerDetailList d = new answerDetailList();
                                     d.location_id = a.transaction_id;
                                     d.location_name = l.seq_number + "." + l.location_title;
@@ -82,6 +92,7 @@ namespace QRT.Service.Implement
                                     d.answer_cdate_string = a.transaction_cdate.Value.ToString("dd/MM/yyyy HH:mm");
                                     d.answer_flag = a.transaction_answer == true ? "Yes" : "No";
                                     d.answer_comment = a.transaction_comment;
+                                    d.hotkey_comment = a.hotkey_id != null && a.hotkey_id != 0 ? " " + pin + " : " + a.hotkey_remark : "";
                                     d.answer_emp_name = a.session_id;
                                     ansList.Add(d);
                                 }
@@ -150,6 +161,16 @@ namespace QRT.Service.Implement
                                 foreach (var a in t)
                                 {
                                     var l = _location.Filter(c => c.location_id == a.location_id).SingleOrDefault();
+                                    string pin;
+                                    if (a.hotkey_id != null && a.hotkey_id != 0)
+                                    {
+                                        var data = _hotkey.Filter(c => c.hotkey_id == a.hotkey_id).SingleOrDefault();
+                                        pin = data.hotkey_code;
+                                    }
+                                    else
+                                    {
+                                        pin = "";
+                                    }
                                     answerDetailList d = new answerDetailList();
                                     d.location_id = a.transaction_id;
                                     d.location_name = l.seq_number + "." + l.location_title;
@@ -157,6 +178,7 @@ namespace QRT.Service.Implement
                                     d.answer_cdate_string = a.transaction_cdate.Value.ToString("dd/MM/yyyy HH:mm");
                                     d.answer_flag = a.transaction_answer == true ? "Yes" : "No";
                                     d.answer_comment = a.transaction_comment;
+                                    d.hotkey_comment = a.hotkey_id != null && a.hotkey_id != 0 ? " " + pin + " : " + a.hotkey_remark : "";
                                     d.answer_emp_name = a.session_id;
                                     ansList.Add(d);
                                 }
@@ -182,26 +204,6 @@ namespace QRT.Service.Implement
             return routeList;
         }
 
-        public void SaveHotKey(hotkey model, UserViewModel admin)
-        {
-            // start.AddMinutes(20) > DateTime.UtcNow;
-            try
-            {
-                var start = DateTime.Now;
-                trn_hotkey hk = new trn_hotkey();
-                hk.hotkey_code = model.keycode.ToString();
-                hk.hotkey_cdate = start;
-                hk.hotkey_expiredate = start.AddMinutes(5);
-                hk.hotkey_active = "A";
-                hk.admin_id = admin.id;
-                _hotkey.Create(hk);
-            }
-            catch (Exception ex)
-            {
-                if (ex.IsValidateHandler())
-                    throw ex.ToValidateHandler();
-                throw new ValidateHandler(MessageLevel.Error, "Error:'" + ex.Message + "'");
-            }
-        }
+       
     }
 }

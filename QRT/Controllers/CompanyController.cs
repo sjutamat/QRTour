@@ -46,6 +46,7 @@ namespace QRT.Controllers
             {
                 var data = _compService.GetAllCompany(admin);
                 ViewBag.AdminName = admin.username;
+                ViewBag.Role = admin.role;
                 return View(data);
             }
             else
@@ -62,6 +63,7 @@ namespace QRT.Controllers
             {
                var data = _compService.GetFilterCompany(model, admin);
                 ViewBag.AdminName = admin.username;
+                ViewBag.Role = admin.role;
                 return View(model);
             }
             else
@@ -77,6 +79,7 @@ namespace QRT.Controllers
             {
                 m_companyViewModel model = new m_companyViewModel();
                 ViewBag.AdminName = admin.username;
+                ViewBag.Role = admin.role;
                 return View("Detail", model);
             }
             else
@@ -93,6 +96,7 @@ namespace QRT.Controllers
             {
                 var model = _compService.GetCompanyById(id, admin);
                 ViewBag.AdminName = admin.username;
+                ViewBag.Role = admin.role;
                 return View("Detail", model);
             }
             else

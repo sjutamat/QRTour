@@ -19,18 +19,22 @@ namespace QRT.Service.Implement
         private readonly Itrn_transactionRepository _trn;
         private readonly Imas_locationRepository _location;
         private readonly Imas_routeRepository _route;
+        private readonly Itrn_hotkeyRepository _hotkey;
 
         private ValidateHandler Validator;
         public trn_answerService(Itrn_answerRepository itrn_answerrepository,
             Imas_locationRepository imas_locationrepository,
             Imas_routeRepository imas_routerepository,
-            Itrn_transactionRepository itrn_transactionrepository
+            Itrn_transactionRepository itrn_transactionrepository,
+            Itrn_hotkeyRepository itrn_hotkeyrepository
             )
         {
             _answer = itrn_answerrepository;
             _location = imas_locationrepository;
             _route = imas_routerepository;
             _trn = itrn_transactionrepository;
+            _hotkey = itrn_hotkeyrepository;
+
         }
 
 
@@ -80,6 +84,17 @@ namespace QRT.Service.Implement
                     {
                         flag = false;
                     }
+                    long pinid;
+                    if (!string.IsNullOrEmpty(model.pin_id) && model.pin_id != "0")
+                    {
+                        //var a = _hotkey.Filter(c => c.hotkey_code == model.pin_id).SingleOrDefault();
+                        pinid = _hotkey.Filter(c => c.hotkey_code == model.pin_id).SingleOrDefault().hotkey_id;
+                    }
+                    else
+                    {
+                        pinid = 0;
+                    }
+
 
                     trn_transaction trn = new trn_transaction();
                     trn.transaction_comment = model.answer_text;
@@ -89,6 +104,8 @@ namespace QRT.Service.Implement
                     trn.location_id = Convert.ToInt32(model.answerlist[0].location_id);
                     trn.route_id = route_id;
                     trn.round_number = round_number;
+                    trn.hotkey_id = pinid;
+                    trn.hotkey_remark = model.pin_remark;
                     trn.emp_id = emp.id;
                     _trn.Create(trn);
 

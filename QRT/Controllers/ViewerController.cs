@@ -40,6 +40,7 @@ namespace QRT.Controllers
             {
                 var data = _viewerService.GetAllReportViewer(admin);
                 ViewBag.AdminName = admin.username;
+                ViewBag.Role = admin.role;
                 return View(data);
             }
             else
@@ -56,6 +57,7 @@ namespace QRT.Controllers
             {
                 var data = _viewerService.FilterViewer(model, admin);
                 ViewBag.AdminName = admin.username;
+                ViewBag.Role = admin.role;
                 return View(data);
             }
             else
@@ -71,6 +73,7 @@ namespace QRT.Controllers
             {
                 m_viewerViewModel model = new m_viewerViewModel();
                 ViewBag.AdminName = admin.username;
+                ViewBag.Role = admin.role;
                 return View("Detail", model);
             }
             else
@@ -87,6 +90,7 @@ namespace QRT.Controllers
             {
                 var model = _viewerService.GetById(id, admin);
                 ViewBag.AdminName = admin.username;
+                ViewBag.Role = admin.role;
                 return View("Detail", model);
             }
             else

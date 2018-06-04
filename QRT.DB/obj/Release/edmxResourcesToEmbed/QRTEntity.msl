@@ -12,6 +12,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="mas_company">
+      <EntityTypeMapping TypeName="QRCodeTourModel.mas_company">
+        <MappingFragment StoreEntitySet="mas_company">
+          <ScalarProperty Name="comp_active" ColumnName="comp_active" />
+          <ScalarProperty Name="admin_id" ColumnName="admin_id" />
+          <ScalarProperty Name="flag_internal" ColumnName="flag_internal" />
+          <ScalarProperty Name="comp_desc" ColumnName="comp_desc" />
+          <ScalarProperty Name="comp_name" ColumnName="comp_name" />
+          <ScalarProperty Name="comp_id" ColumnName="comp_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="mas_emp">
       <EntityTypeMapping TypeName="QRCodeTourModel.mas_emp">
         <MappingFragment StoreEntitySet="mas_emp">
@@ -88,6 +100,22 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="mas_user">
+      <EntityTypeMapping TypeName="QRCodeTourModel.mas_user">
+        <MappingFragment StoreEntitySet="mas_user">
+          <ScalarProperty Name="admin_id" ColumnName="admin_id" />
+          <ScalarProperty Name="user_cdate" ColumnName="user_cdate" />
+          <ScalarProperty Name="user_active" ColumnName="user_active" />
+          <ScalarProperty Name="authen_edit" ColumnName="authen_edit" />
+          <ScalarProperty Name="authen_view" ColumnName="authen_view" />
+          <ScalarProperty Name="user_surname" ColumnName="user_surname" />
+          <ScalarProperty Name="user_fname" ColumnName="user_fname" />
+          <ScalarProperty Name="user_password" ColumnName="user_password" />
+          <ScalarProperty Name="user_login" ColumnName="user_login" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="trn_answer">
       <EntityTypeMapping TypeName="QRCodeTourModel.trn_answer">
         <MappingFragment StoreEntitySet="trn_answer">
@@ -106,6 +134,8 @@
     <EntitySetMapping Name="trn_transaction">
       <EntityTypeMapping TypeName="QRCodeTourModel.trn_transaction">
         <MappingFragment StoreEntitySet="trn_transaction">
+          <ScalarProperty Name="hotkey_remark" ColumnName="hotkey_remark" />
+          <ScalarProperty Name="hotkey_id" ColumnName="hotkey_id" />
           <ScalarProperty Name="round_number" ColumnName="round_number" />
           <ScalarProperty Name="emp_id" ColumnName="emp_id" />
           <ScalarProperty Name="route_id" ColumnName="route_id" />
@@ -119,31 +149,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="mas_company">
-      <EntityTypeMapping TypeName="QRCodeTourModel.mas_company">
-        <MappingFragment StoreEntitySet="mas_company">
-          <ScalarProperty Name="comp_active" ColumnName="comp_active" />
+    <EntitySetMapping Name="trn_hotkey">
+      <EntityTypeMapping TypeName="QRCodeTourModel.trn_hotkey">
+        <MappingFragment StoreEntitySet="trn_hotkey">
+          <ScalarProperty Name="hotkey_usedate" ColumnName="hotkey_usedate" />
           <ScalarProperty Name="admin_id" ColumnName="admin_id" />
-          <ScalarProperty Name="flag_internal" ColumnName="flag_internal" />
-          <ScalarProperty Name="comp_desc" ColumnName="comp_desc" />
-          <ScalarProperty Name="comp_name" ColumnName="comp_name" />
-          <ScalarProperty Name="comp_id" ColumnName="comp_id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="mas_user">
-      <EntityTypeMapping TypeName="QRCodeTourModel.mas_user">
-        <MappingFragment StoreEntitySet="mas_user">
-          <ScalarProperty Name="admin_id" ColumnName="admin_id" />
-          <ScalarProperty Name="user_cdate" ColumnName="user_cdate" />
-          <ScalarProperty Name="user_active" ColumnName="user_active" />
-          <ScalarProperty Name="authen_edit" ColumnName="authen_edit" />
-          <ScalarProperty Name="authen_view" ColumnName="authen_view" />
-          <ScalarProperty Name="user_surname" ColumnName="user_surname" />
-          <ScalarProperty Name="user_fname" ColumnName="user_fname" />
-          <ScalarProperty Name="user_password" ColumnName="user_password" />
-          <ScalarProperty Name="user_login" ColumnName="user_login" />
-          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="hotkey_active" ColumnName="hotkey_active" />
+          <ScalarProperty Name="hotkey_expiredate" ColumnName="hotkey_expiredate" />
+          <ScalarProperty Name="hotkey_cdate" ColumnName="hotkey_cdate" />
+          <ScalarProperty Name="hotkey_code" ColumnName="hotkey_code" />
+          <ScalarProperty Name="hotkey_id" ColumnName="hotkey_id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

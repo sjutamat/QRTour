@@ -15,17 +15,20 @@ namespace QRT.Controllers
         private readonly Imas_questionService _questservice;
         private readonly Itrn_answerService _answerservice;
         private readonly Imas_locationService _location;
+        private readonly Itrn_hotkeyService _hotkey;
 
         private EmpData empdata = UserInfo.GetEmployee;
         public CheckPointController(Imas_empService iempService
             ,Imas_questionService iquestService
             ,Itrn_answerService ianswerService
-            ,Imas_locationService ilocationService)
+            ,Imas_locationService ilocationService
+            ,Itrn_hotkeyService ihotkeyService)
         {
             _empservice = iempService;
             _questservice = iquestService;
             _answerservice = ianswerService;
             _location = ilocationService;
+            _hotkey = ihotkeyService;
         }
 
 
@@ -80,7 +83,11 @@ namespace QRT.Controllers
         }
 
 
-
+        /// <summary>
+        /// Chk Emp Cookies, Chk over sequence
+        /// </summary>
+        /// <param name="locationid">Is QRCode</param>
+        /// <returns></returns>
         public ActionResult Question(string locationid)
         {
             var chkLocation = _location.ChkQRCodeActive(locationid);
@@ -111,7 +118,9 @@ namespace QRT.Controllers
                         var chkOverSeq = _location.ChkOverSequentNumber(locationid, employee);
                         if (chkOverSeq != null)
                         {
-                            return RedirectToAction("OverSequent", new { previousSequent = chkOverSeq });
+                            //var current_location = _location.GetLocationByCode(locationid).location_title;
+                            
+                            return RedirectToAction("OverSequent", new { previousSequent = chkOverSeq, currentLocation = locationid });
                         }
                         else
                         {
@@ -128,12 +137,12 @@ namespace QRT.Controllers
             else
             {
                 var AlertMsg = "QRCode นี้ยังไม่เปิดใช้งาน กรุณาติดต่อ admin ของท่าน";
-                return RedirectToAction("OverSequent",new { previousSequent  = AlertMsg });
+                return RedirectToAction("currentLocation",new { previousSequent  = AlertMsg, currentLocation = locationid});
             }
         }
 
 
-        public ActionResult QuestionCheck(string location)
+        public ActionResult QuestionCheck(string location, int pin_id = 0, string pin_remark = "")
         {
             if (HttpContext.Session["SUBMIT_KEY"]==null)
             {
@@ -144,6 +153,7 @@ namespace QRT.Controllers
             var employeecode = Request.Cookies["EmpCookies"].Value;
             if (employeecode != null && data.Any())
             {
+                var aa = HttpContext.Session["SUBMIT_KEY"].ToString();
                 string code = Request.Cookies["EmpCookies"]["code"];
                 string password = Request.Cookies["EmpCookies"]["password"];
                 string enable = Request.Cookies["EmpCookies"]["EnableSave"];
@@ -152,6 +162,8 @@ namespace QRT.Controllers
 
                 ViewBag.Name = employee.name;
                 ViewBag.LocationName = data[0].location_name;
+                ViewBag.PIN_ID = pin_id;
+                ViewBag.PIN_REMARK = pin_remark;
                 return View(data);
                 
             }
@@ -179,7 +191,7 @@ namespace QRT.Controllers
                 if (aa == "0")
                 {
                     _answerservice.SaveAnswer(model, employee);
-
+                    _hotkey.UpdateHotKey(model.pin_id);
                     HttpContext.Session["SUBMIT_KEY"] = 1;
                     Request.Cookies["EmpCookies"]["EnableSave"] = "0";
                     var aaa = Request.Cookies["EmpCookies"].Value;
@@ -198,6 +210,25 @@ namespace QRT.Controllers
             return Json(returnMsg, JsonRequestBehavior.AllowGet);
         }
 
+
+        public JsonResult ChkPINCode(string locationid, string keycode, string remark)
+        {
+            var chk = _hotkey.chkHotKey(keycode, locationid);
+            var returnMsg = "";
+            if (chk == true)
+            {
+                HttpContext.Session["SUBMIT_KEY"] = 0;
+                returnMsg = "true";
+            }
+            else
+            {
+                returnMsg = "false";
+            }
+            
+            return Json(returnMsg, JsonRequestBehavior.AllowGet);
+        }
+
+        #region Page Alert
         public ActionResult SuccessPage(string location)
         {
             var l = Convert.ToInt32(location);
@@ -205,9 +236,10 @@ namespace QRT.Controllers
             return View(locationName);
         }
 
-        public ActionResult OverSequent(string previousSequent)
+        public ActionResult OverSequent(string previousSequent, string currentLocation = "")
         {
             ViewBag.previousLocation = previousSequent;
+            ViewBag.currentLocation = currentLocation;
             return View();
         }
 
@@ -218,14 +250,19 @@ namespace QRT.Controllers
         }
 
 
-       /// <summary>
-       /// not have any question for the location.
-       /// </summary>
-       /// <returns></returns>
+        /// <summary>
+        /// not have any question for the location.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Alert()
         {
             ViewBag.CrossRoute = "ไม่พบคำถาม โปรดติดต่อ admin ของท่าน";
             return View("CrossRoute");
         }
+        #endregion
+
+
+
+
     }
 }

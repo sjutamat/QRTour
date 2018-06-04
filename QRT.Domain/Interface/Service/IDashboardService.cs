@@ -11,6 +11,6 @@ namespace QRT.Domain.Interface.Service
     {
         List<answerHeader> GetAnswer(int admin_id);
         List<answerHeader> GetAnswerFilter(dashboardViewModel model, int admin_id);
-        void SaveHotKey(hotkey model, UserViewModel admin);
+        
     }
 }

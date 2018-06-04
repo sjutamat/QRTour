@@ -79,6 +79,7 @@
     <Compile Include="Interface\Service\Imas_routeService.cs" />
     <Compile Include="Interface\Service\Imas_viewerService.cs" />
     <Compile Include="Interface\Service\Itrn_answerService.cs" />
+    <Compile Include="Interface\Service\Itrn_hotkeyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\dashboardViewModel.cs" />
     <Compile Include="ViewModel\m_companyViewModel.cs" />

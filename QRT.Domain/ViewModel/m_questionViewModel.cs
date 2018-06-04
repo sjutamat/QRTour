@@ -27,8 +27,10 @@ namespace QRT.Domain.ViewModel
 
     public class answer
     {
-        public List<Answer> answerlist { get; set; }
         public string answer_text { get; set; }
+        public List<Answer> answerlist { get; set; }
+        public string pin_id { get; set; }
+        public string pin_remark { get; set; }
     }
 
     public class quest_item

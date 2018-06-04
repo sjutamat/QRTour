@@ -95,6 +95,7 @@ Use search to find needed section.
 <body class="">
 
     <!-- #HEADER -->
+    @*<header id="header" style="background-image: linear-gradient(to bottom,#3a2d4b,#3a2d4b)">*@
     <header id="header">
         <div id="logo-group">
             <div id="logo-group">
@@ -260,13 +261,13 @@ Use search to find needed section.
         </div>
     </header>
     <aside id="left-panel">
-       
+
         <div class="login-info">
             <span>
-                <a href="#" id="show-shortcut" >
+                <a href="#" id="show-shortcut">
                     @*<img src="~/Content/img/avatars/sunny.png" alt="me" class="online" />*@
                     <span>
-                       Hello @ViewBag.AdminName
+                        Hello @ViewBag.AdminName
                     </span>
                     @*<i class="fa fa-angle-down"></i>*@
                 </a>
@@ -274,45 +275,61 @@ Use search to find needed section.
         </div>
         <nav>
             <ul>
+                
+                @if (ViewBag.Role != (int)RolesEnum.Roles.Admin)
+    {
                 <li class="">
                     <a href="\Home\Index" title="blank_">
                         <i class="fa fa-lg fa-fw fa-home"></i>
                         <span class="menu-item-parent">Dashboard</span>
                     </a>
                 </li>
-                @if (ViewBag.Role == 1)
-                {
-                        <li class="active">
-                            <a href="\Route\Index" title="route_">
-                                <span class="menu-item-parent">Route</span>
-                            </a>
-                        </li>
-                        <li class="active">
-                            <a href="\Location\Index" title="location_">
-                                <span class="menu-item-parent">Location</span>
-                            </a>
-                        </li>
-                        <li class="active">
-                            <a href="\Question\Index" title="question_">
-                                <span class="menu-item-parent">Question</span>
-                            </a>
-                        </li>
-                        <li class="active">
-                            <a href="\Emp\Index" title="emp_">
-                                <span class="menu-item-parent">Employee</span>
-                            </a>
-                        </li>
-                        <li class="active">
-                            <a href="\Company\Index" title="company_">
-                                <span class="menu-item-parent">Company</span>
-                            </a>
-                        </li>
-                        <li class="active">
-                            <a href="\Viewer\Index" title="viewer_">
-                                <span class="menu-item-parent">Report Viewer</span>
-                            </a>
-                        </li>
-                }
+}
+else
+{
+            <li class="">
+                <a href="\Home\Index" title="blank_">
+                    <i class="fa fa-lg fa-fw fa-home"></i>
+                    <span class="menu-item-parent">Dashboard</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="\Route\Index" title="route_">
+                    <span class="menu-item-parent">Route</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="\Location\Index" title="location_">
+                    <span class="menu-item-parent">Location</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="\Question\Index" title="question_">
+                    <span class="menu-item-parent">Question</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="\Emp\Index" title="emp_">
+                    <span class="menu-item-parent">Employee</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="\Company\Index" title="company_">
+                    <span class="menu-item-parent">Company</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="\Viewer\Index" title="viewer_">
+                    <span class="menu-item-parent">Report Viewer</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="\Home\GenerateHotkey" title="hotkey_">
+                    <span class="menu-item-parent">Generate Hotkey</span>
+                </a>
+            </li>
+}
+
             </ul>
         </nav>
         <span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit"></i> </span>

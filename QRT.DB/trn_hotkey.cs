@@ -20,5 +20,6 @@ namespace QRT.DB
         public Nullable<System.DateTime> hotkey_expiredate { get; set; }
         public string hotkey_active { get; set; }
         public Nullable<int> admin_id { get; set; }
+        public Nullable<System.DateTime> hotkey_usedate { get; set; }
     }
 }

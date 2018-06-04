@@ -15,18 +15,21 @@ namespace QRT.Controllers
         private readonly Imas_routeService _route;
         private readonly Imas_viewerService _viewer;
         private readonly Imas_adminService _admin;
+        private readonly Itrn_hotkeyService _hotkey;
         private ValidateHandler Validator;
 
         public HomeController(IDashboardService idashboardService
             ,Imas_routeService irouteService
             ,Imas_viewerService iviewService
             ,Imas_adminService iadminService
+            ,Itrn_hotkeyService ihotkeyService
             )
         {
             _route = irouteService;
             _viewer = iviewService;
             _dashboard = idashboardService;
             _admin = iadminService;
+            _hotkey = ihotkeyService;
         }
 
         private ValidateHandler ValidateModel(hotkey model)
@@ -151,7 +154,7 @@ namespace QRT.Controllers
                 }
                 else
                 {
-                    _dashboard.SaveHotKey(model, admin);
+                    _hotkey.SaveHotKey(model, admin);
                     returnMsg = "success";
                 }
             }

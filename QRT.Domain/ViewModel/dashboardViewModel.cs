@@ -47,6 +47,7 @@ namespace QRT.Domain.ViewModel
         public string answer_cdate_string { get; set; }
         public string answer_flag { get; set; }
         public string answer_comment { get; set; }
+        public string hotkey_comment { get; set; }
         public long? answer_emp_id { get; set; }
         public string answer_emp_name { get; set; }
         public string answer_emp_company { get; set; }

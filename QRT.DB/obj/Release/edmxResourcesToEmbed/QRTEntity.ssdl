@@ -121,6 +121,18 @@
     <Property Name="answer_cdate" Type="datetime" />
     <Property Name="answer_picture" Type="nvarchar" MaxLength="150" />
   </EntityType>
+  <EntityType Name="trn_hotkey">
+    <Key>
+      <PropertyRef Name="hotkey_id" />
+    </Key>
+    <Property Name="hotkey_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="hotkey_code" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="hotkey_cdate" Type="datetime" />
+    <Property Name="hotkey_expiredate" Type="datetime" />
+    <Property Name="hotkey_active" Type="nvarchar" MaxLength="5" Nullable="false" />
+    <Property Name="admin_id" Type="int" />
+    <Property Name="hotkey_usedate" Type="datetime" />
+  </EntityType>
   <EntityType Name="trn_transaction">
     <Key>
       <PropertyRef Name="transaction_id" />
@@ -135,6 +147,8 @@
     <Property Name="route_id" Type="bigint" />
     <Property Name="emp_id" Type="bigint" />
     <Property Name="round_number" Type="bigint" />
+    <Property Name="hotkey_id" Type="bigint" />
+    <Property Name="hotkey_remark" Type="nvarchar" MaxLength="250" />
   </EntityType>
   <Association Name="FK_mas_emp_mas_company">
     <End Role="mas_company" Type="Self.mas_company" Multiplicity="1" />
@@ -278,6 +292,7 @@
     <EntitySet Name="mas_route" EntityType="Self.mas_route" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="mas_user" EntityType="Self.mas_user" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="trn_answer" EntityType="Self.trn_answer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="trn_hotkey" EntityType="Self.trn_hotkey" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="trn_transaction" EntityType="Self.trn_transaction" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_mas_emp_mas_company" Association="Self.FK_mas_emp_mas_company">
       <End Role="mas_company" EntitySet="mas_company" />

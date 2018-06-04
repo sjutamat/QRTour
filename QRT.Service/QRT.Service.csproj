@@ -85,6 +85,7 @@
     <Compile Include="Implement\mas_routeService.cs" />
     <Compile Include="Implement\mas_viewerService.cs" />
     <Compile Include="Implement\trn_answerService.cs" />
+    <Compile Include="Implement\trn_hotkeyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

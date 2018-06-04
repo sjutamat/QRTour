@@ -42,6 +42,7 @@ namespace QRT.Controllers
             {
                 var data = _locationService.GetAllLocation(admin);
                 ViewBag.AdminName = admin.username;
+                ViewBag.Role = admin.role;
                 return View(data);
             }
             else
@@ -59,6 +60,7 @@ namespace QRT.Controllers
             {
                 var data = _locationService.FilterLocation(model, admin);
                 ViewBag.AdminName = admin.username;
+                ViewBag.Role = admin.role;
                 return View(data);
             }
             else
@@ -73,6 +75,7 @@ namespace QRT.Controllers
             {
                 var model = _locationService.GetRoute(admin);
                 ViewBag.AdminName = admin.username;
+                ViewBag.Role = admin.role;
                 return View("Detail", model);
             }
             else
@@ -87,6 +90,7 @@ namespace QRT.Controllers
             {
                 var model = _locationService.GetById(id, admin);
                 ViewBag.AdminName = admin.username;
+                ViewBag.Role = admin.role;
                 return View("Detail", model);
             }
             else

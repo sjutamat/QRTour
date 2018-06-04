@@ -83,7 +83,9 @@
                                     }
 
                                     <input type="text" name="answer_text"/>
-                                </section>
+                                    <input type="hidden" name="pin_id" value="@ViewBag.PIN_ID" />
+                                    <input type="hidden" name="pin_remark" value="@ViewBag.PIN_REMARK" />
+                                 </section>
                             </fieldset>
                             <footer>
                                 <label class="cke_label">
@@ -211,6 +213,8 @@
             var question_id;
             var answer_flag;
             var answer_comment = $('[name="answer_text"]').val();
+            var pinid = $('[name="pin_id"]').val();
+            var pinremark = $('[name="pin_remark"]').val();
             for (var i = 0; i < element; i++) {
                     location_id = ($('[name="location_id[' + i + ']"]').val()),
                     question_id = ($('[name="question_id[' + i + ']"]').val()),
@@ -229,7 +233,9 @@
 
             objmodel = {
                 answerlist: listObj,
-                answer_text: answer_comment
+                answer_text: answer_comment,
+                pin_id: pinid,
+                pin_remark: pinremark
             }
             //return listObj;
             return objmodel;

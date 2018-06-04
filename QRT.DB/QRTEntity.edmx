@@ -136,6 +136,7 @@
           <Property Name="hotkey_expiredate" Type="datetime" />
           <Property Name="hotkey_active" Type="nvarchar" MaxLength="5" Nullable="false" />
           <Property Name="admin_id" Type="int" />
+          <Property Name="hotkey_usedate" Type="datetime" />
         </EntityType>
         <EntityType Name="trn_transaction">
           <Key>
@@ -357,7 +358,6 @@
           <EntitySet Name="mas_route" EntityType="QRCodeTourModel.mas_route" />
           <EntitySet Name="mas_user" EntityType="QRCodeTourModel.mas_user" />
           <EntitySet Name="trn_answer" EntityType="QRCodeTourModel.trn_answer" />
-          <EntitySet Name="trn_hotkey" EntityType="QRCodeTourModel.trn_hotkey" />
           <EntitySet Name="trn_transaction" EntityType="QRCodeTourModel.trn_transaction" />
           <AssociationSet Name="FK_mas_emp_mas_company" Association="QRCodeTourModel.FK_mas_emp_mas_company">
             <End Role="mas_company" EntitySet="mas_company" />
@@ -403,6 +403,7 @@
             <End Role="trn_transaction" EntitySet="trn_transaction" />
             <End Role="trn_answer" EntitySet="trn_answer" />
           </AssociationSet>
+          <EntitySet Name="trn_hotkey" EntityType="QRCodeTourModel.trn_hotkey" />
         </EntityContainer>
         <EntityType Name="mas_admin">
           <Key>
@@ -543,17 +544,6 @@
           <NavigationProperty Name="mas_location" Relationship="QRCodeTourModel.FK_trn_answer_mas_location" FromRole="trn_answer" ToRole="mas_location" />
           <NavigationProperty Name="mas_question" Relationship="QRCodeTourModel.FK_trn_answer_mas_question" FromRole="trn_answer" ToRole="mas_question" />
           <NavigationProperty Name="trn_transaction" Relationship="QRCodeTourModel.FK_trn_answer_trn_transaction" FromRole="trn_answer" ToRole="trn_transaction" />
-        </EntityType>
-        <EntityType Name="trn_hotkey">
-          <Key>
-            <PropertyRef Name="hotkey_id" />
-          </Key>
-          <Property Name="hotkey_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="hotkey_code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="hotkey_cdate" Type="DateTime" Precision="3" />
-          <Property Name="hotkey_expiredate" Type="DateTime" Precision="3" />
-          <Property Name="hotkey_active" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="admin_id" Type="Int32" />
         </EntityType>
         <EntityType Name="trn_transaction">
           <Key>
@@ -707,6 +697,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="trn_hotkey">
+          <Key>
+            <PropertyRef Name="hotkey_id" />
+          </Key>
+          <Property Name="hotkey_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="hotkey_code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="hotkey_cdate" Type="DateTime" Precision="3" />
+          <Property Name="hotkey_expiredate" Type="DateTime" Precision="3" />
+          <Property Name="hotkey_active" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="admin_id" Type="Int32" />
+          <Property Name="hotkey_usedate" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -843,18 +845,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="trn_hotkey">
-            <EntityTypeMapping TypeName="QRCodeTourModel.trn_hotkey">
-              <MappingFragment StoreEntitySet="trn_hotkey">
-                <ScalarProperty Name="admin_id" ColumnName="admin_id" />
-                <ScalarProperty Name="hotkey_active" ColumnName="hotkey_active" />
-                <ScalarProperty Name="hotkey_expiredate" ColumnName="hotkey_expiredate" />
-                <ScalarProperty Name="hotkey_cdate" ColumnName="hotkey_cdate" />
-                <ScalarProperty Name="hotkey_code" ColumnName="hotkey_code" />
-                <ScalarProperty Name="hotkey_id" ColumnName="hotkey_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="trn_transaction">
             <EntityTypeMapping TypeName="QRCodeTourModel.trn_transaction">
               <MappingFragment StoreEntitySet="trn_transaction">
@@ -870,6 +860,19 @@
                 <ScalarProperty Name="transaction_picture" ColumnName="transaction_picture" />
                 <ScalarProperty Name="transaction_comment" ColumnName="transaction_comment" />
                 <ScalarProperty Name="transaction_id" ColumnName="transaction_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_hotkey">
+            <EntityTypeMapping TypeName="QRCodeTourModel.trn_hotkey">
+              <MappingFragment StoreEntitySet="trn_hotkey">
+                <ScalarProperty Name="hotkey_usedate" ColumnName="hotkey_usedate" />
+                <ScalarProperty Name="admin_id" ColumnName="admin_id" />
+                <ScalarProperty Name="hotkey_active" ColumnName="hotkey_active" />
+                <ScalarProperty Name="hotkey_expiredate" ColumnName="hotkey_expiredate" />
+                <ScalarProperty Name="hotkey_cdate" ColumnName="hotkey_cdate" />
+                <ScalarProperty Name="hotkey_code" ColumnName="hotkey_code" />
+                <ScalarProperty Name="hotkey_id" ColumnName="hotkey_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
