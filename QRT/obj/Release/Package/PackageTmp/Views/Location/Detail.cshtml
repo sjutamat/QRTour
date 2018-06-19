@@ -128,7 +128,10 @@ else
                                     </div>
                                     <div class="form-group">
                                         <div id="qrcodeImg" class="col-sm-12" style="text-align:center;">
-
+                                            
+                                        </div>
+                                        <div class="col-sm-12" style="text-align:center;">
+                                            <a href="#" id="download" class="btn btn-default" style="display:none;">Download</a>
                                         </div>
                                     </div>
 
@@ -435,6 +438,21 @@ else
             }
         }
 
+        //function SaveQRCode() {
+        //    <a href="QRcode/gen.php?data=1234567&amp;file_name=เธ—เธ”เธชเธญเธเธเธทเนเธญเนเธเธฅเน" target="new"> Download </a>
+        //}
+
+        function CreateButtonDownload(code) {
+            var route_name = $('#Route option:selected').text();
+            var location_name = $('[name="title"]').val();
+            var file_name = route_name + "_" + location_name;
+            var encode = encodeURIComponent(file_name);
+            
+            var url = '@QRT.helper.AppSetting.qr_extend';
+            url = url + "/qr_extend/QRcode/gen.php?data=" + code + "&file_name=" + encode;
+            $('#download').attr("href", url);
+        }
+
         function GenQRCode(code) {
             var guidCode = $('[name="' + code + '"]').val();
             //for local test
@@ -444,6 +462,8 @@ else
             var textUrl = 'http://portals.siampiwat.in.th:18031/CheckPoint/Question?locationid=' + guidCode;
             $('#qrcodeImg').empty();
             jQuery("#qrcodeImg").qrcode(textUrl);
+            CreateButtonDownload(guidCode);
+            $('#download').show();
         }
       
     </script>

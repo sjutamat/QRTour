@@ -65,11 +65,11 @@
                 <form id="formSave" class="form-horizontal">
                     <div class="col-md-4">
                         <input type="hidden" value="@(ViewBag.currentLocation)" name="locationid" />
-                        <label class="col-md-2 control-label">PIN Code</label>
+                        <label class="col-md-2 control-label">PIN Code <span style="color:red">*</span></label>
                         <input class="col-md-6 form-control" name="keycode" placeholder="Enter your pin code." type="text">
                     </div>
                     <div class="col-md-4">
-                        <label class="col-md-2 control-label">Remark</label>
+                        <label class="col-md-2 control-label">Remark <span style="color:red">*</span></label>
                         <textarea class="form-control col-md-6" name="remark" placeholder="Enter your remark."></textarea>
                     </div>
                     <br />
@@ -82,6 +82,14 @@
                         </div>
                     </div>
                 </form>
+                <div id="PINAlert" class="alert alert-warning fade in" style="display:none">
+                    <i class="fa-fw fa fa-warning"></i>
+                    <strong>Warning</strong> PIN Code ไม่ถูกต้อง กรุณาติดต่อ Admin ของท่าน
+                </div>
+                <div id="SubMitAlert" class="alert alert-warning fade in" style="display:none">
+                    <i class="fa-fw fa fa-warning"></i>
+                    <strong>Warning</strong> กรุณากรอกข้อมูลให้ครบก่อน Submit.
+                </div>
             </div>
         </div>
     </div>
@@ -127,7 +135,10 @@
             var location = $('[name="locationid"]').val();
             var key = $('[name="keycode"]').val();
             var remark = $('[name="remark"]').val();
-            $.ajax({
+            if (key == "" || remark == "") {
+                $('#SubMitAlert').show();
+            } else {
+                $.ajax({
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 type: "POST",
@@ -139,13 +150,14 @@
                     }
                     else
                     {
-                       
+                        $('#PINAlert').show();
                     }
 
                 },
                 error: function (xhr) {
                 }
             })
+            }
             return false;
         })
 
@@ -160,6 +172,17 @@
                 stop;
             }
         }
+
+        $('[name="keycode"]').keydown(function () {
+            $('#PINAlert').hide();
+            $('#SubMitAlert').hide();
+        });
+
+        $('[name = "remark"]').keydown(function () {
+            $('#PINAlert').hide();
+            $('#SubMitAlert').hide();
+        });
+        
     </script>
 </body>
 </html>

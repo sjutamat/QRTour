@@ -184,11 +184,10 @@ namespace QRT.Controllers
             string location = Request.Cookies["EmpCookies"]["Location"];
             string enableSave = Request.Cookies["EmpCookies"]["EnableSave"];
             EmpData employee = _empservice.CheckEmp(code, password, location);
-            var aa = HttpContext.Session["SUBMIT_KEY"].ToString();
-            //var aaa = Request.Cookies["EmpCookies"]["EnableSave"];
+            var key = HttpContext.Session["SUBMIT_KEY"].ToString();
             if (model != null)
             {
-                if (aa == "0")
+                if (key == "0")
                 {
                     _answerservice.SaveAnswer(model, employee);
                     _hotkey.UpdateHotKey(model.pin_id);
@@ -201,7 +200,6 @@ namespace QRT.Controllers
                 {
                     returnMsg = "disable";
                 }
-                
             }
             else
             {
